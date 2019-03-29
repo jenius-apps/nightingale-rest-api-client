@@ -27,3 +27,5 @@ Is there a way I can contribute to Nightingale?
 
 - I appreciate the interest! However at this current time, Nightingale is not open source. The best way to contribute to Nightingale is to open bug tickets if you find some and by making feature requests so we can properly prioritize our backlog!
 
+If you're not open sourcing Nightingale, why create this repo?
+- The goal of this repo is to provide a method for people to report problems that will also allow for discussion. This method is easier than using Twitter, email, or other methods. 
