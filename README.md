@@ -29,3 +29,9 @@ Is there a way I can contribute to Nightingale?
 
 If you're not open sourcing Nightingale, why create this repo?
 - The goal of this repo is to provide a method for people to report problems that will also allow for discussion. This method is easier than using Twitter, email, or other methods. 
+
+# Known bugs
+
+Bug | Details
+--- | ---
+Drag and drop disabled | There's a bug in the Microsoft TreeView UI control that leads to an invalid state in Nightingale. [Details](https://github.com/microsoft/microsoft-ui-xaml/issues/1002)
