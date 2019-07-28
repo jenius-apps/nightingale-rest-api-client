@@ -13,6 +13,7 @@ To use environment variables, simply wrap a variable name with double curly brac
 When Nightingale sees this, it will replace the variable with the corresponding value from your environment when you execute your request.
 
 Here are the different areas in Nightingale where you can use variables:
+
 Area | Example
 --- | ---
 Base URL | `https://{{myHostVariable}}/path?foo=bar`
