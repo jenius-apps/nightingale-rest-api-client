@@ -1,5 +1,17 @@
 ## Recent changelog
 
+3.0.5
+- New UI
+- Added ability to open multiple instances of Nightingale
+- Added ability to save data as text-based Nightingale collection file (aka NCF file)
+- Added ability to double click on NCF files to launch Nightingale
+- Added WinUI support
+- Fixed drag and drop issues. You can now drag and drop once again
+- Fixed bug with localhost connection not working when there's no internet
+- Fixed slow downs when launching Nightingale caused by large history
+- Adding ability to connect to localhost on another computer in the same network
+- Added ability to store collections inside collections
+
 2.4.1
 - Added beautify button
 
