@@ -1,5 +1,13 @@
 ## Recent changelog
 
+3.0.7
+- WebView response preview replaced with HTML text with syntax highlighting to improve performance. Want preview to return? Let us know by opening an issue and we'll investigate re-introducing it with improved performance.
+- Fixed bug where the Save As button sometimes did not actually save data
+- Fixed issue fetching add-on prices
+- Fixed font size in request tooltip
+- Fixed tab-index ordering in request page
+- Fixed crash sometimes caused by toggling between add-on prices
+
 3.0.5
 - New UI
 - Added ability to open multiple instances of Nightingale
