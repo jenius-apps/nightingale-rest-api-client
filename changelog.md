@@ -1,5 +1,11 @@
 ## Recent changelog
 
+3.0.20
+- Added support for multipart form data in request body
+- Added support for text body in request
+- Fixed bug with being unable to cancel collections that are actively running
+- Added digest authentication support
+
 3.0.7
 - WebView response preview replaced with HTML text with syntax highlighting to improve performance. Want preview to return? Let us know by opening an issue and we'll investigate re-introducing it with improved performance.
 - Fixed bug where the Save As button sometimes did not actually save data
