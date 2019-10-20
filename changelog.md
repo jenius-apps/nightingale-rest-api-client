@@ -1,5 +1,9 @@
 ## Recent changelog
 
+3.0.23
+- Nightingale now opens a request when it's newly created, and the URL bar is focused automatically
+- Fixed bug with form data only sending first row of data.
+
 3.0.20
 - Added support for multipart form data in request body
 - Added support for text body in request
