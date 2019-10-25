@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.0.25
+- Added popup asking to save files when closing the app.
+- Fixed cache issue with Nightingale Premium not being activated until the app was restarted.
+- Fixed crash that occured when you try to save the workspace but the file you're using had been deleted.
+
 3.0.23
 - Nightingale now opens a request when it's newly created, and the URL bar is focused automatically
 - Fixed bug with form data only sending first row of data.
