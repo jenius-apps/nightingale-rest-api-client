@@ -4,6 +4,7 @@
 - Added popup asking to save files when closing the app.
 - Fixed cache issue with Nightingale Premium not being activated until the app was restarted.
 - Fixed crash that occured when you try to save the workspace but the file you're using had been deleted.
+- Fixed bug where you sometimes cannot delete items in collections
 
 3.0.23
 - Nightingale now opens a request when it's newly created, and the URL bar is focused automatically
