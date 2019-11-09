@@ -1,5 +1,12 @@
 ## Recent changelog
 
+3.1.6
+- New cookie manager in Nightingale. You can now add cookies to your requests!
+- You can now copy headers and cookies from your responses.
+
+3.0.27
+- Nightingale now automatically saves your workspaces when you close the app. This can be turned on or off in settings.
+
 3.0.25
 - Added popup asking to save files when closing the app.
 - Fixed cache issue with Nightingale Premium not being activated until the app was restarted.
