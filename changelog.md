@@ -1,5 +1,8 @@
 ## Recent changelog
 
+3.1.8
+- Bug fixes
+
 3.1.6
 - New cookie manager in Nightingale. You can now add cookies to your requests!
 - You can now copy headers and cookies from your responses.
