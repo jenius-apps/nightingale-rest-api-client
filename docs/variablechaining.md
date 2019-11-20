@@ -3,7 +3,7 @@
 ## What is it?
 Sometimes, you want to send an authentication request manually, retrieve the token, and then use that token for a different request. 
 
-Nightingale supports this ability to have values from the response of one request used when sending a different request. We call this variable chaining. This is made possible using `enviroment variables` combined with `chaining rules`. 
+Nightingale supports this ability to have values from the response of one request used when sending a different request. We call this variable chaining. This is made possible using `environment variables` combined with `chaining rules`. 
 
 ## Outline
 The basic outline to enable variable chaining is as follows:
