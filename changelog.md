@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.1.19
+- Added ability to import Postman Collection v2.1 files
+- Added ability to add new item to workspace root via context menu
+- Fixed issue where page navigation failed when creating new item in collection via context menu
+
 3.1.8
 - Bug fixes
 
