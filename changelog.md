@@ -5,6 +5,7 @@
 - 1xx and 3xx status codes are now displayed in orange
 - Fixed crash when extracting a property that doesn't exist during variable chaining
 - Fixed crashes caused by invalid postman collection files
+- Known issue: in some scenarios, the F2 rename shortcut does not rename the actively selected item. It will rename a previously selected item instead. Unfortunately, to fix this, a SelectionChanged API is required from the Windows UI Library's TreeView control. [Click here for the API proposal](https://github.com/microsoft/microsoft-ui-xaml/issues/322).
 
 3.1.19
 - Added ability to import Postman Collection v2.1 files
