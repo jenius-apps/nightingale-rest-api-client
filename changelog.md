@@ -1,5 +1,11 @@
 ## Recent changelog
 
+3.2.1
+- Added F2 rename shortcut
+- 1xx and 3xx status codes are now displayed in orange
+- Fixed crash when extracting a property that doesn't exist during variable chaining
+- Fixed crashes caused by invalid postman collection files
+
 3.1.19
 - Added ability to import Postman Collection v2.1 files
 - Added ability to add new item to workspace root via context menu
