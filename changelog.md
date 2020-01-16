@@ -1,5 +1,12 @@
 ## Recent changelog
 
+3.2.4
+- Fixed crash when adding a URL without a proper protocol.
+- Fixed issue with Nightingale not setting the key name of a form data file.
+
+3.2.3
+- Added abilitiy to import OpenAPI files (preview)
+
 3.2.1
 - Added F2 rename shortcut
 - 1xx and 3xx status codes are now displayed in orange
