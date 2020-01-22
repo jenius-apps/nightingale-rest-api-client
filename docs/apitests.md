@@ -1,6 +1,6 @@
 # API Testing using C# boolean expressions
 
-Nightingale supports the ability to test the responses of your requests. A test in Nightingale is a C# boolean expression which you can add in the `TESTS` secion of your request. 
+Nightingale supports the ability to test the responses of your requests. A test in Nightingale is a C# boolean expression which you can add in the `TESTS` section of your request. 
 
 `response.StatusCode == 200`
 
