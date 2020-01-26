@@ -1,5 +1,11 @@
 ## Recent changelog
 
+3.2.5
+- Workspaces are automatically saved when a crash occurs
+- Improved screen reader support
+- Fixed bug with variables not working for username and password in basic authentication
+- Fixed bug with search bar not getting focused when pressing Ctrl+F
+
 3.2.4
 - Fixed crash when adding a URL without a proper protocol.
 - Fixed issue with Nightingale not setting the key name of a form data file.
