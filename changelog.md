@@ -1,5 +1,12 @@
 ## Recent changelog
 
+3.3.0
+- Added authentication to collections.
+- Requests and collections can now recursively inherit the authentication of its parent.
+
+3.2.9
+- Added a help message to the bottom status bar while working with localhost in case troubleshooting is needed.
+
 3.2.5
 - Workspaces are automatically saved when a crash occurs
 - Improved screen reader support
