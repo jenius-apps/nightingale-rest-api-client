@@ -1,5 +1,8 @@
 ## Recent changelog
 
+3.3.1
+- Fixed authentication inheritance not working when collection or request were just created.
+
 3.3.0
 - Added authentication to collections.
 - Requests and collections can now recursively inherit the authentication of its parent.
