@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.4.4
+- HTTP engine rewritten to replace RestSharp with .NET's built-in HttpClient
+- OAuth 1.0a improvements
+- Added support for custom HTTP methods
+
 3.3.1
 - Fixed authentication inheritance not working when collection or request were just created.
 
