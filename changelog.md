@@ -1,5 +1,9 @@
 ## Recent changelog
 
+3.4.7
+- Fixed bug with OAuth 2.0 not working if the authorization URL you provide already contains query parameters
+- Performance improvement when sending requests
+
 3.4.4
 - HTTP engine rewritten to replace RestSharp with .NET's built-in HttpClient
 - OAuth 1.0a improvements
