@@ -1,5 +1,13 @@
 ## Recent changelog
 
+3.5.2
+- Left sidebar will now automatically collapse when the window becomes narrow 
+- URL padding and sizes were improved for more real estate in narrow view
+- List of queries will now synchronize with the queries in the URL bar
+- Fixed bug where XML bodies were not being sent
+- Fixed bug in multipart form data where multiple empty rows are added randomly
+- Fixed bug where cancelling file selection from the import dialog causes a crash
+
 3.4.7
 - Fixed bug with OAuth 2.0 not working if the authorization URL you provide already contains query parameters
 - Performance improvement when sending requests
