@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.5.5
+- Added Variable Quick Add feature
+- Added NCF import feature
+- Fixed crash caused by null URL
+
 3.5.2
 - Left sidebar will now automatically collapse when the window becomes narrow 
 - URL padding and sizes were improved for more real estate in narrow view
