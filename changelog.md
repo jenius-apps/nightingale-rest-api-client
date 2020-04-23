@@ -1,5 +1,8 @@
 ## Recent changelog
 
+3.5.6
+- Fixed null reference when importing postman files.
+
 3.5.5
 - Added Variable Quick Add feature
 - Added NCF import feature
