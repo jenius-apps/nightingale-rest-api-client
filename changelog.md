@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.5.7
+- Fixed form data postman import
+- Fixed variables not working for OAuth 2.0 properties
+- Removed API Test Preview features temporarily. We plan to reintroduce testing in the future.
+
 3.5.6
 - Fixed null reference when importing postman files.
 
