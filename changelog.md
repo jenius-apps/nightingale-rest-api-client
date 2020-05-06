@@ -1,5 +1,18 @@
 ## Recent changelog
 
+3.6.7
+- Added ability to select which workspaces to export
+- Added auto detection of binary file content type in form data and binary file body
+- Added Environment Quick Edit
+- Added ability to rename and clone environments
+- Added ability to make an environment active directly from the environment manager
+- Moved environments button down to beside the active environment selector
+- Fixed access denied issues when attaching files to requests
+- Fixed custom user content type not being acknowledged by Nightingale
+- Improved treeview performance
+- Requests can now hold children
+- Improved UX when adding new requests/collections
+
 3.5.7
 - Fixed form data postman import
 - Fixed variables not working for OAuth 2.0 properties
