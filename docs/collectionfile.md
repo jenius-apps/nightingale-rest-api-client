@@ -1,4 +1,4 @@
-# Nightingale collection files (NCF)
+# Nightingale collection format (NCF)
 
 Nightingale can save your data in collection files (e.g. myCollection.ncf). These collection files are text-based, so you can open them in Notepad or any text editor to view the structure of the data. You can also share this data to anyone, just like any other text-based file like TXT or JSON files. And just like an other text-based file, you can double click on an NCF file to launch Nightingale and start sending requests. Simple, eh?
 

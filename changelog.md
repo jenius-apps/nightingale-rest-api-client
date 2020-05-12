@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.6.8
+- Fixed collections being duplicated upon app shutdown and restart
+- Fixed imported workspace not persisting after app shutdown and restart
+- Fixed issue where user cannot send the request when using touch to tap the send button
+
 3.6.7
 - Added ability to select which workspaces to export
 - Added auto detection of binary file content type in form data and binary file body
@@ -115,7 +120,7 @@
 3.0.5
 - New UI
 - Added ability to open multiple instances of Nightingale
-- Added ability to save data as text-based Nightingale collection file (aka NCF file)
+- Added ability to save data as text-based Nightingale collection format (aka NCF file)
 - Added ability to double click on NCF files to launch Nightingale
 - Added WinUI support
 - Fixed drag and drop issues. You can now drag and drop once again
