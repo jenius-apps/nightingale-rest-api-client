@@ -1,5 +1,9 @@
 ## Recent changelog
 
+3.6.10
+- Fixed handling keys in form data
+- Added `Variable Quick Add` feature for headers and form url encoded body.
+
 3.6.8
 - Fixed collections being duplicated upon app shutdown and restart
 - Fixed imported workspace not persisting after app shutdown and restart
