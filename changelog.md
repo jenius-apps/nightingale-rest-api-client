@@ -1,5 +1,12 @@
 ## Recent changelog
 
+3.7.2
+- Added auto expanding fields
+
+3.7.1
+- Added image preview
+- Fixed URI format exception with URLs that are missing the URI scheme
+
 3.6.10
 - Fixed handling keys in form data
 - Added `Variable Quick Add` feature for headers and form url encoded body.
