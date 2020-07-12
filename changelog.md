@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.7.10
+- Added private variables
+- Fixed exception when using authorization header and having an auth setting enabled
+- Enabled file picker to view all files when selecting files in multipart form body content
+
 3.7.2
 - Added auto expanding fields
 
