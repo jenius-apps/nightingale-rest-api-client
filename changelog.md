@@ -1,5 +1,10 @@
 ## Recent changelog
 
+3.8.2
+- Added queries and headers to collections
+- Fixed crash when a cancelled request is duplicated
+- Added Ctrl+Space shortcut to insert variables in queries and headers
+
 3.7.10
 - Added private variables
 - Fixed exception when using authorization header and having an auth setting enabled
