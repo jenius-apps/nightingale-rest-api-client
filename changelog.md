@@ -1,5 +1,13 @@
 ## Recent changelog
 
+4.0.4
+- Added tabs
+- Added new menu UI
+- Added new logo
+- Added new keyboard shortcuts for tab UX
+- Added new Get Started page
+- Moved workspace switcher to the title bar
+
 3.8.2
 - Added queries and headers to collections
 - Fixed crash when a cancelled request is duplicated
