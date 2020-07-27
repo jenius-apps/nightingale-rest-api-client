@@ -1,6 +1,6 @@
-# Nightingale REST API Client Issues
+# Nightingale REST Client Issues
 
-Welcome to the official repo for Nightingale REST API Client issue tracking. This is where people can report bugs, provide general feedback, and make feature requests. 
+Welcome to the official repo for Nightingale REST Client issue tracking. This is where people can report bugs, provide general feedback, and make feature requests. 
 
 Download Nightingale here: https://www.microsoft.com/en-us/p/nightingale-rest-api-client/9n2t6f9f5zdn
 
