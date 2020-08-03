@@ -1,5 +1,12 @@
 ## Recent changelog
 
+4.0.7
+- Press Ctrl+Space in a query to insert a DateTime string like 2015-03-25T12:00:00Z
+- Fixed bug with tabs sometimes not rendering properly
+- Fixed bug with auth selection not changing property when switching tabs
+- Fixed bug with request body sometimes not being rendered correctly when switching tabs
+- Fixed bug with URL bar not expanding reliably when focused
+
 4.0.4
 - Added tabs
 - Added new menu UI
