@@ -21,7 +21,7 @@ The above details will help us work with you in fixing the issue.
 
 Why not open source the entire app?
 
-- Nightingale's current revenue model involves purchases from users. I cannot ethically justify open sourcing Nightingale and potentially earning revenue based on other people's contributions.
+- Nightingale licenses a third party control that requires a license key to use. Without the key, the app will not function correctly. Thus, open sourcing Nightingale has less benefit as contributors will not be able to debug the app.
 
 Is there a way I can contribute to Nightingale?
 
