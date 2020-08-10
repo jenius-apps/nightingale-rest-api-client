@@ -1,5 +1,8 @@
 ## Recent changelog
 
+4.0.8
+- Fixed bug with form data not functioning correctly when switching between tabs
+
 4.0.7
 - Press Ctrl+Space in a query to insert a DateTime string like 2015-03-25T12:00:00Z
 - Fixed bug with tabs sometimes not rendering properly
