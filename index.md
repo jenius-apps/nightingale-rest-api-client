@@ -13,3 +13,11 @@
 ### Killer dark theme
 
 ![](img/dark2.png)
+
+<br/>
+<br/>
+<br/>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jenius-apps/nightingale-rest-api-client/gh-pages/img/v4_logo.png" alt="Sublime's custom image"/>
+</p>
