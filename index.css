@@ -1,0 +1,53 @@
+.dark-background-text {
+  color: white;
+}
+
+.light-background-text {
+  color: black;
+}
+
+.corner-ribbon {
+  width: 200px;
+  background: #e43;
+  position: absolute;
+  top: 25px;
+  left: -50px;
+  text-align: center;
+  line-height: 50px;
+  letter-spacing: 1px;
+  color: #f0f0f0;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  z-index: 9999;
+}
+
+.corner-ribbon.sticky {
+  position: fixed;
+}
+
+.corner-ribbon.top-right {
+  top: 25px;
+  right: -50px;
+  left: auto;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.corner-ribbon.nightingale {
+  background: linear-gradient(to left, #0dffbb, #13d7a0);
+}
+
+.links {
+  margin: auto;
+  width: 67%;
+}
+
+p {
+  margin-bottom: 0 !important;
+}
+
+h4 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
