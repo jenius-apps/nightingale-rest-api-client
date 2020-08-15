@@ -1,5 +1,8 @@
 ## Recent changelog
 
+4.1.1
+- New feature: added mock server deployment. Go to Workspace > deploy mock server to learn more.
+
 4.0.8
 - Fixed bug with form data not functioning correctly when switching between tabs
 
