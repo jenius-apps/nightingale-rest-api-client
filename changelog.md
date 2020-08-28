@@ -1,5 +1,15 @@
 ## Recent changelog
 
+4.1.2
+- Added HTTP method to tab
+- Improved toggle side bar icon
+- Now displaying which layout is actively used in the View menu
+- Improved file size of NCF files
+- Added support button
+- Added out of box experience for first-time installers
+- Added status code information
+- Fixed the logo size of NCF files
+
 4.1.1
 - New feature: added mock server deployment. Go to Workspace > deploy mock server to learn more.
 
