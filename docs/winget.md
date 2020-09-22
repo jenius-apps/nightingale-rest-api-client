@@ -1,6 +1,6 @@
 # Install Nightingale via WinGet
 
-You can now programmatically install Nightingale via [WinGet, Microsoft's new CLI tool for installing packages](https://github.com/microsoft/winget-cli). 
+You can now programmatically install Nightingale via [WinGet, Microsoft's new CLI tool for installing packages](https://github.com/microsoft/winget-cli). Note this feature is currently experimental.
 
 ![](/images/winget.png)
 
