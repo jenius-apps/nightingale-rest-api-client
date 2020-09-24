@@ -1,5 +1,14 @@
 ## Recent changelog
 
+4.1.3
+- Fixed crash caused by importing an online-only OneDrive file without internet
+- Fixed collection page results not updating
+- Added auto save every 5 minutes
+- Fixed Set-Cookie not correctly being detected when receiving a response
+- Added auto decoding of gzip-encoded responses
+- Fixed bug with text size changing in URL bar
+- Added link to instructions in the mock server dialog
+
 4.1.2
 - Added HTTP method to tab
 - Improved toggle side bar icon
