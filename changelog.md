@@ -1,5 +1,10 @@
 ## Recent changelog
 
+4.1.4
+- Nightingale will now launch with your last used workspace
+- Added option to change menu background image
+- Added setting to always wrap URL bar
+
 4.1.3
 - Fixed crash caused by importing an online-only OneDrive file without internet
 - Fixed collection page results not updating
