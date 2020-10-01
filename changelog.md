@@ -1,5 +1,10 @@
 ## Recent changelog
 
+4.1.5
+- Added support for non-standard auth header
+- Fixed broken OAuth 2.0 auth code flow
+- Fixed broken grant type field when switching tabs
+
 4.1.4
 - Nightingale will now launch with your last used workspace
 - Added option to change menu background image
