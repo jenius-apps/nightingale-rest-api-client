@@ -1,5 +1,10 @@
 ## Recent changelog
 
+4.1.6
+- Improved UX upon successful import
+- Improved UX upon successful export
+
+
 4.1.5
 - Added support for non-standard auth header
 - Fixed broken OAuth 2.0 auth code flow
