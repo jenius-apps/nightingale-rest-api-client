@@ -1,5 +1,13 @@
 ## Recent changelog
 
+4.1.10
+- Fixed theme bug (GitHub issue #129)
+- Added right click context menu to tabs
+
+4.1.9
+- Fixed postman collection import issue (GitHub issue #133)
+- Added rounded corners to dialogs
+
 4.1.6
 - Improved UX upon successful import
 - Improved UX upon successful export
