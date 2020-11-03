@@ -1,5 +1,11 @@
 ## Recent changelog
 
+4.2.0
+- Added random GUID insertion in Ctrl+Space toolbox
+- Added toggle word wrap button to text editor
+- Added new setting to change the default word wrap mode
+- Improved log tab to show raw request and raw response log data
+
 4.1.10
 - Fixed theme bug (GitHub issue #129)
 - Added right click context menu to tabs
