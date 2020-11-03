@@ -1,5 +1,8 @@
 ## Recent changelog
 
+4.3.0
+- ARM64 support
+
 4.2.0
 - Added random GUID insertion in Ctrl+Space toolbox
 - Added toggle word wrap button to text editor
