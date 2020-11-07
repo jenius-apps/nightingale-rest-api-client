@@ -1,7 +1,7 @@
 
 ![](img/v4_github2.png)
 
-[![](https://img.shields.io/badge/Microsoft%20Store-Download-orange)](https://www.microsoft.com/store/productId/9N2T6F9F5ZDN) [![](https://img.shields.io/badge/platform-windows%2010%20%7C%20uwp-blue)](https://docs.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide) [![GitHub stars](https://img.shields.io/github/stars/jenius-apps/nightingale-rest-api-client?style=social)](https://github.com/jenius-apps/nightingale-rest-api-client) [![Twitter Follow](https://img.shields.io/twitter/follow/nightingaleuwp?style=social)](https://twitter.com/NightingaleUWP)
+[![](https://img.shields.io/badge/Microsoft%20Store-Download-orange)](https://www.microsoft.com/store/productId/9N2T6F9F5ZDN) [![](https://img.shields.io/github/v/release/jenius-apps/nightingale-rest-api-client?label=Direct%20download)](https://github.com/jenius-apps/nightingale-rest-api-client/releases) [![GitHub stars](https://img.shields.io/github/stars/jenius-apps/nightingale-rest-api-client?style=social)](https://github.com/jenius-apps/nightingale-rest-api-client) [![Twitter Follow](https://img.shields.io/twitter/follow/nightingaleuwp?style=social)](https://twitter.com/NightingaleUWP)
 
 ### Send http requests & view responses
 
