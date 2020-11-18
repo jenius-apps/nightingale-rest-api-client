@@ -1,5 +1,14 @@
 ## Recent changelog
 
+4.3.4
+- Fixed duplicate queries in postman converstion (GitHub #132)
+- Improved error messages in OAuth 2.0
+- Fixed null Url (GitHub #144)
+- Added curl import support (GitHub #70)
+
+4.3.1
+- Fixed trailing '?' added to requests (GitHub #139)
+
 4.3.0
 - ARM64 support
 
