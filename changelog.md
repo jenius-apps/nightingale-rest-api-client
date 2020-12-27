@@ -1,5 +1,10 @@
 ## Recent changelog
 
+4.3.7
+- F2 rename shortcut
+- Fixed some postman import issues
+- Added curl paste support
+
 4.3.4
 - Fixed duplicate queries in postman converstion (GitHub #132)
 - Improved error messages in OAuth 2.0
