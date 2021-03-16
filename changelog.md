@@ -1,5 +1,12 @@
 ## Recent changelog
 
+4.3.9
+- Fixed typo in about page
+
+4.3.8
+- Fixed curl import error
+- Added tooltip to request tab on mouse hover
+
 4.3.7
 - F2 rename shortcut
 - Fixed some postman import issues
