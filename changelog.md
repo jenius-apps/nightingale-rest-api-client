@@ -1,5 +1,10 @@
 ## Recent changelog
 
+4.4.0
+- Fixed issues with environment variables when importing Insomnia (GitHub #123). Thanks to contributor **@jamesmcroft**.
+- Added support for exporting collections to Postman files. Try it by right clicking on a collection. (GitHub #146). Thanks to contributor **@Ombrelin**.
+- Added support for importing OData files. Thanks to contributor **@paule96**.
+
 4.3.9
 - Fixed typo in about page
 
