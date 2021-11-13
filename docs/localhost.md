@@ -17,4 +17,3 @@ We apologize for the inconvenience, and we appreciate your understanding as we w
 Description | Link
 --- | ---
 Official Microsoft docs explaining that UWP apps installed from the store aren't allowed to make network calls to the device they're installed on. | https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/deploying-and-debugging-uwp-apps#debugging-options
-Windows Platform UserVoice requesting for network loopback support. | https://wpdev.uservoice.com/forums/110705-universal-windows-platform/suggestions/36604855-allow-localhost-loopback-capability-in-uwp-apps-de
