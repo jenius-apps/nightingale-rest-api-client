@@ -2,7 +2,7 @@
 
 In an effort to increase security, [Microsoft has blocked modern applications from connecting to localhost](https://stackoverflow.com/questions/33259763/uwp-enable-local-network-loopback/33263253#33263253) by default. 
 
-Fortunately, there is a temporary workaround available. Please run this command in command prompt after installing Nightingale:
+Fortunately, there is a temporary workaround available. Open a command prompt as administrator, then please run this command after installing Nightingale:
 
 ```
 checknetisolation loopbackexempt -a -p=S-1-15-2-2472482401-1297737560-3464812208-2778208509-1273584065-1826830168-474783446
