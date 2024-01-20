@@ -1,0 +1,162 @@
+﻿<ContentDialog
+    x:Class="Nightingale.Dialogs.CookiesDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Nightingale.Core.Cookies.Models"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    CornerRadius="8"
+    mc:Ignorable="d">
+
+    <Grid Width="560" Height="600">
+        <Button
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Click="ExitButton_Clicked"
+            Style="{StaticResource CloseButton}">
+            <ToolTipService.ToolTip>
+                <TextBlock x:Uid="Close" />
+            </ToolTipService.ToolTip>
+        </Button>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                FontSize="20"
+                Text="Manage cookies" />
+            <HyperlinkButton
+                Grid.Row="1"
+                Margin="0,0,0,8"
+                Content="Click for more information about cookies"
+                NavigateUri="https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/docs/cookies.md"
+                Style="{StaticResource DefaultHyperlink}" />
+
+            <!--  add cookie section  -->
+            <toolkit:DropShadowPanel
+                Grid.Row="2"
+                Margin="6,0"
+                HorizontalContentAlignment="Stretch"
+                BlurRadius="12"
+                CornerRadius="4"
+                OffsetY="4"
+                Style="{StaticResource LightDropShadowStyle}">
+                <Grid CornerRadius="4">
+                    <Rectangle Fill="{ThemeResource Page1Background}" Stretch="Fill" />
+                    <Grid Padding="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            KeyDown="TextBox_KeyDown"
+                            PlaceholderText="domain.com"
+                            Style="{StaticResource UnderlinedTextBox}"
+                            Text="{x:Bind ViewModel.NewDomain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="4,0,0,0"
+                            KeyDown="TextBox_KeyDown"
+                            PlaceholderText="_cfuid=value; Secure; HttpOnly; Expires=null;"
+                            Style="{StaticResource UnderlinedTextBox}"
+                            Text="{x:Bind ViewModel.NewCookieString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Grid.Column="2"
+                            Height="26"
+                            Margin="4,0,0,0"
+                            VerticalAlignment="Bottom"
+                            Click="{x:Bind ViewModel.AddCookie}"
+                            Content="Add"
+                            Style="{ThemeResource BaseRevealButton}" />
+                    </Grid>
+                </Grid>
+            </toolkit:DropShadowPanel>
+
+            <!--  cookies list  -->
+            <ListView
+                Grid.Row="3"
+                Padding="0,12,0,0"
+                ItemsSource="{x:Bind ViewModel.Cookies, Mode=OneWay}"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Cookie">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox
+                                VerticalAlignment="Bottom"
+                                PlaceholderText="domain.com"
+                                Style="{StaticResource UnderlinedTextBox}"
+                                Text="{x:Bind Domain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Bottom"
+                                PlaceholderText="_cfuid=value; Secure; HttpOnly; Expires=null;"
+                                Style="{StaticResource UnderlinedTextBox}"
+                                Text="{x:Bind Raw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <!--  delete button  -->
+                            <Button
+                                Grid.Column="2"
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Stretch"
+                                Click="DeleteButton_Clicked"
+                                Content="&#xE107;"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="16"
+                                Style="{ThemeResource TransparentRevealButton}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock x:Uid="Delete" />
+                                </ToolTipService.ToolTip>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="16,0" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <!--  no cookies placeholder  -->
+            <TextBlock
+                x:Name="NoCookiesMessage"
+                Grid.Row="3"
+                Margin="0,40,0,0"
+                HorizontalAlignment="Center"
+                x:Load="{x:Bind ViewModel.NoCookiesVisisble, Mode=OneWay}"
+                Text="No cookies" />
+
+            <!--  Delete all button  -->
+            <Button
+                x:Name="DeleteAllButton"
+                Grid.Row="4"
+                Margin="0,12,0,0"
+                x:Load="{x:Bind ViewModel.DeleteAllButtonVisible, Mode=OneWay}"
+                Click="{x:Bind ViewModel.DeleteAll}"
+                Content="Delete all"
+                Style="{StaticResource BaseRevealButton}" />
+        </Grid>
+    </Grid>
+</ContentDialog>

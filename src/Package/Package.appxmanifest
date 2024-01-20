@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" 
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2"  
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  IgnorableNamespaces="uap rescap desktop4 iot2">
+
+  <Identity
+    Name="75bf4b83-a7ae-402f-87cb-67e9fcb743a6"
+    Publisher="CN=0B44CA61-7898-42FE-825C-ADA43BC01A93"
+    Version="4.4.2.0" />
+
+  <Properties>
+    <DisplayName>Nightingale REST Client</DisplayName>
+    <PublisherDisplayName>Jenius Apps</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="$targetentrypoint$"      
+      desktop4:SupportsMultipleInstances="true"
+      iot2:SupportsMultipleInstances="true">
+
+      <uap:VisualElements
+        DisplayName="Nightingale REST Client"
+        Description="Package"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png"
+        BackgroundColor="#1C1C1C">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square310x310Logo="Images\Square310x310Logo.png" Square71x71Logo="Images\Square71x71Logo.png" ShortName="Nightingale">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo"/>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Images\SplashScreen.png"  BackgroundColor="#1C1C1C" uap5:Optional="true"/>
+      </uap:VisualElements>
+      <Extensions>
+        <desktop:Extension Category="windows.fullTrustProcess" Executable="FullTrust\FullTrust.exe">
+          <desktop:FullTrustProcess>
+            <desktop:ParameterGroup GroupId="ExemptGroup" Parameters="/Exemption"/>
+            <desktop:ParameterGroup GroupId="ServerGroup" Parameters="/Server"/>
+          </desktop:FullTrustProcess>
+        </desktop:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="ncf">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="application/json">.ncf</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Nightingale Collection Format</uap:DisplayName>
+            <uap:Logo>Images\NcfLogo.png</uap:Logo>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <rescap:Capability Name="confirmAppClose" />
+    <rescap:Capability Name="runFullTrust" />
+    <Capability Name="privateNetworkClientServer"/>
+  </Capabilities>
+</Package>

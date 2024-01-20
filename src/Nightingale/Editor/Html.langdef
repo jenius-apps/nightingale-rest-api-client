@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Actipro Syntax Language Definition (.langdef)
+  For use with Actipro SyntaxEditor and related products.
+  http://www.actiprosoftware.com
+
+'HTML' language created by Actipro Software LLC.
+  Copyright (c) 2001-2018 Actipro Software LLC.  All rights reserved.
+
+-->
+<LanguageDefinition LanguageKey="Html" LanguageDescription="HTML" Creator="Actipro Software LLC" Copyright="Copyright (c) 2001-2018 Actipro Software LLC.  All rights reserved." xmlns="http://schemas.actiprosoftware.com/langdef/1.0">
+	<!-- Classification types -->
+	<LanguageDefinition.ClassificationTypes>
+		<ClassificationType Key="XmlEntity" Description="XML Entity" DefaultStyle="#FFFF0000" />
+		<ClassificationType Key="XmlDelimiter" Description="XML Delimiter" DefaultStyle="#FF0000FF" />
+		<ClassificationType Key="XmlName" Description="XML Name" DefaultStyle="#FF800000" />
+		<ClassificationType Key="XmlAttribute" Description="XML Attribute" DefaultStyle="#FFFF0000" />
+		<ClassificationType Key="XmlAttributeValue" Description="XML Attribute Value" DefaultStyle="#FF0000FF" />
+		<ClassificationType Key="XmlComment" Description="XML Comment" DefaultStyle="#FF008000" />
+		<ClassificationType Key="XmlProcessingInstruction" Description="XML Processing Instruction" DefaultStyle="#FFFF00FF" />
+		<ClassificationType Key="XmlDeclaration" Description="XML Declaration" DefaultStyle="#FFFF00FF" />
+		<ClassificationType Key="ServerSideScript" Description="Server-Side Script" DefaultStyle="#FF000000,,,#FFFFEE62" />
+	</LanguageDefinition.ClassificationTypes>
+	<!-- Lexer -->
+	<LanguageDefinition.Lexer>
+		<DynamicLexer>
+			<DynamicLexer.Macros>
+				<Macro Key="Word" Pattern="[a-zA-Z_0-9\-]" />
+				<Macro Key="NonWord" Pattern="[^a-zA-Z_0-9\-]" />
+				<Macro Key="TagName" Pattern="[a-zA-Z_0-9\-:\.]" />
+			</DynamicLexer.Macros>
+			<!-- Default state -->
+			<State Key="Default">
+				<State.ChildStates>
+					<StateRef Key="EndTag" />
+					<StateRef Key="Comment" />
+					<StateRef Key="Declaration" />
+					<StateRef Key="ProcessingInstruction" />
+					<StateRef Key="AspDirectiveResponseWrite" />
+					<StateRef Key="AspDirectiveCode" />
+					<StateRef Key="StyleStartTag" />
+					<StateRef Key="VBScriptStartTag" />
+					<StateRef Key="JavaScriptStartTag" />
+					<StateRef Key="StartTag" />
+				</State.ChildStates>
+				<RegexPatternGroup TokenKey="Entity" ClassificationTypeKey="XmlEntity" Pattern="&amp; \#? {Word}+ ;?" />
+				<RegexPatternGroup TokenKey="Identifier" Pattern="{Alpha}({Word})*" />
+				<RegexPatternGroup TokenKey="Whitespace" Pattern="{Whitespace}+" />
+			</State>
+			<!-- StartTag state -->
+			<State Key="StartTag" DefaultTokenKey="StartTagText" DefaultClassificationTypeKey="XmlName">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="StartTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="/? &gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<State.ChildStates>
+					<StateRef Key="StartTagAttribute" />
+				</State.ChildStates>
+			</State>
+			<!-- StartTagAttribute state -->
+			<State Key="StartTagAttribute" DefaultTokenKey="StartTagText" DefaultClassificationTypeKey="XmlAttribute">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagName" ClassificationTypeKey="XmlName" Pattern="{LineTerminatorWhitespace}* {TagName}+ {LineTerminatorWhitespace}*" />
+						</Scope.StartPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<State.ChildStates>
+					<StateRef Key="StartTagAttributeStringValue" />
+					<StateRef Key="StartTagAttributeValue" />
+				</State.ChildStates>
+				<RegexPatternGroup TokenKey="StartTagAttribute" ClassificationTypeKey="XmlAttribute" Pattern="{Word}+" LookAheadPattern="{NonWord}|\z" />
+			</State>
+			<!-- StartTagAttributeValue state -->
+			<State Key="StartTagAttributeValue" DefaultTokenKey="StartTagAttributeValueText" DefaultClassificationTypeKey="XmlAttributeValue">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagAttributeValueStartDelimiter" Pattern="= {LineTerminatorWhitespace}*" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagAttributeValueEndDelimiter" Pattern="{LineTerminatorWhitespace}+" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup Pattern="{Word}+" />
+			</State>
+			<!-- StartTagAttributeStringValue state -->
+			<State Key="StartTagAttributeStringValue" DefaultTokenKey="StartTagAttributeStringValueText" DefaultClassificationTypeKey="XmlAttributeValue">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagAttributeStringValueStartDelimiter" Pattern="= {LineTerminatorWhitespace}* \&quot;" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagAttributeStringValueEndDelimiter" Pattern="\&quot;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup Pattern="[^&quot;]+" />
+			</State>
+			<!-- EndTag state -->
+			<State Key="EndTag" DefaultTokenKey="EndTagText" DefaultClassificationTypeKey="XmlName">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="EndTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;/" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenKey="EndTagEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup Pattern="[^&gt;]+" />
+			</State>
+			<!-- AspDirectiveResponseWrite state -->
+			<State Key="AspDirectiveResponseWrite">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="AspDirectiveStartDelimiter" ClassificationTypeKey="ServerSideScript" Pattern="&lt;%" LookAheadPattern="=" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenKey="AspDirectiveEndDelimiter" ClassificationTypeKey="ServerSideScript" Pattern="%&gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<State.Transition>
+					<StateTransition>
+						<StateTransition.ChildLanguage>
+							<LanguageRef ManifestResourceStreamName="ActiproSoftware.ProductSamples.SyntaxEditorSamples.Languages.Definitions.VBScript.langdef" />
+						</StateTransition.ChildLanguage>
+					</StateTransition>
+				</State.Transition>
+			</State>
+			<!-- AspDirectiveCode state -->
+			<State Key="AspDirectiveCode">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="AspDirectiveStartDelimiter" ClassificationTypeKey="ServerSideScript" Pattern="&lt;%" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenKey="AspDirectiveEndDelimiter" ClassificationTypeKey="ServerSideScript" Pattern="%&gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<State.Transition>
+					<StateTransition>
+						<StateTransition.ChildLanguage>
+							<LanguageRef ManifestResourceStreamName="ActiproSoftware.ProductSamples.SyntaxEditorSamples.Languages.Definitions.VBScript.langdef" />
+						</StateTransition.ChildLanguage>
+					</StateTransition>
+				</State.Transition>
+			</State>
+			<!-- StyleStartTag state -->
+			<State Key="StyleStartTag" DefaultTokenKey="StartTagText" DefaultClassificationTypeKey="XmlName">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="StartTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;" LookAheadPattern="style" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="/? &gt;" />
+						</Scope.EndPatternGroup>
+						<Scope.Transition>
+							<StateTransition>
+								<StateTransition.ChildLanguage>
+									<LanguageRef ManifestResourceStreamName="ActiproSoftware.ProductSamples.SyntaxEditorSamples.Languages.Definitions.Css.langdef" />
+								</StateTransition.ChildLanguage>
+								<StateTransition.ChildScope>
+									<Scope>
+										<Scope.EndPatternGroup>
+											<ExplicitPatternGroup TokenKey="EndTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;/" LookAheadPattern="style" />
+										</Scope.EndPatternGroup>
+									</Scope>
+								</StateTransition.ChildScope>
+							</StateTransition>
+						</Scope.Transition>
+					</Scope>
+				</State.Scopes>
+				<State.ChildStates>
+					<StateRef Key="StartTagAttribute" />
+				</State.ChildStates>
+			</State>
+			<!-- JavaScriptStartTag state -->
+			<State Key="JavaScriptStartTag" DefaultTokenKey="StartTagText" DefaultClassificationTypeKey="XmlName">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="StartTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;" LookAheadPattern="script" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="/? &gt;" />
+						</Scope.EndPatternGroup>
+						<Scope.Transition>
+							<StateTransition>
+								<StateTransition.ChildLanguage>
+									<LanguageRef ManifestResourceStreamName="ActiproSoftware.ProductSamples.SyntaxEditorSamples.Languages.Definitions.JavaScript.langdef" />
+								</StateTransition.ChildLanguage>
+								<StateTransition.ChildScope>
+									<Scope>
+										<Scope.EndPatternGroup>
+											<ExplicitPatternGroup TokenKey="EndTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;/" LookAheadPattern="script" />
+										</Scope.EndPatternGroup>
+									</Scope>
+								</StateTransition.ChildScope>
+							</StateTransition>
+						</Scope.Transition>
+					</Scope>
+				</State.Scopes>
+				<State.ChildStates>
+					<StateRef Key="StartTagAttribute" />
+				</State.ChildStates>
+			</State>
+			<!-- VBScriptStartTag state -->
+			<State Key="VBScriptStartTag" DefaultTokenKey="StartTagText" DefaultClassificationTypeKey="XmlName">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="StartTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;" LookAheadPattern="script {LineTerminatorWhitespace}* language=\&quot; (&quot;VBS&quot; | &quot;VBScript&quot;)" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenKey="StartTagEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="/? &gt;" />
+						</Scope.EndPatternGroup>
+						<Scope.Transition>
+							<StateTransition>
+								<StateTransition.ChildLanguage>
+									<LanguageRef ManifestResourceStreamName="ActiproSoftware.ProductSamples.SyntaxEditorSamples.Languages.Definitions.VBScript.langdef" />
+								</StateTransition.ChildLanguage>
+								<StateTransition.ChildScope>
+									<Scope>
+										<Scope.EndPatternGroup>
+											<ExplicitPatternGroup TokenKey="EndTagStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;/" LookAheadPattern="script" />
+										</Scope.EndPatternGroup>
+									</Scope>
+								</StateTransition.ChildScope>
+							</StateTransition>
+						</Scope.Transition>
+					</Scope>
+				</State.Scopes>
+				<State.ChildStates>
+					<StateRef Key="StartTagAttribute" />
+				</State.ChildStates>
+			</State>
+			<!-- Comment state -->
+			<State Key="Comment" DefaultTokenKey="CommentText" DefaultClassificationTypeKey="XmlComment">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="CommentStartDelimiter" Pattern="&lt;!--" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenKey="CommentEndDelimiter" Pattern="--&gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup Pattern="[^\-]+" />
+			</State>
+			<!-- ProcessingInstruction state -->
+			<State Key="ProcessingInstruction" DefaultTokenKey="ProcessingInstructionText" DefaultClassificationTypeKey="XmlProcessingInstruction">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="ProcessingInstructionStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;?" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenKey="ProcessingInstructionEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="?&gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup Pattern="[^\?]+" />
+			</State>
+			<!-- Declaration state -->
+			<State Key="Declaration" DefaultTokenKey="DeclarationText" DefaultClassificationTypeKey="XmlDeclaration">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenKey="DeclarationStartDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&lt;!" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenKey="DeclarationEndDelimiter" ClassificationTypeKey="XmlDelimiter" Pattern="&gt;" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup Pattern="[^&gt;]+" />
+			</State>
+		</DynamicLexer>
+	</LanguageDefinition.Lexer>
+	<!-- Example text -->
+	<LanguageDefinition.ExampleText><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- This is a comment -->
+<html>
+<head>
+	<title>This is a title.</title>
+	<style>
+		/* CSS Block */
+		a { color: Red; }
+	</style>
+</head>
+<body background="Background.gif" text="Black">
+	<script language="JavaScript">
+		// JavaScript block
+		for (int i = 0; i < 3; i++)
+			window.alert('This is some JavaScript code: ' + i);
+	</script>
+	<script language="VBScript">
+		'VBScript block
+		Dim i
+		For i = 0 To 3
+			window.alert("This is some VBScript code: " & CStr(i));
+		Next
+	</script>
+	<%
+	'ASP Block
+	Dim i 
+	For i = 1 To 100
+		Response.Write("Item " & CStr(i) & vbCRLF)
+	Next 
+	%>
+	Entity test: &amp; &gt : Test over	
+	<singlevals>
+		<a href="http://www.actiprosoftware.com" target="_top" />
+	</singlevals>
+</body>
+</html>
+]]></LanguageDefinition.ExampleText>
+</LanguageDefinition>

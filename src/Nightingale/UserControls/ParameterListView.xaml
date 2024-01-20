@@ -1,0 +1,228 @@
+﻿<utilities:ObservableUserControl
+    x:Class="Nightingale.UserControls.ParameterListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:Nightingale.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Nightingale.Core.Models"
+    xmlns:utilities="using:Nightingale.Utilities"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:ParameterTypeToKeyPlaceholder x:Key="ParameterTypeToKeyPlaceholder" />
+            <converters:ParameterTypeToValuePlaceholder x:Key="ParameterTypeToValuePlaceholder" />
+
+            <DataTemplate x:Key="ParameterTemplate" x:DataType="models:Parameter">
+                <Grid Margin="0,0" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MaxWidth="300" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  checkbox  -->
+                    <CheckBox
+                        Grid.Column="0"
+                        Margin="0,0,-88,0"
+                        VerticalAlignment="Top"
+                        AutomationProperties.Name="Checkbox for enabling or disabling item"
+                        Checked="CheckBox_Modified"
+                        IsChecked="{x:Bind Enabled}"
+                        Unchecked="CheckBox_Modified" />
+
+                    <!--  key  -->
+                    <utilities:TextBoxOverride
+                        Grid.Column="1"
+                        MaxHeight="300"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        GotFocus="TextBox_GotFocus"
+                        KeyDown="TextBox_KeyDown"
+                        LostFocus="TextBox_LostFocus"
+                        PlaceholderText="{x:Bind Type, Converter={StaticResource ParameterTypeToKeyPlaceholder}}"
+                        Style="{StaticResource UnderlinedTextBox}"
+                        Text="{x:Bind Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextChanged="KeyValueChanged">
+                        <FlyoutBase.AttachedFlyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedLeft" />
+                        </FlyoutBase.AttachedFlyout>
+                    </utilities:TextBoxOverride>
+
+                    <!--  value  -->
+                    <utilities:TextBoxOverride
+                        Grid.Column="3"
+                        MaxHeight="300"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        GotFocus="TextBox_GotFocus"
+                        KeyDown="TextBox_KeyDown"
+                        LostFocus="TextBox_LostFocus"
+                        PlaceholderText="{x:Bind Type, Converter={StaticResource ParameterTypeToValuePlaceholder}}"
+                        Style="{StaticResource UnderlinedTextBox}"
+                        Text="{x:Bind Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextChanged="KeyValueChanged">
+                        <FlyoutBase.AttachedFlyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedLeft" />
+                        </FlyoutBase.AttachedFlyout>
+                    </utilities:TextBoxOverride>
+
+                    <!--  add variable button  -->
+                    <Button
+                        Grid.Column="4"
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Top"
+                        Click="AddVariableClick"
+                        Content="&#xED0E;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="16"
+                        Style="{ThemeResource TransparentRevealButton}"
+                        ToolTipService.ToolTip="Add value to environment"
+                        Visibility="{x:Bind Type, Converter={StaticResource ParamTypeVisibilty}}" />
+
+                    <!--  private button  -->
+                    <ToggleButton
+                        Grid.Column="4"
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        Click="PrivateButtonClicked"
+                        Content="&#xE72E;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="16"
+                        IsChecked="{x:Bind Private, Mode=TwoWay}"
+                        ToolTipService.ToolTip="Block value from being exported"
+                        Visibility="{x:Bind Type, Converter={StaticResource EnvTypeVisibility}}" />
+
+                    <!--  delete button  -->
+                    <Button
+                        Grid.Column="5"
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Top"
+                        AutomationProperties.Name="Delete item"
+                        Click="DeleteParameter_Clicked"
+                        Content="&#xE107;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="16"
+                        Style="{ThemeResource TransparentRevealButton}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock x:Uid="Delete" />
+                        </ToolTipService.ToolTip>
+                    </Button>
+
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <Grid Margin="0,0,0,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <ListView
+                x:Name="ParamList"
+                Grid.Row="0"
+                ItemTemplate="{StaticResource ParameterTemplate}"
+                ItemsSource="{x:Bind ItemsSource, Mode=OneWay}"
+                ScrollViewer.VerticalScrollMode="Disabled"
+                SelectionMode="None"
+                TabNavigation="Once">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="IsTabStop" Value="False" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <!--  place holder entry  -->
+            <Grid
+                Grid.Row="1"
+                Margin="0,0"
+                Opacity="0.5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" MaxWidth="300" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--  fake checkbox  -->
+                <CheckBox
+                    Grid.Column="0"
+                    Margin="0,0,-88,0"
+                    IsChecked="True"
+                    IsEnabled="False" />
+
+                <!--  key  -->
+                <utilities:TextBoxOverride
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    BeforeTextChanging="NewKeyAdded"
+                    PlaceholderText="{x:Bind ParameterType, Converter={StaticResource ParameterTypeToKeyPlaceholder}}"
+                    Style="{StaticResource UnderlinedTextBox}" />
+
+                <!--  value  -->
+                <utilities:TextBoxOverride
+                    Grid.Column="3"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    BeforeTextChanging="NewValueAdded"
+                    PlaceholderText="{x:Bind ParameterType, Converter={StaticResource ParameterTypeToValuePlaceholder}}"
+                    Style="{StaticResource UnderlinedTextBox}" />
+
+                <Button
+                    Grid.Column="4"
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Stretch"
+                    Content="&#xED0E;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Style="{ThemeResource TransparentRevealButton}"
+                    ToolTipService.ToolTip="Add value to environment"
+                    Visibility="{x:Bind ParameterType, Converter={StaticResource ParamTypeVisibilty}}" />
+
+                <!--  private button  -->
+                <Button
+                    Grid.Column="4"
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    Content="&#xE72E;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    ToolTipService.ToolTip="Block value from being exported"
+                    Visibility="{x:Bind ParameterType, Converter={StaticResource EnvTypeVisibility}}" />
+
+                <!--  disabled delete button  -->
+                <Button
+                    Grid.Column="5"
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Stretch"
+                    Content="&#xE107;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Style="{ThemeResource TransparentRevealButton}" />
+            </Grid>
+        </Grid>
+
+    </ScrollViewer>
+</utilities:ObservableUserControl>

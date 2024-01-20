@@ -1,0 +1,151 @@
+﻿<utilities:ObservableUserControl
+    x:Class="Nightingale.UserControls.ItemTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Nightingale.Core.Workspaces.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:utilities="using:Nightingale.Utilities"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="TreeItemTemplate" x:DataType="models:Item">
+            <muxc:TreeViewItem IsExpanded="{x:Bind IsExpanded, Mode=OneWay}" ItemsSource="{x:Bind Children, Mode=OneWay}">
+                <Grid Margin="-8,0,0,0" Padding="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="16"
+                        Glyph="{Binding IsExpanded, Mode=OneWay, Converter={StaticResource TreeIsExpandedGlyph}}"
+                        Visibility="{x:Bind Type, Converter={StaticResource CollectionTypeVisibility}}" />
+
+                    <TextBlock
+                        Grid.Column="0"
+                        FontSize="11"
+                        FontWeight="Bold"
+                        Foreground="{x:Bind Method, Mode=OneWay, Converter={StaticResource MethodColourConverter}}"
+                        Text="{x:Bind Method, Mode=OneWay, Converter={StaticResource HttpMethodShortName}}"
+                        Visibility="{x:Bind Type, Converter={StaticResource RequestTypeVisibility}}" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="6,0,0,0"
+                        FontSize="12"
+                        Text="{x:Bind Name, Mode=OneWay}" />
+                </Grid>
+            </muxc:TreeViewItem>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <muxc:TreeView
+        x:Name="ItemsTree"
+        Margin="-6,0,0,0"
+        CanReorderItems="{x:Bind ReorderEnabled, Mode=OneWay}"
+        Collapsed="{x:Bind NodeCollapsing}"
+        Expanding="{x:Bind NodeExpanding}"
+        Holding="{x:Bind ItemHolding}"
+        ItemInvoked="{x:Bind InvokeItem}"
+        ItemTemplate="{StaticResource TreeItemTemplate}"
+        ItemsSource="{x:Bind ItemsSource, Mode=OneWay}"
+        RightTapped="{x:Bind ItemRightTapped}"
+        SelectionMode="Single">
+
+        <muxc:TreeView.Resources>
+
+            <!--  Request menu  -->
+            <MenuFlyout x:Name="RequestsListFlyout">
+                <MenuFlyout.Items>
+                    <MenuFlyoutItem
+                        x:Uid="DuplicateRequest"
+                        Click="{x:Bind CloneItem}"
+                        Icon="Copy" />
+                    <MenuFlyoutItem
+                        x:Uid="Rename"
+                        Click="{x:Bind EditItem}"
+                        Icon="Edit" />
+                    <MenuFlyoutItem x:Uid="GenerateCode" Click="{x:Bind GenerateCode}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE945;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Uid="Delete"
+                        Click="{x:Bind DeleteItem}"
+                        Icon="Delete" />
+                </MenuFlyout.Items>
+            </MenuFlyout>
+
+            <!--  Collection menu  -->
+            <MenuFlyout x:Name="CollectionListFlyout">
+                <MenuFlyout.Items>
+                    <MenuFlyoutItem
+                        x:Uid="AddRequest"
+                        Click="{x:Bind AddRequestToParent}"
+                        Icon="Add" />
+                    <MenuFlyoutItem x:Uid="AddCollection" Click="{x:Bind AddCollectionToParent}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECCD;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Uid="DuplicateCollection"
+                        Click="{x:Bind CloneItem}"
+                        Icon="Copy" />
+                    <MenuFlyoutItem
+                        x:Uid="Rename"
+                        Click="{x:Bind EditItem}"
+                        Icon="Edit" />
+                    <MenuFlyoutSubItem Text="Export as">
+                        <MenuFlyoutSubItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" />
+                        </MenuFlyoutSubItem.Icon>
+                        <!--<MenuFlyoutItem Click="{x:Bind ExportAs}" Text="Nightingale" />-->
+                        <MenuFlyoutItem Click="{x:Bind ExportAs}" Text="Postman" />
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem
+                        x:Name="MockServerItem"
+                        x:Load="{x:Bind IsFullTrustAvailable}"
+                        Click="{x:Bind DeployServer}"
+                        Text="Deploy mock server">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE968;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Uid="Delete"
+                        Click="{x:Bind DeleteItem}"
+                        Icon="Delete" />
+                </MenuFlyout.Items>
+            </MenuFlyout>
+
+            <!--  Base flyout  -->
+            <MenuFlyout x:Name="RootFlyout">
+                <MenuFlyout.Items>
+                    <MenuFlyoutItem
+                        x:Uid="AddRequest"
+                        Click="{x:Bind AddRequestToRoot}"
+                        Icon="Add" />
+                    <MenuFlyoutItem x:Uid="AddCollection" Click="{x:Bind AddCollectionToRoot}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECCD;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Uid="DeleteAll"
+                        Click="{x:Bind DeleteAll}"
+                        Icon="Delete" />
+                </MenuFlyout.Items>
+            </MenuFlyout>
+        </muxc:TreeView.Resources>
+    </muxc:TreeView>
+</utilities:ObservableUserControl>

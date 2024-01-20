@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Actipro Syntax Language Definition (.langdef)
+  For use with Actipro SyntaxEditor and related products.
+  http://www.actiprosoftware.com
+
+'JavaScript' language created by Actipro Software LLC.
+  Copyright (c) 2001-2018 Actipro Software LLC.  All rights reserved.
+
+-->
+<LanguageDefinition LanguageKey="JavaScript" Creator="Actipro Software LLC" Copyright="Copyright (c) 2001-2018 Actipro Software LLC.  All rights reserved." xmlns="http://schemas.actiprosoftware.com/langdef/1.0">
+	<!-- Classification types -->
+	<LanguageDefinition.ClassificationTypes>
+		<ClassificationType Key="Comment" DefaultStyle="#FF6a9955" />
+		<ClassificationType Key="Identifier"/>
+		<ClassificationType Key="Keyword" DefaultStyle="#FF569cd6" />
+		<ClassificationType Key="Number" DefaultStyle="#FFb5cea8"/>
+		<ClassificationType Key="Operator" />
+		<ClassificationType Key="String" DefaultStyle="#FFCE9178" />
+  </LanguageDefinition.ClassificationTypes>
+	<!-- Lexer -->
+	<LanguageDefinition.Lexer>
+		<DynamicLexer>
+			<!-- Default state -->
+			<State Key="Default" DefaultCaseSensitivity="Sensitive">
+				<State.ChildStates>
+					<StateRef Key="PrimaryString" />
+					<StateRef Key="AlternateString" />
+					<StateRef Key="SingleLineComment" />
+					<StateRef Key="MultiLineComment" />
+					<StateRef Key="RegExpLiteral" />
+				</State.ChildStates>
+				<RegexPatternGroup TokenId="1" TokenKey="Whitespace" Pattern="{Whitespace}+" />
+				<RegexPatternGroup TokenId="2" TokenKey="LineTerminator" Pattern="{LineTerminator}" />
+				<ExplicitPatternGroup TokenId="3" TokenKey="OpenParenthesis" Pattern="(" />
+        <ExplicitPatternGroup TokenId="4" TokenKey="CloseParenthesis" Pattern=")" />
+        <ExplicitPatternGroup TokenId="5" TokenKey="OpenCurlyBrace" Pattern="{" />
+        <ExplicitPatternGroup TokenId="6" TokenKey="CloseCurlyBrace" Pattern="}" />
+        <ExplicitPatternGroup TokenId="7" TokenKey="OpenSquareBrace" Pattern="[" />
+        <ExplicitPatternGroup TokenId="8" TokenKey="CloseSquareBrace" Pattern="]" />
+        <ExplicitPatternGroup TokenId="9" TokenKey="Punctuation">
+					<ExplicitPatterns><![CDATA[
+						. , : ;
+					]]></ExplicitPatterns>
+				</ExplicitPatternGroup>
+				<ExplicitPatternGroup TokenId="10" TokenKey="Null" ClassificationTypeKey="Keyword" Pattern="null" LookAheadPattern="{NonWord}|\z" />
+				<ExplicitPatternGroup TokenId="11" TokenKey="Boolean" ClassificationTypeKey="Keyword" LookAheadPattern="{NonWord}|\z">
+					<ExplicitPatterns><![CDATA[
+						false true
+					]]></ExplicitPatterns>
+				</ExplicitPatternGroup>
+				<ExplicitPatternGroup TokenId="12" TokenKey="Keyword" ClassificationTypeKey="Keyword" LookAheadPattern="{NonWord}|\z">
+					<ExplicitPatterns><![CDATA[
+						break case catch continue debugger default delete do else finally for function if instanceof in
+						new return switch this throw try typeof var void while with
+					]]></ExplicitPatterns>
+				</ExplicitPatternGroup>
+				<RegexPatternGroup TokenId="13" TokenKey="Identifier" ClassificationTypeKey="Identifier" Pattern="(_ | {Alpha})({Word})*" />
+				<ExplicitPatternGroup TokenId="14" TokenKey="Operator" ClassificationTypeKey="Operator">
+					<ExplicitPatterns><![CDATA[
+						!== != ! %= % && &= & *= * ++ += + -- -= - /= / <<= << <= < === == = >= >>= >>>= >>> >> > ? ^= ^ |= || | ~
+					]]></ExplicitPatterns>
+				</ExplicitPatternGroup>
+				<RegexPatternGroup TokenId="15" TokenKey="RealNumber" ClassificationTypeKey="Number" LookAheadPattern="{NonWord}|\z">
+					<RegexPattern Value="{Digit}* \. {Digit}+ ([Ee] [\+\-]? {Digit}+)?" />
+					<RegexPattern Value="{Digit}+ [Ee] [\+\-]? {Digit}+" />
+				</RegexPatternGroup>
+				<RegexPatternGroup TokenId="16" TokenKey="IntegerNumber" ClassificationTypeKey="Number" Pattern="{Digit}+" LookAheadPattern="{NonWord}|\z" />
+				<RegexPatternGroup TokenId="17" TokenKey="HexNumber" ClassificationTypeKey="Number" Pattern="0x {HexDigit}+" LookAheadPattern="{NonWord}|\z" CaseSensitivity="Insensitive" />
+			</State>
+			<!-- PrimaryString state -->
+			<State Key="PrimaryString" DefaultTokenId="18" DefaultTokenKey="PrimaryStringText" DefaultClassificationTypeKey="String">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenId="19" TokenKey="PrimaryStringStartDelimiter" Pattern="&quot;" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenId="20" TokenKey="PrimaryStringEndDelimiter" Pattern="[\&quot;\n]" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup TokenId="21" TokenKey="PrimaryStringEscapedCharacter" Pattern="\\(.|\n)" />
+				<RegexPatternGroup TokenId="18" TokenKey="PrimaryStringText" Pattern="[^\&quot;\\\n]+" />
+			</State>
+			<!-- AlternateString state -->
+			<State Key="AlternateString" DefaultTokenId="22" DefaultTokenKey="AlternateStringText" DefaultClassificationTypeKey="String">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenId="23" TokenKey="AlternateStringStartDelimiter" Pattern="'" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenId="24" TokenKey="AlternateStringEndDelimiter" Pattern="[\'\n]" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup TokenId="25" TokenKey="AlternateStringEscapedCharacter" Pattern="\\(.|\n)" />
+        <RegexPatternGroup TokenId="22" TokenKey="AlternateStringText" Pattern="[^\'\\\n]+" />
+			</State>
+			<!-- SingleLineComment state -->
+			<State Key="SingleLineComment" DefaultTokenId="26" DefaultTokenKey="SingleLineCommentText" DefaultClassificationTypeKey="Comment">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenId="27" TokenKey="SingleLineCommentStartDelimiter" Pattern="//" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenId="28" TokenKey="SingleLineCommentEndDelimiter" Pattern="\n" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup TokenId="26" TokenKey="SingleLineCommentText" Pattern="[^\n]+" />
+			</State>
+			<!-- MultiLineComment state -->
+			<State Key="MultiLineComment" DefaultTokenId="29" DefaultTokenKey="MultiLineCommentText" DefaultClassificationTypeKey="Comment">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<ExplicitPatternGroup TokenId="30" TokenKey="MultiLineCommentStartDelimiter" Pattern="/*" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<ExplicitPatternGroup TokenId="31" TokenKey="MultiLineCommentEndDelimiter" Pattern="*/" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup TokenId="32" TokenKey="MultiLineCommentLineTerminator" Pattern="\n" />
+				<RegexPatternGroup TokenId="29" TokenKey="MultiLineCommentText" Pattern="[^\*\n]+" />
+			</State>
+			<!-- RegExpLiteral state -->
+			<State Key="RegExpLiteral" DefaultTokenId="33" DefaultTokenKey="RegExpLiteralText" DefaultClassificationTypeKey="String">
+				<State.Scopes>
+					<Scope>
+						<Scope.StartPatternGroup>
+							<RegexPatternGroup TokenId="34" TokenKey="RegExpLiteralStartDelimiter" Pattern="/(?! [\*/\s\n])" />
+						</Scope.StartPatternGroup>
+						<Scope.EndPatternGroup>
+							<RegexPatternGroup TokenId="35" TokenKey="RegExpLiteralEndDelimiter" Pattern="[/\n]" />
+						</Scope.EndPatternGroup>
+					</Scope>
+				</State.Scopes>
+				<RegexPatternGroup TokenId="36" TokenKey="RegExpLiteralEscapedCharacter" Pattern="\\." />
+				<RegexPatternGroup TokenId="33" TokenKey="RegExpLiteralText" Pattern="[^\\/\n]+" />
+			</State>
+		</DynamicLexer>
+	</LanguageDefinition.Lexer>
+	<!-- Example text -->
+	<LanguageDefinition.ExampleText><![CDATA[/* Comment */
+
+var labelString = 'Screen pixel count: ';
+
+function displayScreenPixelCount(screenWidth, screenHeight) {
+	// Write a paragraph with the screen's pixel count
+	document.write("<p>" + labelString);
+
+	var pixelCount = product(screenWidth, screenHeight);
+	document.write(pixelCount);
+
+	if (pixelCount <= 64000) {
+		document.write(" (small)");
+	}
+	else {
+		document.write(" (large)");
+	}
+
+	document.write("</p>");
+}
+
+function product(x, y) {
+	return x * y;
+}
+]]></LanguageDefinition.ExampleText>
+</LanguageDefinition>

@@ -1,0 +1,27 @@
+﻿<ContentDialog
+    x:Class="Nightingale.Dialogs.ConfirmDeleteDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Confirm deletion"
+    CloseButtonStyle="{StaticResource BaseRevealButton}"
+    CloseButtonText="Cancel"
+    CornerRadius="8"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    PrimaryButtonStyle="{StaticResource DeleteButtonStyle}"
+    PrimaryButtonText="Delete"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <TextBlock Text="Are you sure you want to delete this?" />
+        <CheckBox
+            x:Name="AskDeleteCheckBox"
+            Margin="0,16,0,0"
+            x:Load="{x:Bind ShowCheckBox}"
+            Checked="{x:Bind CheckBox_Checked}"
+            Content="Delete without asking next time"
+            Unchecked="{x:Bind CheckBox_Unchecked}" />
+    </StackPanel>
+</ContentDialog>

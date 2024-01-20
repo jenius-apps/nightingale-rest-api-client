@@ -1,0 +1,230 @@
+﻿<utilities:ObservableUserControl
+    x:Class="Nightingale.UserControls.SettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:utilities="using:Nightingale.Utilities"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="SettingsItemGrid" TargetType="Grid">
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        <Style
+            x:Key="SettingsItemSwitch"
+            BasedOn="{StaticResource DefaultToggleSwitchStyle}"
+            TargetType="ToggleSwitch">
+            <Setter Property="Margin" Value="0,0,-76,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        </Style>
+        <Style
+            x:Key="SettingsItemName"
+            BasedOn="{StaticResource BaseTextblock}"
+            TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style
+            x:Key="AboutText"
+            BasedOn="{StaticResource BaseTextblock}"
+            TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,2,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Normal" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Height="400">
+        <Pivot>
+            <PivotItem>
+                <PivotItem.Header>
+                    <TextBlock x:Uid="General" />
+                </PivotItem.Header>
+
+                <ScrollViewer>
+                    <StackPanel
+                        Margin="0,0,0,100"
+                        Padding="0,0,16,0"
+                        HorizontalAlignment="Stretch">
+                        <!--<TextBlock Text="Sync workspace across devices"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleSwitch IsOn="{x:Bind ViewModel.SyncToggle, Mode=TwoWay}" />
+                                    <ProgressRing IsActive="{x:Bind ViewModel.Loading, Mode=OneWay}" Margin="-100,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>-->
+
+                        <!--  SelectedIndex="{x:Bind ViewModel.SelectedThemeIndex, Mode=TwoWay}">  -->
+                        <!--<TextBlock Text="Clear all encryption passwords" Margin="0,16,0,0"/>
+                                <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                                    <Button Content="Clear" Style="{ThemeResource ButtonRevealStyle}" Click="{x:Bind ViewModel.ClearAllPasswords}" IsEnabled="{x:Bind ViewModel.IsDeletePasswordEnabled,Mode=OneWay}"/>
+                                    <ProgressRing Margin="12,0,0,0" IsActive="{x:Bind ViewModel.DeletingPasswords, Mode=OneWay}" VerticalAlignment="Center"/>
+                                </StackPanel>-->
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock x:Uid="ValidateSslCert" Style="{StaticResource SettingsItemName}" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.SslValidationOn, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Auto save on app exit" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.AutoSaveOn, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock x:Uid="EnableTelemetry" Style="{StaticResource SettingsItemName}" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.TelemetryOn, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock x:Uid="EnableHistory" Style="{StaticResource SettingsItemName}" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.HistoryEnabled, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Confirm deletions" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.ConfirmDeleteOn, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Enable environment quick edit" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.EnvQuickEditOn, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Show MVP badge (requires restart)" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.MvpBadgeEnabled, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Auto save every 5 minutes (requires restart)" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.AutoSaveIntervalEnabled, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Always wrap text in URL bar" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.AlwaysWrapUrlOn, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingsItemGrid}">
+                            <TextBlock Style="{StaticResource SettingsItemName}" Text="Wrap words in text editor" />
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.WordWrapEnabled, Mode=TwoWay}" Style="{StaticResource SettingsItemSwitch}" />
+                        </Grid>
+
+                        <!--  Clear recent url  -->
+                        <TextBlock
+                            x:Uid="RecentUrls"
+                            Margin="0,12,0,4"
+                            Style="{StaticResource BaseTextblock}" />
+                        <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                            <Button
+                                x:Uid="ClearRecentUrls"
+                                Click="{x:Bind ViewModel.ClearRecentUrlsAsync}"
+                                IsEnabled="{x:Bind ViewModel.CanClearUrls, Mode=OneWay}"
+                                Style="{StaticResource BaseRevealButton}" />
+                            <muxc:ProgressRing
+                                x:Name="recentUrlProgressRing"
+                                Margin="8,0,0,0"
+                                x:Load="{x:Bind ViewModel.ClearingRecentUrls, Mode=OneWay}"
+                                IsActive="True"
+                                Style="{StaticResource DefaultProgressRing}" />
+                            <TextBlock
+                                x:Name="recentUrlSuccessIcon"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                x:Load="{x:Bind ViewModel.ClearRecentUrlSuccessful, Mode=OneWay}"
+                                FontFamily="Segoe MDL2 Assets"
+                                Text="&#xE10B;" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--  theme settings  -->
+            <PivotItem Header="Theme">
+                <StackPanel>
+                    <TextBlock x:Uid="ThemeTitle" Style="{StaticResource BaseTextblock}" />
+                    <ComboBox
+                        Margin="0,4,0,0"
+                        SelectedIndex="{x:Bind ViewModel.SelectedThemeIndex, Mode=TwoWay}"
+                        Style="{StaticResource DefaultComboBoxStyle}">
+                        <ComboBoxItem x:Uid="ThemeSystemSettings" />
+                        <ComboBoxItem x:Uid="ThemeLight" />
+                        <ComboBoxItem x:Uid="ThemeDark" />
+                    </ComboBox>
+
+                    <TextBlock
+                        Margin="0,12,0,0"
+                        Style="{StaticResource BaseTextblock}"
+                        Text="Menu background" />
+                    <GridView
+                        ItemsSource="{x:Bind ViewModel.BackgroundSettingsViewModel.Images}"
+                        SelectionChanged="{x:Bind ViewModel.BackgroundSettingsViewModel.GridView_SelectionChanged}"
+                        SelectionMode="Single" />
+                </StackPanel>
+            </PivotItem>
+
+            <PivotItem>
+                <PivotItem.Header>
+                    <TextBlock x:Uid="Licenses" />
+                </PivotItem.Header>
+                <local:NoticesPane Margin="0,12,0,0" />
+            </PivotItem>
+
+            <PivotItem>
+                <PivotItem.Header>
+                    <TextBlock x:Uid="About" />
+                </PivotItem.Header>
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="🙋🏽‍♂️" />
+                    <TextBlock Style="{StaticResource AboutText}" Text="{x:Bind ViewModel.AppVersion}" />
+                    <TextBlock Style="{StaticResource AboutText}" Text="© Jenius Apps" />
+                    <TextBlock Style="{StaticResource AboutText}" Text="Hello from Vancouver" />
+
+                    <HyperlinkButton
+                        x:Uid="EmailSupport"
+                        Margin="0,12,0,0"
+                        HorizontalAlignment="Center"
+                        NavigateUri="mailto:nightingale_app@outlook.com" />
+                    <HyperlinkButton
+                        x:Uid="Feedback"
+                        HorizontalAlignment="Center"
+                        NavigateUri="https://github.com/jenius-apps/nightingale-rest-api-client" />
+                    <HyperlinkButton
+                        x:Uid="PrivacyPolicy"
+                        HorizontalAlignment="Center"
+                        NavigateUri="https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/privacypolicy.md" />
+                    <HyperlinkButton
+                        x:Uid="RateReview"
+                        HorizontalAlignment="Center"
+                        Click="{x:Bind ViewModel.RateAndReviewAsync}" />
+                    <HyperlinkButton
+                        x:Uid="Donate"
+                        HorizontalAlignment="Center"
+                        NavigateUri="https://paypal.me/kidjenius" />
+                    <HyperlinkButton
+                        HorizontalAlignment="Center"
+                        Content="More apps"
+                        NavigateUri="ms-windows-store://publisher/?name=Jenius%20Apps" />
+                </StackPanel>
+
+            </PivotItem>
+        </Pivot>
+
+        <Button
+            Grid.Column="3"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Click="{x:Bind ExitButton_Clicked}"
+            Style="{ThemeResource CloseButton}" />
+    </Grid>
+</utilities:ObservableUserControl>

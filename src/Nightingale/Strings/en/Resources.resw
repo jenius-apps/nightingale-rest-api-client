@@ -1,0 +1,766 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AccessToken.Text" xml:space="preserve">
+    <value>Access token</value>
+  </data>
+  <data name="AccessTokenUrl.Text" xml:space="preserve">
+    <value>Access token URL</value>
+  </data>
+  <data name="Add.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddItem.Text" xml:space="preserve">
+    <value>Add item</value>
+  </data>
+  <data name="AddNewTest.Content" xml:space="preserve">
+    <value>Add test</value>
+  </data>
+  <data name="AddRequest.Text" xml:space="preserve">
+    <value>Add request</value>
+  </data>
+  <data name="AddTest.PlaceholderText" xml:space="preserve">
+    <value>Insert test here</value>
+  </data>
+  <data name="AddWorkspace.Content" xml:space="preserve">
+    <value>Add workspace</value>
+  </data>
+  <data name="Authentication.Text" xml:space="preserve">
+    <value>Auth</value>
+  </data>
+  <data name="AuthorizationCode.Content" xml:space="preserve">
+    <value>Authorization code</value>
+  </data>
+  <data name="AuthorizationUrl.Text" xml:space="preserve">
+    <value>Authorization URL</value>
+  </data>
+  <data name="BackupToFile.Content" xml:space="preserve">
+    <value>Backup to file</value>
+  </data>
+  <data name="BackupToOneDrive.Content" xml:space="preserve">
+    <value>Backup to OneDrive</value>
+  </data>
+  <data name="Base" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="BasicAuth.Content" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="BearerAuth.Content" xml:space="preserve">
+    <value>Bearer</value>
+  </data>
+  <data name="BearerToken.Text" xml:space="preserve">
+    <value>Bearer token</value>
+  </data>
+  <data name="Beautify.Content" xml:space="preserve">
+    <value>Beautify</value>
+  </data>
+  <data name="BinaryFile.Content" xml:space="preserve">
+    <value>Binary file</value>
+  </data>
+  <data name="Body.Text" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="CallbackUrl.Text" xml:space="preserve">
+    <value>Callback URL</value>
+  </data>
+  <data name="Cancel.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Chain.Text" xml:space="preserve">
+    <value>Chain</value>
+  </data>
+  <data name="ChainRuleHelpLink.Content" xml:space="preserve">
+    <value>Click here for variable chaining instructions</value>
+  </data>
+  <data name="ChainRuleHelpMessage.Text" xml:space="preserve">
+    <value>Create chaining rules to automatically update environment variables using values from the response of this request. Example of response property to extract: response.Body[1].token</value>
+  </data>
+  <data name="ClearHistory.Content" xml:space="preserve">
+    <value>Delete history</value>
+  </data>
+  <data name="ClearRecentUrls.Content" xml:space="preserve">
+    <value>Clear recent URLs</value>
+  </data>
+  <data name="ClickForInformation.Content" xml:space="preserve">
+    <value>Click here for more information</value>
+  </data>
+  <data name="ClickToSeeChangelog.Content" xml:space="preserve">
+    <value>Click to see changelog</value>
+  </data>
+  <data name="ClientCredentials.Content" xml:space="preserve">
+    <value>Client credentials</value>
+  </data>
+  <data name="ClientId.Text" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="ClientSecret.Text" xml:space="preserve">
+    <value>Client secret</value>
+  </data>
+  <data name="Close.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CodeGenerator.Text" xml:space="preserve">
+    <value>Code Generator (Beta)</value>
+  </data>
+  <data name="CodeSnippet.Content" xml:space="preserve">
+    <value>Open code snippets</value>
+  </data>
+  <data name="CodeSnippet.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Click to view pre-made code snippets</value>
+  </data>
+  <data name="CodeSnippetTitle.Text" xml:space="preserve">
+    <value>Insert code snippets</value>
+  </data>
+  <data name="CollectionPage.Text" xml:space="preserve">
+    <value>Collection page</value>
+  </data>
+  <data name="Completed.Text" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="ConsumerKey.Text" xml:space="preserve">
+    <value>Consumer key</value>
+  </data>
+  <data name="ConsumerSecret.Text" xml:space="preserve">
+    <value>Consumer secret</value>
+  </data>
+  <data name="Continue.Content" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Cookies.Text" xml:space="preserve">
+    <value>Cookies</value>
+  </data>
+  <data name="CsharpRestSharp.Content" xml:space="preserve">
+    <value>C# (RestSharp)</value>
+  </data>
+  <data name="Curl.Content" xml:space="preserve">
+    <value>cURL</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Done.Text" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="DragDropDisabledTitle" xml:space="preserve">
+    <value>Drag and drop is temporarily disabled</value>
+  </data>
+  <data name="DuplicateCollection.Text" xml:space="preserve">
+    <value>Duplicate collection</value>
+  </data>
+  <data name="DuplicateRequest.Text" xml:space="preserve">
+    <value>Duplicate request</value>
+  </data>
+  <data name="EditName" xml:space="preserve">
+    <value>Edit name</value>
+  </data>
+  <data name="ElapsedTime.Text" xml:space="preserve">
+    <value>Elapsed time</value>
+  </data>
+  <data name="EmailSupport.Content" xml:space="preserve">
+    <value>Email support</value>
+  </data>
+  <data name="EmptyCollection.Text" xml:space="preserve">
+    <value>Empty collection</value>
+  </data>
+  <data name="EmptyCollectionMessage.Text" xml:space="preserve">
+    <value>Right-click on this collection on the left sidebar to add requests</value>
+  </data>
+  <data name="EmptyHistory.Text" xml:space="preserve">
+    <value>Empty history</value>
+  </data>
+  <data name="EnableHistory.Text" xml:space="preserve">
+    <value>Enable history</value>
+  </data>
+  <data name="EnableTelemetry.Text" xml:space="preserve">
+    <value>Enable telemetry</value>
+  </data>
+  <data name="EnterEnvName.PlaceholderText" xml:space="preserve">
+    <value>Enter new environment name</value>
+  </data>
+  <data name="EnterUrl.PlaceholderText" xml:space="preserve">
+    <value>Enter URL</value>
+  </data>
+  <data name="ErrorContent" xml:space="preserve">
+    <value>We encountered an issue and must shut down.</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorValidationTests" xml:space="preserve">
+    <value>Error running validation tests</value>
+  </data>
+  <data name="EvaluatingTests.Text" xml:space="preserve">
+    <value>Evaluating tests</value>
+  </data>
+  <data name="ExecuteAll.Text" xml:space="preserve">
+    <value>Execute all</value>
+  </data>
+  <data name="Failed.Text" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="FetchTokenManually.Content" xml:space="preserve">
+    <value>Fetch token</value>
+  </data>
+  <data name="FindButton.Content" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="General.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GenerateCode.Text" xml:space="preserve">
+    <value>Generate code</value>
+  </data>
+  <data name="GrantType.Text" xml:space="preserve">
+    <value>Grant type</value>
+  </data>
+  <data name="Headers.Text" xml:space="preserve">
+    <value>Headers</value>
+  </data>
+  <data name="History.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Html.Content" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="ImportDataMessage.Text" xml:space="preserve">
+    <value>⚠ The backup features that previously existed here are now obsolete. To backup your files, close the settings menu and click the 'Save As' button at the top left of the home page's menu bar. Use the import buttons below to load your old backup files and then use the 'Save As' button to convert them to NCF files.</value>
+  </data>
+  <data name="ImportFromFile.Content" xml:space="preserve">
+    <value>Import from file</value>
+  </data>
+  <data name="ImportFromOneDrive.Content" xml:space="preserve">
+    <value>Import from OneDrive</value>
+  </data>
+  <data name="InternetUnavailable" xml:space="preserve">
+    <value>Internet unavailable</value>
+  </data>
+  <data name="Items.Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="Json.Content" xml:space="preserve">
+    <value>JSON</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="KnownBugs.Content" xml:space="preserve">
+    <value>Known bugs</value>
+  </data>
+  <data name="Licenses.Text" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="LocalBackup.Text" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="LocalhostHelp.Content" xml:space="preserve">
+    <value>Localhost help</value>
+  </data>
+  <data name="LocalhostMessage.Text" xml:space="preserve">
+    <value>To enable localhost connection, please run the command below using command prompt.</value>
+  </data>
+  <data name="Location.Text" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Log.Text" xml:space="preserve">
+    <value>Log</value>
+    <comment>a log of events</comment>
+  </data>
+  <data name="LoopbackDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="LoopbackDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="LoopbackDialog.Title" xml:space="preserve">
+    <value>👩🏽‍💻 Localhost loopback</value>
+  </data>
+  <data name="LoopbackNeverShowAgain.Content" xml:space="preserve">
+    <value>Never show this dialog again. If you need these instructions again you can find a link under Settings &gt; About &gt; Localhost help.</value>
+  </data>
+  <data name="Environments.Text" xml:space="preserve">
+    <value>Environments</value>
+  </data>
+  <data name="ManageEnvironments.Text" xml:space="preserve">
+    <value>Manage environments</value>
+  </data>
+  <data name="ManageEnvironmentsHelp.Content" xml:space="preserve">
+    <value>Click here for environment instructions</value>
+  </data>
+  <data name="MyRequest" xml:space="preserve">
+    <value>My request</value>
+  </data>
+  <data name="MyWorkspace" xml:space="preserve">
+    <value>My workspace</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NameTests.PlaceholderText" xml:space="preserve">
+    <value>Name your test</value>
+  </data>
+  <data name="NewChanges.Text" xml:space="preserve">
+    <value>New Changes</value>
+  </data>
+  <data name="NewCollection.Text" xml:space="preserve">
+    <value>New collection</value>
+  </data>
+  <data name="NewRequest.Text" xml:space="preserve">
+    <value>New request</value>
+  </data>
+  <data name="NewTest" xml:space="preserve">
+    <value>New test</value>
+  </data>
+  <data name="NewWorkspace" xml:space="preserve">
+    <value>New workspace</value>
+  </data>
+  <data name="Nightingale.Text" xml:space="preserve">
+    <value>Nightingale</value>
+  </data>
+  <data name="NoAuth.Text" xml:space="preserve">
+    <value>This item will not use any authentication</value>
+  </data>
+  <data name="NoBody.Text" xml:space="preserve">
+    <value>This request does not have a body</value>
+  </data>
+  <data name="NoContentFound.Text" xml:space="preserve">
+    <value>No content found</value>
+  </data>
+  <data name="NoFileSelected.PlaceholderText" xml:space="preserve">
+    <value>No file selected</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NoneFound" xml:space="preserve">
+    <value>None found</value>
+  </data>
+  <data name="NoWorkspaceSelected.Text" xml:space="preserve">
+    <value>No workspace selected.</value>
+  </data>
+  <data name="Oauth1.Content" xml:space="preserve">
+    <value>OAuth 1.0a</value>
+  </data>
+  <data name="Oauth2.Content" xml:space="preserve">
+    <value>OAuth 2.0</value>
+  </data>
+  <data name="Okay" xml:space="preserve">
+    <value>Okay</value>
+  </data>
+  <data name="OneDriveBackup.Text" xml:space="preserve">
+    <value>OneDrive</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PassworkDialogMismatchMessage" xml:space="preserve">
+    <value>Passwords must match</value>
+  </data>
+  <data name="PickAName.PlaceholderText" xml:space="preserve">
+    <value>Pick a name, any name!</value>
+  </data>
+  <data name="Premium.Text" xml:space="preserve">
+    <value>Nightingale Premium</value>
+  </data>
+  <data name="PremiumCheckingPrice" xml:space="preserve">
+    <value>Checking price...</value>
+  </data>
+  <data name="PremiumCodeGen.Text" xml:space="preserve">
+    <value>✔ Code generator</value>
+  </data>
+  <data name="PremiumExport.Text" xml:space="preserve">
+    <value>✔ Local import and export 💾</value>
+  </data>
+  <data name="PremiumOneDrive.Text" xml:space="preserve">
+    <value>✔ OneDrive backup ☁</value>
+  </data>
+  <data name="PremiumSupportWork.Text" xml:space="preserve">
+    <value>✔ Support development</value>
+  </data>
+  <data name="PremiumThankYou.Text" xml:space="preserve">
+    <value>Thank you for unlocking premium!</value>
+  </data>
+  <data name="PremiumValidation.Text" xml:space="preserve">
+    <value>✔ Auto response validation</value>
+  </data>
+  <data name="PremiumWorkspaces.Text" xml:space="preserve">
+    <value>✔ Multiple workspaces</value>
+  </data>
+  <data name="Preview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="PrivacyPolicy.Content" xml:space="preserve">
+    <value>Privacy policy</value>
+  </data>
+  <data name="Queries.Text" xml:space="preserve">
+    <value>Queries</value>
+  </data>
+  <data name="RateReview.Content" xml:space="preserve">
+    <value>Rate and review</value>
+  </data>
+  <data name="RateUs.Text" xml:space="preserve">
+    <value>Rate us</value>
+  </data>
+  <data name="RawBytes.Content" xml:space="preserve">
+    <value>Raw bytes</value>
+  </data>
+  <data name="RecentUrls.Text" xml:space="preserve">
+    <value>Recent URL data</value>
+  </data>
+  <data name="Rename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="RequestDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RequestDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="ResponsePropertyExtact" xml:space="preserve">
+    <value>Response property</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveAs.Text" xml:space="preserve">
+    <value>Save As</value>
+  </data>
+  <data name="SaveWorkspace.Text" xml:space="preserve">
+    <value>Save workspace</value>
+  </data>
+  <data name="Scope.Text" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SelectedFile.Text" xml:space="preserve">
+    <value>Selected file</value>
+  </data>
+  <data name="SelectEnv.Text" xml:space="preserve">
+    <value>Select environment</value>
+  </data>
+  <data name="SelectFile.Content" xml:space="preserve">
+    <value>Select file</value>
+  </data>
+  <data name="Send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SendAndDownload.Text" xml:space="preserve">
+    <value>Send and download</value>
+  </data>
+  <data name="SendRequest.Text" xml:space="preserve">
+    <value>Send request</value>
+  </data>
+  <data name="SignOut.Content" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Size:</value>
+  </data>
+  <data name="SnippetCode200.Content" xml:space="preserve">
+    <value>Status code: Code is OK</value>
+  </data>
+  <data name="SnippetCode204.Content" xml:space="preserve">
+    <value>Status code: Code is No Content</value>
+  </data>
+  <data name="SnippetContainsString.Content" xml:space="preserve">
+    <value>Response body: Contains string</value>
+  </data>
+  <data name="SnippetContentType.Content" xml:space="preserve">
+    <value>Response headers: Content-Type check</value>
+  </data>
+  <data name="SnippetEqualString.Content" xml:space="preserve">
+    <value>Response body: Is equal to a string</value>
+  </data>
+  <data name="Status.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="TestResults.Text" xml:space="preserve">
+    <value>Test Results</value>
+  </data>
+  <data name="Tests.Text" xml:space="preserve">
+    <value>Tests:</value>
+  </data>
+  <data name="TestsHelpMessage.Text" xml:space="preserve">
+    <value>Automatically validate the payload of your responses. These tests will be executed after each response is received.</value>
+  </data>
+  <data name="TestsInstructionLink.Content" xml:space="preserve">
+    <value>Click here for instructions on how to create tests</value>
+  </data>
+  <data name="TestsNoContentMessage.Text" xml:space="preserve">
+    <value>This request does not have any validation tests</value>
+  </data>
+  <data name="ThemeDark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ThemeLight.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeSystemSettings.Content" xml:space="preserve">
+    <value>System settings</value>
+  </data>
+  <data name="ThemeTitle.Text" xml:space="preserve">
+    <value>Choose a theme</value>
+  </data>
+  <data name="Time.Text" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="TokenReusedMessage.Text" xml:space="preserve">
+    <value>This token is reused for each request unless you fetch it manually</value>
+  </data>
+  <data name="TokenSecret.Text" xml:space="preserve">
+    <value>Token secret</value>
+  </data>
+  <data name="UnlockPremiumMessage" xml:space="preserve">
+    <value>Unlock Nightingale Premium to enable this feature.</value>
+  </data>
+  <data name="UrlPreview.PlaceholderText" xml:space="preserve">
+    <value>URL preview</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Validate.Text" xml:space="preserve">
+    <value>Tests</value>
+  </data>
+  <data name="ValidateSslCert.Text" xml:space="preserve">
+    <value>Validate SSL certificates</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="VariableToUpdate" xml:space="preserve">
+    <value>Variable to update</value>
+  </data>
+  <data name="WelcomeScreenDescription.Text" xml:space="preserve">
+    <value>A simple REST API client for Windows 10</value>
+  </data>
+  <data name="WorkspaceGetStarted.Text" xml:space="preserve">
+    <value>Add or select a workspace to get started.</value>
+  </data>
+  <data name="Workspaces.Text" xml:space="preserve">
+    <value>Workspaces</value>
+  </data>
+  <data name="Xml.Content" xml:space="preserve">
+    <value>XML</value>
+  </data>
+  <data name="Donate.Content" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="PremiumTeachingTip.Subtitle" xml:space="preserve">
+    <value>Unlock Nightingale Premium to add more!</value>
+  </data>
+  <data name="PremiumTeachingTip.Title" xml:space="preserve">
+    <value>Premium</value>
+  </data>
+  <data name="FormData.Content" xml:space="preserve">
+    <value>Form data</value>
+  </data>
+  <data name="NoBodyButton.Content" xml:space="preserve">
+    <value>No body</value>
+  </data>
+  <data name="FormEncoded.Content" xml:space="preserve">
+    <value>x-www-form-urlencoded</value>
+  </data>
+  <data name="EnterUrlAndSend.Text" xml:space="preserve">
+    <value>Enter a URL and press the send button</value>
+  </data>
+  <data name="FeelsLonely.Text" xml:space="preserve">
+    <value>Feels a bit lonely in here...</value>
+  </data>
+  <data name="InvalidFileHeader.Text" xml:space="preserve">
+    <value>Invalid file</value>
+  </data>
+  <data name="InvalidFileMessage.Text" xml:space="preserve">
+    <value>Sorry, we couldn't open this file. Can you confirm it's compatible with Nightingale?</value>
+  </data>
+  <data name="BackupSettingsHeader.Text" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="Feedback.Content" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="ContentTypePlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Optional Content-Type</value>
+  </data>
+  <data name="KeyPlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="ValuePlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="CancelText.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="PremiumEnvironments.Text" xml:space="preserve">
+    <value>✔ Multiple environments</value>
+  </data>
+  <data name="PremiumMoreItems.Text" xml:space="preserve">
+    <value>✔ Collections hold &gt;5 items</value>
+  </data>
+  <data name="DigestAuth.Content" xml:space="preserve">
+    <value>Digest</value>
+  </data>
+  <data name="AddCollection.Text" xml:space="preserve">
+    <value>Add collection</value>
+  </data>
+  <data name="AddCertificate.Content" xml:space="preserve">
+    <value>Add certificate</value>
+  </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Passphrase.Text" xml:space="preserve">
+    <value>Passphrase</value>
+  </data>
+  <data name="PfxFile.Text" xml:space="preserve">
+    <value>PFX file</value>
+  </data>
+  <data name="Expiry.Text" xml:space="preserve">
+    <value>Expiry</value>
+  </data>
+  <data name="DeleteAll.Text" xml:space="preserve">
+    <value>Delete all</value>
+  </data>
+</root>

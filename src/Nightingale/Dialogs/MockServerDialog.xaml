@@ -1,0 +1,102 @@
+﻿<ContentDialog
+    x:Class="Nightingale.Dialogs.MockServerDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:usercontrols="using:Nightingale.UserControls"
+    CloseButtonStyle="{StaticResource BaseRevealButton}"
+    CloseButtonText="Cancel"
+    CornerRadius="8"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    PrimaryButtonStyle="{StaticResource BaseRevealButton}"
+    PrimaryButtonText="Deploy"
+    mc:Ignorable="d">
+    <ContentDialog.TitleTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20" Text="Mock Server" />
+                <usercontrols:BetaBadge Margin="4,0,0,0" />
+            </StackPanel>
+        </DataTemplate>
+    </ContentDialog.TitleTemplate>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <FontIcon
+            Grid.Row="0"
+            Margin="0,20,0,30"
+            FontFamily="Segoe MDL2 Assets"
+            FontSize="80"
+            Glyph="&#xE968;" />
+
+        <Grid
+            Grid.Row="1"
+            MaxWidth="300"
+            Margin="0,0,0,20"
+            Padding="12"
+            Background="{StaticResource SystemAccentColorLight2}"
+            CornerRadius="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                FontSize="{StaticResource DefaultFontSize}"
+                Foreground="{StaticResource SystemAccentColorDark2}"
+                TextWrapping="WrapWholeWords">
+                What is a mock server? Deploying a mock server will spawn a
+                console window showing the server's status.
+                You'll then be able to send HTTP requests
+                to this mock server and you'll get mock
+                data in return.
+            </TextBlock>
+            <HyperlinkButton
+                Grid.Row="1"
+                Content="View instructions"
+                NavigateUri="https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/docs/mockserver.md"
+                Style="{StaticResource DefaultHyperlink}" />
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <TextBlock
+                FontSize="{StaticResource DefaultFontSize}"
+                FontWeight="SemiBold"
+                Text="Workspace" />
+            <TextBlock
+                Margin="12,0,0,0"
+                FontSize="{StaticResource DefaultFontSize}"
+                Text="{x:Bind WorkspaceName}" />
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <TextBlock
+                FontSize="{StaticResource DefaultFontSize}"
+                FontWeight="SemiBold"
+                Text="Environment" />
+            <TextBlock
+                Margin="12,0,0,0"
+                FontSize="{StaticResource DefaultFontSize}"
+                Text="{x:Bind EnvName}" />
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <TextBlock
+                FontSize="{StaticResource DefaultFontSize}"
+                FontWeight="SemiBold"
+                Text="Item" />
+            <TextBlock
+                Margin="12,0,0,0"
+                FontSize="{StaticResource DefaultFontSize}"
+                Text="{x:Bind ItemName}" />
+        </StackPanel>
+
+    </Grid>
+</ContentDialog>

@@ -1,0 +1,138 @@
+﻿<utilities:ObservableUserControl
+    x:Class="Nightingale.UserControls.UrlBarControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilities="using:Nightingale.Utilities"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///XamlResources/CustomAutoSuggestBox_themeresources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light" Source="ms-appx:///XamlResources/ThemeResourceLight.xaml" />
+                <ResourceDictionary x:Key="Dark" Source="ms-appx:///XamlResources/ThemeResourceDark.xaml" />
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid
+        Padding="0,0"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MaxWidth="94" />
+            <ColumnDefinition Width="*" MinWidth="100" />
+            <ColumnDefinition Width="*" MaxWidth="86" />
+        </Grid.ColumnDefinitions>
+
+        <!--  method  -->
+        <ComboBox
+            Grid.Column="0"
+            Margin="0,8,0,0"
+            VerticalAlignment="Top"
+            AutomationProperties.Name="HTTP method selector"
+            ItemsSource="{x:Bind ItemsSource, Mode=OneWay}"
+            PlaceholderText="Select"
+            SelectedItem="{x:Bind SelectedMethod, Mode=OneWay}"
+            SelectionChanged="ComboBox_SelectionChanged"
+            Style="{StaticResource DefaultComboBoxStyle}" />
+
+        <!--  base url  -->
+        <AutoSuggestBox
+            Name="AutoSuggestUrlBox"
+            x:Uid="EnterUrl"
+            Grid.Column="1"
+            MaxHeight="300"
+            Margin="4,4,0,0"
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            FontSize="13"
+            GotFocus="{x:Bind AutoSuggestUrlBox_GotFocus}"
+            LostFocus="{x:Bind UrlLostFocus}"
+            QuerySubmitted="{x:Bind AutoSuggestBox_QuerySubmitted}"
+            Text="{x:Bind BaseUrl, Mode=OneWay}"
+            TextBoxStyle="{StaticResource UrlTextBox}"
+            TextChanged="{x:Bind AutoSuggestBox_TextChanged}" />
+
+        <!--  send button  -->
+        <c:SplitButton
+            Grid.Column="2"
+            Margin="4,8,0,0"
+            VerticalAlignment="Top"
+            AutomationProperties.Name="Send request"
+            Background="{StaticResource SystemAccentColor}"
+            Click="{x:Bind Send}"
+            Foreground="White">
+            <c:SplitButton.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Default">
+                            <SolidColorBrush x:Key="SplitButtonBackground" Color="{ThemeResource SystemAccentColor}" />
+                            <SolidColorBrush x:Key="SplitButtonBackgroundPointerOver" Color="{ThemeResource SystemAccentColorLight1}" />
+                            <SolidColorBrush x:Key="SplitButtonBackgroundPressed" Color="{ThemeResource SystemAccentColorDark1}" />
+                            <SolidColorBrush x:Key="SplitButtonForegroundPointerOver" Color="White" />
+                            <SolidColorBrush x:Key="SplitButtonForegroundPressed" Color="White" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </c:SplitButton.Resources>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="{StaticResource DefaultFontSize}"
+                    Text="Send" />
+            </StackPanel>
+            <ToolTipService.ToolTip>
+                <TextBlock x:Uid="/ToolTips/SendRequest" Style="{StaticResource BaseTextblock}" />
+            </ToolTipService.ToolTip>
+            <c:SplitButton.KeyboardAccelerators>
+                <KeyboardAccelerator Key="Enter" Modifiers="Control" />
+                <KeyboardAccelerator Key="S" Modifiers="Menu" />
+            </c:SplitButton.KeyboardAccelerators>
+
+            <c:SplitButton.Flyout>
+                <MenuFlyout>
+                    <!--  send flyout button required for touch  -->
+                    <MenuFlyoutItem
+                        AutomationProperties.Name="Send request and view response"
+                        Click="{x:Bind Send}"
+                        Text="Send">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE725;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+
+                    <!--  send and download button  -->
+                    <MenuFlyoutItem
+                        x:Uid="SendAndDownload"
+                        AutomationProperties.Name="Send request and download response to file"
+                        Click="{x:Bind SendAndDownload}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE118;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </c:SplitButton.Flyout>
+        </c:SplitButton>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Focused">
+                    <VisualState.Setters>
+                        <Setter Target="AutoSuggestUrlBox.TextBoxStyle" Value="{StaticResource ExpandedUrlTextBox}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</utilities:ObservableUserControl>
