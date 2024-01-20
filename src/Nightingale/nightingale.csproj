@@ -1,0 +1,717 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{4AE08123-B5E6-449E-BED5-7C7FD04EF1B1}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nightingale</RootNamespace>
+    <AssemblyName>Nightingale</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Auth\WebAuthBroker.cs" />
+    <Compile Include="Auth\WebAuthDialog.xaml.cs">
+      <DependentUpon>WebAuthDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ActiveStringConverter.cs" />
+    <Compile Include="Converters\AutoContentTypeConverter.cs" />
+    <Compile Include="Converters\EnvTypeVisibility.cs" />
+    <Compile Include="Converters\HttpMethodShortName.cs" />
+    <Compile Include="Converters\CollectionTypeVisibility.cs" />
+    <Compile Include="Converters\MethodColourConverter.cs" />
+    <Compile Include="Converters\MillisecondsLongToString.cs" />
+    <Compile Include="Converters\ParameterTypeToKeyPlaceholder.cs" />
+    <Compile Include="Converters\ParameterTypeToValuePlaceholder.cs" />
+    <Compile Include="Converters\ParamTypeVisibilty.cs" />
+    <Compile Include="Converters\RequestTypeVisibility.cs" />
+    <Compile Include="Converters\TestResultColorConverter.cs" />
+    <Compile Include="Converters\TreeIsExpandedGlyph.cs" />
+    <Compile Include="Converters\TreeItemTemplateSelector.cs" />
+    <Compile Include="Dialogs\ConfirmDeleteDialog.xaml.cs">
+      <DependentUpon>ConfirmDeleteDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\CookieDialogService.cs" />
+    <Compile Include="Dialogs\CookiesDialog.xaml.cs">
+      <DependentUpon>CookiesDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\CustomMethodsDialog.xaml.cs">
+      <DependentUpon>CustomMethodsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialogService.cs" />
+    <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Dialogs\EnvironmentDialogService.cs" />
+    <Compile Include="Dialogs\ExportDialog.xaml.cs">
+      <DependentUpon>ExportDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ICookieDialogService.cs" />
+    <Compile Include="Dialogs\IEnvironmentDialogService.cs" />
+    <Compile Include="Dialogs\ImportDialog.xaml.cs">
+      <DependentUpon>ImportDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ManageEnvironmentsDialog.xaml.cs">
+      <DependentUpon>ManageEnvironmentsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MockServerDialog.xaml.cs">
+      <DependentUpon>MockServerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MultiSelectListDialog.xaml.cs">
+      <DependentUpon>MultiSelectListDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NewRequestDialog.xaml.cs">
+      <DependentUpon>NewRequestDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SettingsDialog.xaml.cs">
+      <DependentUpon>SettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\TutorialDialog.xaml.cs">
+      <DependentUpon>TutorialDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MvpDialog.xaml.cs">
+      <DependentUpon>MvpDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\HtmlSyntaxLanguage.cs" />
+    <Compile Include="Editor\JavaScriptIndentProvider.cs" />
+    <Compile Include="Editor\JavascriptOutliningSource.cs" />
+    <Compile Include="Editor\JavascriptSyntaxLanguage.cs" />
+    <Compile Include="Editor\JavaScriptTokenId.cs" />
+    <Compile Include="Editor\LangDefLoader.cs" />
+    <Compile Include="Editor\XmlClassificationTypes.cs" />
+    <Compile Include="Editor\XmlSyntaxLanguage.cs" />
+    <Compile Include="CustomEventArgs\AddedItemArgs.cs" />
+    <Compile Include="CustomEventArgs\DeletedItemArgs.cs" />
+    <Compile Include="Handlers\ContainerSetup.cs" />
+    <Compile Include="Handlers\DocumentStorage.cs" />
+    <Compile Include="Handlers\KbShortcutsHandler.cs" />
+    <Compile Include="Handlers\ResponseFileWriter.cs" />
+    <Compile Include="History\HistorySource.cs" />
+    <Compile Include="History\HistoryViewModel.cs" />
+    <Compile Include="HttpClients\RestSharpClient\RestSharpAuthenticator.cs" />
+    <Compile Include="Handlers\StorageFilePicker.cs" />
+    <Compile Include="Handlers\StoreHandler.cs" />
+    <Compile Include="Handlers\UserSettings.cs" />
+    <Compile Include="Importers\IInsomniaImporter.cs" />
+    <Compile Include="Importers\InsomniaImporter.cs" />
+    <Compile Include="Importers\IODataImporter.cs" />
+    <Compile Include="Importers\IPostmanImporter.cs" />
+    <Compile Include="Importers\ISwaggerImporter.cs" />
+    <Compile Include="Importers\NcfImporter.cs" />
+    <Compile Include="Importers\ODataImporter.cs" />
+    <Compile Include="Importers\PostmanImporter.cs" />
+    <Compile Include="Importers\SwaggerImporter.cs" />
+    <Compile Include="Mock\LocalDeployService.cs" />
+    <Compile Include="Mock\MockDataView.xaml.cs">
+      <DependentUpon>MockDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mock\MockDataViewModel.cs" />
+    <Compile Include="Modifiers\EnvironmentListModifier.cs" />
+    <Compile Include="Navigation\BaseNavigationService.cs" />
+    <Compile Include="Navigation\IRootFrameNavigationService.cs" />
+    <Compile Include="Navigation\IWorkspaceItemNavigationService.cs" />
+    <Compile Include="Navigation\IWorkspaceNavigationService.cs" />
+    <Compile Include="Navigation\RootFrameNavigationService.cs" />
+    <Compile Include="Navigation\WorkspaceItemNavigationService.cs" />
+    <Compile Include="Navigation\WorkspaceNavigationArgs.cs" />
+    <Compile Include="Navigation\WorkspaceNavigationService.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreHelpers\Models\CollectionData.cs" />
+    <Compile Include="StoreHelpers\Models\ExtendedData.cs" />
+    <Compile Include="StoreHelpers\Models\Sku.cs" />
+    <Compile Include="StoreHelpers\Models\SkuAvailability.cs" />
+    <Compile Include="Tabs\Factories\ITabCollectionViewFactory.cs" />
+    <Compile Include="Tabs\Factories\ITabViewModelFactory.cs" />
+    <Compile Include="Tabs\Factories\TabCollectionViewFactory.cs" />
+    <Compile Include="Tabs\Factories\TabViewModelFactory.cs" />
+    <Compile Include="Tabs\Models\TabCollectionView.cs" />
+    <Compile Include="Tabs\Services\ITabCollectionContainer.cs" />
+    <Compile Include="Tabs\Services\TabCollectionContainer.cs" />
+    <Compile Include="UserControls\AuthControl.xaml.cs">
+      <DependentUpon>AuthControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Auth\AuthCodeForm.xaml.cs">
+      <DependentUpon>AuthCodeForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Auth\ClientCredForm.xaml.cs">
+      <DependentUpon>ClientCredForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BetaBadge.xaml.cs">
+      <DependentUpon>BetaBadge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CollectionControl.xaml.cs">
+      <DependentUpon>CollectionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EditorControl.xaml.cs">
+      <DependentUpon>EditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EnvironmentsControl.xaml.cs">
+      <DependentUpon>EnvironmentsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ExportControl.xaml.cs">
+      <DependentUpon>ExportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FormDataListView.xaml.cs">
+      <DependentUpon>FormDataListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Auth\ImplicitAuthForm.xaml.cs">
+      <DependentUpon>ImplicitAuthForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemTreeView.xaml.cs">
+      <DependentUpon>ItemTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NoticesPane.xaml.cs">
+      <DependentUpon>NoticesPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NoWorkspacesControl.xaml.cs">
+      <DependentUpon>NoWorkspacesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\OutputControl.xaml.cs">
+      <DependentUpon>OutputControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ParameterListView.xaml.cs">
+      <DependentUpon>ParameterListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RequestBodyControl.xaml.cs">
+      <DependentUpon>RequestBodyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RequestControl.xaml.cs">
+      <DependentUpon>RequestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ChainingRulesControl.xaml.cs">
+      <DependentUpon>ChainingRulesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SupportView.xaml.cs">
+      <DependentUpon>SupportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TutorialItem.xaml.cs">
+      <DependentUpon>TutorialItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UrlBarControl.xaml.cs">
+      <DependentUpon>UrlBarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WelcomeScreen.xaml.cs">
+      <DependentUpon>WelcomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WhatsNewControl.xaml.cs">
+      <DependentUpon>WhatsNewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\AppSettings.cs" />
+    <Compile Include="Utilities\Common.cs" />
+    <Compile Include="Utilities\FileReader.cs" />
+    <Compile Include="Utilities\FileWriter.cs" />
+    <Compile Include="Utilities\KeyboardState.cs" />
+    <Compile Include="Utilities\PivotOverride.cs" />
+    <Compile Include="Utilities\ObservableUserControl.cs" />
+    <Compile Include="Utilities\RadioButtonExtension.cs" />
+    <Compile Include="Utilities\Telemetry.cs" />
+    <Compile Include="Utilities\TextBoxOverride.cs" />
+    <Compile Include="Utilities\ThemeController.cs" />
+    <Compile Include="ViewModels\AuthControlViewModel.cs" />
+    <Compile Include="ViewModels\BackgroundSettingsViewModel.cs" />
+    <Compile Include="ViewModels\BodyControlViewModel.cs" />
+    <Compile Include="ViewModels\CodeGenPageViewModel.cs" />
+    <Compile Include="ViewModels\CollectionViewModel.cs" />
+    <Compile Include="ViewModels\CookiesViewModel.cs" />
+    <Compile Include="ViewModels\EditorViewModel.cs" />
+    <Compile Include="ViewModels\EnvironmentsViewModel.cs" />
+    <Compile Include="ViewModels\EnvItemViewModel.cs" />
+    <Compile Include="ViewModels\Factories\CodeGeneratorViewModelFactory.cs" />
+    <Compile Include="ViewModels\Factories\ICodeGeneratorViewModelFactory.cs" />
+    <Compile Include="ViewModels\ImportPostmanViewModel.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MvpViewModel.cs" />
+    <Compile Include="ViewModels\RequestBodyViewModel.cs" />
+    <Compile Include="ViewModels\RequestControlViewModel.cs" />
+    <Compile Include="ViewModels\RequestPageViewModel.cs" />
+    <Compile Include="ViewModels\RequestViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\StatusBarViewModel.cs" />
+    <Compile Include="ViewModels\UrlBarViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+    <Compile Include="Views\CodeGeneratorPage.xaml.cs">
+      <DependentUpon>CodeGeneratorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DockedCollectionPage.xaml.cs">
+      <DependentUpon>DockedCollectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InvalidFilePage.xaml.cs">
+      <DependentUpon>InvalidFilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPage2.xaml.cs">
+      <DependentUpon>MainPage2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NavigationParameters\CollectionPageParameters.cs" />
+    <Compile Include="Views\NavigationParameters\RequestPageParameters.cs" />
+    <Compile Include="Views\NoWorkspacesPage.xaml.cs">
+      <DependentUpon>NoWorkspacesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkspacePage.xaml.cs">
+      <DependentUpon>WorkspacePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VisualState\BooleanStateTrigger.cs" />
+    <Compile Include="VisualState\IVisualStatePublisher.cs" />
+    <Compile Include="VisualState\VisualStatePublisher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <Content Include="Assets\Backgrounds\dark_cloth.png" />
+    <Content Include="Assets\Backgrounds\dark_ocean.png" />
+    <Content Include="Assets\Backgrounds\dark_plant.png" />
+    <Content Include="Assets\Backgrounds\dark_stars.png" />
+    <Content Include="Assets\Backgrounds\light_cloth.png" />
+    <Content Include="Assets\Backgrounds\light_ocean.png" />
+    <Content Include="Assets\Backgrounds\light_plant.png" />
+    <Content Include="Assets\Backgrounds\light_stars.png" />
+    <Content Include="Assets\Backgrounds\none.png" />
+    <Content Include="Assets\cookie-black.png" />
+    <Content Include="Assets\cookie-white2.png" />
+    <Content Include="Assets\Backgrounds\dark_architecture.png" />
+    <Content Include="Assets\Backgrounds\light_architecture.png" />
+    <Content Include="Editor\Xml.langdef" />
+    <Content Include="Editor\JavaScript.langdef" />
+    <Content Include="Assets\main_logo.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square310x310Logo.scale-100.png" />
+    <Content Include="Assets\Square310x310Logo.scale-200.png" />
+    <Content Include="Assets\Square310x310Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
+    <Content Include="Assets\Square71x71Logo.scale-100.png" />
+    <Content Include="Assets\Square71x71Logo.scale-200.png" />
+    <Content Include="Assets\Square71x71Logo.scale-400.png" />
+    <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <PRIResource Include="Strings\en\NewChanges.resw" />
+    <PRIResource Include="Strings\en\ToolTips.resw" />
+    <PRIResource Include="Strings\en\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Auth\WebAuthDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ConfirmDeleteDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\CookiesDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\CustomMethodsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ExportDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ImportDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ManageEnvironmentsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\MockServerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\MultiSelectListDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\NewRequestDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\SettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\TutorialDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\MvpDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mock\MockDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AuthControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Auth\AuthCodeForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Auth\ClientCredForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\BetaBadge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CollectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EnvironmentsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ExportControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FormDataListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Auth\ImplicitAuthForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ItemTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NoticesPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NoWorkspacesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\OutputControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ParameterListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RequestBodyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RequestControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChainingRulesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SupportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TutorialItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UrlBarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\WelcomeScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\WhatsNewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CodeGeneratorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DockedCollectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InvalidFilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainPage2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NoWorkspacesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkspacePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\AppDefaults.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\CustomAutoSuggestBox_themeresources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\ThemeResourceDark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\ThemeResourceLight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac">
+      <Version>5.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="JeniusApps.Insomnia.NET">
+      <Version>0.0.4-preview</Version>
+    </PackageReference>
+    <PackageReference Include="JeniusApps.Nightingale.Converters">
+      <Version>4.2.3-preview</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>5.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>5.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.OpenApi">
+      <Version>1.2.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.OpenApi.Readers">
+      <Version>1.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm">
+      <Version>7.0.0-preview3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Connectivity">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>6.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Lottie">
+      <Version>6.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Win2D.uwp">
+      <Version>1.27.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nightingale.Core\Nightingale.Core.csproj">
+      <Project>{93cfc710-cc96-437c-b64d-0cd8b6fb584b}</Project>
+      <Name>Nightingale.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="ActiproSoftware.Universal, Version=20.1.0355">
+      <Name>Actipro Universal Windows Controls</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsDesktop, Version=10.0.22621.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Editor\Html.langdef" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\fluentui.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\25986-thanks-heart.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="appsettings.resw" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties TimelineCard_1json__JSONSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

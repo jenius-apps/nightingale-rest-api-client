@@ -1,0 +1,48 @@
+﻿<ContentDialog
+    x:Class="Nightingale.Dialogs.NewRequestDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="using:Nightingale.Core.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="using:Nightingale.UserControls"
+    x:Uid="RequestDialog"
+    Title="{x:Bind DialogTitle}"
+    CloseButtonStyle="{StaticResource BaseRevealButton}"
+    CornerRadius="8"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    PrimaryButtonStyle="{StaticResource BaseRevealButton}"
+    mc:Ignorable="d">
+
+    <StackPanel MaxWidth="270">
+        <StackPanel.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.ThemeDictionaries>
+                    <ResourceDictionary x:Key="Light" Source="ms-appx:///XamlResources/ThemeResourceLight.xaml" />
+                    <ResourceDictionary x:Key="Dark" Source="ms-appx:///XamlResources/ThemeResourceDark.xaml" />
+                </ResourceDictionary.ThemeDictionaries>
+            </ResourceDictionary>
+        </StackPanel.Resources>
+
+        <TextBlock x:Uid="Name" Style="{StaticResource BaseTextblock}" />
+        <TextBox
+            x:Name="NameBox"
+            x:Uid="PickAName"
+            Margin="0,4,0,0"
+            KeyDown="NameBox_KeyDown"
+            Loaded="NameBox_Loaded"
+            MaxLength="100"
+            Style="{StaticResource UnderlinedTextBox}"
+            Text="{x:Bind NewName, Mode=OneWay}" />
+
+        <u:ItemTreeView
+            x:Name="LocationTree"
+            Height="200"
+            Margin="0,8,0,0"
+            ItemInvoked="{x:Bind ItemTreeView_ItemInvoked}"
+            ItemsSource="{x:Bind Locations}"
+            Visibility="{x:Bind IsLocationSelectorVisible}" />
+
+    </StackPanel>
+</ContentDialog>

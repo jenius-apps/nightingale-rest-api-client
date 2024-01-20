@@ -1,0 +1,81 @@
+# Universal Windows Platform
+# Build a Universal Windows Platform project using Visual Studio.
+# Add steps that test and distribute an app, save build artifacts, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'windows-2022'
+
+variables:
+  - group: nightingale-pipeline
+  - name: solution
+    value: '**/*.sln'
+  - name: buildPlatform
+    value: 'x64|ARM64'
+  - name: buildConfiguration
+    value: 'Release'
+  - name: appxPackageDir
+    value: '$(build.artifactStagingDirectory)\AppxPackages\\'
+
+steps:
+- task: PowerShell@2
+  displayName: 'Installing actipro'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $sdkUrl = '$(actiproSdkUrl)'
+      $actiproSdkPath = Join-Path $env:TEMP "Setup.msi"
+
+      Write-Output "downloading $sdkUrl"
+      Invoke-WebRequest -Uri $sdkUrl -OutFile $actiproSdkPath
+
+      Write-Output "Installing $actiproSdkPath"
+      Start-Process $actiproSdkPath -ArgumentList "/q" -Wait
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      [xml]$xmlDoc = Get-Content $(Build.SourcesDirectory)\Package\Package.appxmanifest
+      $xmlDoc.Package.Identity.Name="43891JeniusApps.NightingaleRESTAPIClient"
+      $xmlDoc.Save('$(Build.SourcesDirectory)\Package\Package.appxmanifest')
+    failOnStderr: true
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      [xml]$xmlDoc = Get-Content $(Build.SourcesDirectory)\Nightingale\appsettings.resw
+      $xmlDoc.SelectSingleNode("//root/data[@name='TelemetryApiKey']").Value = "$(TelemetryApiKey)"
+      $xmlDoc.SelectSingleNode("//root/data[@name='ActiproLicenseKey']").Value = "$(ActiproLicenseKey)"
+      $xmlDoc.SelectSingleNode("//root/data[@name='ActiproLicensee']").Value = "$(ActiproLicensee)"
+      $xmlDoc.Save('$(Build.SourcesDirectory)\Nightingale\appsettings.resw')
+    failOnStderr: true
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/Nightingale.Core.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: MSBuild@1
+  inputs:
+    solution: '**/Package.wapproj'
+    platform: 'x64'
+    configuration: '$(buildConfiguration)'
+    msbuildArguments: '/t:build;_GenerateAppxPackage /p:Configuration=Release;Platform="$(buildPlatform)";AppxBundle=Always;AppxBundlePlatforms="$(buildPlatform)"'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'

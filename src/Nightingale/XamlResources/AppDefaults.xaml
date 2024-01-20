@@ -1,0 +1,350 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:m="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls">
+
+    <!--  Accent colour override  -->
+    <!--<Color x:Key="SystemAccentColor">#0078D7</Color>-->
+
+    <!--  Default constants  -->
+    <x:Double x:Key="DefaultFontSize">12</x:Double>
+    <x:Double x:Key="BoxHeight">28</x:Double>
+    <x:Double x:Key="StatusBarFontSize">13</x:Double>
+    <x:Double x:Key="LargeFontSize">14</x:Double>
+    <x:Double x:Key="FadedOpacity">0.5</x:Double>
+    <Thickness x:Key="DefaultBorderThickness">1</Thickness>
+    <x:Double x:Key="EmojiHeightPlaceholder">40</x:Double>
+    <Duration x:Key="AnimationLength">0:0:0.5</Duration>
+
+    <Color x:Key="Dark1PageBackgroundColour">#303030</Color>
+    <Color x:Key="Dark2PageBackgroundColour">#252423</Color>
+    <Color x:Key="Dark3PageBackgroundColour">#1e1e1e</Color>
+    <Color x:Key="Light1PageBackgroundColour">#f3f2f1</Color>
+    <Color x:Key="Light2PageBackgroundColour">#faf9f8</Color>
+    <Color x:Key="Light3PageBackgroundColour">#ffffff</Color>
+    <Color x:Key="DarkSidebarBackgroundColour">#282828</Color>
+
+    <!--  Buttons  -->
+    <Style
+        x:Key="DeleteButtonStyle"
+        BasedOn="{StaticResource BaseRevealButton}"
+        TargetType="Button">
+        <Setter Property="Background" Value="DarkRed" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Key="TabViewActionButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <Style
+        x:Key="AccentRevealButton"
+        BasedOn="{StaticResource BaseRevealButton}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource SystemAccentColor}" />
+    </Style>
+
+    <Style
+        x:Key="BaseRevealButton"
+        BasedOn="{StaticResource DefaultButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BorderThickness" Value="{StaticResource DefaultBorderThickness}" />
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+    </Style>
+
+    <Style
+        x:Key="TransparentRevealButton"
+        BasedOn="{StaticResource BaseRevealButton}"
+        TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style x:Key="TransparentDropDownButtonStyle" TargetType="m:DropDownButton">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style
+        x:Key="DefaultToggleButton"
+        BasedOn="{StaticResource DefaultToggleButtonStyle}"
+        TargetType="ToggleButton">
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="Margin" Value="0,0,2,0" />
+        <Setter Property="BorderThickness" Value="{StaticResource DefaultBorderThickness}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="MinWidth" Value="0" />
+    </Style>
+
+    <Style
+        x:Key="CloseButton"
+        BasedOn="{StaticResource TransparentRevealButton}"
+        TargetType="Button">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="Content" Value="&#xE106;" />
+        <Setter Property="Height" Value="32" />
+    </Style>
+
+    <!--  Ref: https://github.com/windows-toolkit/WindowsCommunityToolkit/blob/master/Microsoft.Toolkit.Uwp.UI.Controls/TabView/TabView.xaml  -->
+    <Style x:Key="TabViewItemCloseButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumHighBrush}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="6,0,6,0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                        <ContentPresenter
+                            x:Name="ContentPresenter"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            AutomationProperties.AccessibilityView="Raw"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            ContentTransitions="{TemplateBinding ContentTransitions}" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPointerOverForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
+                                                   Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>-->
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightTransparentBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightBaseHighBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseMediumLowBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Combo Boxes  -->
+    <Style
+        x:Key="DefaultComboBoxStyle"
+        BasedOn="{StaticResource DefaultComboBoxStyle}"
+        TargetType="ComboBox">
+        <Setter Property="BorderThickness" Value="{StaticResource DefaultBorderThickness}" />
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="{StaticResource BoxHeight}" />
+    </Style>
+
+    <DataTemplate x:Key="EnvComboBoxItemTemplate" AutomationProperties.Name="{Binding Name}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="0,0,0,0" Text="{Binding Name}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!--  commandbar  -->
+    <Style
+        x:Key="MenuCommandBarStyle"
+        BasedOn="{StaticResource CommandBarWithoutRevealStyle}"
+        TargetType="CommandBar">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="DefaultLabelPosition" Value="Right" />
+    </Style>
+
+    <!--  dropshadowpanel  -->
+    <Style x:Key="LightDropShadowStyle" TargetType="toolkit:DropShadowPanel">
+        <Setter Property="ShadowOpacity" Value="0.3" />
+        <Setter Property="BlurRadius" Value="10" />
+        <Setter Property="OffsetY" Value="1" />
+    </Style>
+
+    <!--  Font icons  -->
+    <Style x:Key="PlaceholderIcon" TargetType="FontIcon">
+        <Setter Property="FontSize" Value="{StaticResource EmojiHeightPlaceholder}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Opacity" Value="{StaticResource FadedOpacity}" />
+    </Style>
+
+    <!--  Grid splitter  -->
+    <x:Double x:Key="SplitterWidth">6</x:Double>
+    <Style x:Key="BaseSplitter" TargetType="toolkit:GridSplitter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="GripperForeground" Value="Transparent" />
+        <Setter Property="ResizeBehavior" Value="BasedOnAlignment" />
+    </Style>
+
+    <Style
+        x:Key="TallSplitterStyle"
+        BasedOn="{StaticResource BaseSplitter}"
+        TargetType="toolkit:GridSplitter">
+        <Setter Property="MinWidth" Value="{StaticResource SplitterWidth}" />
+        <Setter Property="Width" Value="{StaticResource SplitterWidth}" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style
+        x:Key="WideSplitterStyle"
+        BasedOn="{StaticResource BaseSplitter}"
+        TargetType="toolkit:GridSplitter">
+        <Setter Property="MinHeight" Value="{StaticResource SplitterWidth}" />
+        <Setter Property="Height" Value="{StaticResource SplitterWidth}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <!--  Hyperlinks  -->
+    <Style x:Key="DefaultHyperlink" TargetType="HyperlinkButton">
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+    </Style>
+
+    <!--  Password Box  -->
+    <Style x:Key="DefaultPasswordBox" TargetType="PasswordBox">
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="IsPasswordRevealButtonEnabled" Value="True" />
+    </Style>
+
+    <!--  pivotitem  -->
+    <Style x:Key="NoMarginPivotItemStyle" TargetType="PivotItem">
+        <Setter Property="Margin" Value="0,0,0,0" />
+    </Style>
+
+    <!--  Progress Rings  -->
+    <Style x:Key="DefaultProgressRing" TargetType="m:ProgressRing">
+        <Setter Property="Foreground" Value="{ThemeResource DefaultTextForegroundThemeBrush}" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+    </Style>
+
+    <Style
+        x:Key="LargeProgressRing"
+        BasedOn="{StaticResource DefaultProgressRing}"
+        TargetType="m:ProgressRing">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+    </Style>
+
+    <!--  Rectangles  -->
+    <Style x:Key="BaseBorderRectangleStyle" TargetType="Rectangle">
+        <Setter Property="Opacity" Value="{StaticResource FadedOpacity}" />
+    </Style>
+
+    <Style
+        x:Key="BaseVerticalBorderRectangleStyle"
+        BasedOn="{StaticResource BaseBorderRectangleStyle}"
+        TargetType="Rectangle">
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Width" Value="{StaticResource DefaultBorderThickness}" />
+    </Style>
+
+    <Style
+        x:Key="BaseHorizontalBorderRectangleStyle"
+        BasedOn="{StaticResource BaseBorderRectangleStyle}"
+        TargetType="Rectangle">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="{StaticResource DefaultBorderThickness}" />
+    </Style>
+
+    <!--  Textblocks  -->
+    <Style x:Key="BaseTextblock" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+    </Style>
+
+    <Style x:Key="SuperScriptTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <Style x:Key="PlaceholderTextblock" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiLight" />
+        <Setter Property="TextWrapping" Value="WrapWholeWords" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style
+        x:Key="PlaceholderTextBlockWithPadding"
+        BasedOn="{StaticResource PlaceholderTextblock}"
+        TargetType="TextBlock">
+        <Setter Property="Margin" Value="0,48,0,0" />
+    </Style>
+
+    <Style x:Key="StatusBarTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource StatusBarFontSize}" />
+    </Style>
+
+    <Style x:Key="StatusBarResultStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource StatusBarFontSize}" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <!--  TextBoxes  -->
+    <Style x:Key="UnderlinedTextBox" TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="PlaceholderForeground" Value="Gray" />
+        <Setter Property="IsSpellCheckEnabled" Value="False" />
+    </Style>
+
+    <Style
+        x:Key="UrlTextBox"
+        BasedOn="{StaticResource UnderlinedTextBox}"
+        TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+    </Style>
+
+    <Style
+        x:Key="ExpandedUrlTextBox"
+        BasedOn="{StaticResource UnderlinedTextBox}"
+        TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!--  Textbox overrides  -->
+    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+    <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
+
+</ResourceDictionary>

@@ -1,0 +1,119 @@
+﻿<Page
+    x:Class="Nightingale.Views.DockedCollectionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:Nightingale.UserControls"
+    xmlns:utilities="using:Nightingale.Utilities"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light" Source="ms-appx:///XamlResources/ThemeResourceLight.xaml" />
+                <ResourceDictionary x:Key="Dark" Source="ms-appx:///XamlResources/ThemeResourceDark.xaml" />
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid x:DefaultBindMode="OneWay" Background="{ThemeResource Page3Background}">
+        <utilities:PivotOverride Margin="0,4,0,0" SelectedIndex="{x:Bind ViewModel.PivotIndex, Mode=TwoWay}">
+
+            <PivotItem Header="Items">
+                <uc:CollectionControl
+                    x:Name="CollectionUserControl"
+                    CancelButtonVisible="{x:Bind ViewModel.Loading}"
+                    Children="{x:Bind ViewModel.SelectedCollection.Children}"
+                    ExecuteButtonVisible="{x:Bind ViewModel.ReadyToExecute}"
+                    IsEmpty="{x:Bind ViewModel.IsEmpty}"
+                    IsLoadingRingActive="{x:Bind ViewModel.Loading}"
+                    RunAllClicked="{x:Bind ViewModel.RunAllRequests}"
+                    TotalElapsedMilliseconds="{x:Bind ViewModel.TotalElapsedMilliseconds}"
+                    TotalFailed="{x:Bind ViewModel.TotalFailed}"
+                    TotalPassed="{x:Bind ViewModel.TotalPassed}"
+                    TotalRequestCount="{x:Bind ViewModel.TotalRequestCount}" />
+            </PivotItem>
+
+            <PivotItem Header="Auth">
+                <uc:AuthControl
+                    Margin="0,8,0,0"
+                    x:DefaultBindMode="OneWay"
+                    AuthTypeIndex="{x:Bind AuthVm.AuthTypeIndex, Mode=TwoWay}"
+                    BasicPassword="{x:Bind AuthVm.BasicPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    BasicUsername="{x:Bind AuthVm.BasicUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    BearerToken="{x:Bind AuthVm.BearerToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    DigestPassword="{x:Bind AuthVm.DigestPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    DigestUsername="{x:Bind AuthVm.DigestUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    FetchOauth1TokenClicked="{x:Bind AuthVm.FetchOauth1Token}"
+                    FetchTokenClicked="{x:Bind AuthVm.FetchToken}"
+                    IsAuthCode="{x:Bind AuthVm.IsAuthorizationCode, Mode=OneWay}"
+                    IsAuthorizationCode="{x:Bind AuthVm.IsAuthorizationCode, Mode=OneWay}"
+                    IsBasicAuth="{x:Bind AuthVm.IsBasicAuth, Mode=OneWay}"
+                    IsBearerAuth="{x:Bind AuthVm.IsBearerAuth, Mode=OneWay}"
+                    IsClientCred="{x:Bind AuthVm.IsClientCredential, Mode=OneWay}"
+                    IsDigestAuth="{x:Bind AuthVm.IsDigestAuth}"
+                    IsImplicit="{x:Bind AuthVm.IsImplicitFlow, Mode=OneWay}"
+                    IsNoAuth="{x:Bind AuthVm.IsNoAuth, Mode=OneWay}"
+                    IsOauth1="{x:Bind AuthVm.IsOauth1, Mode=OneWay}"
+                    IsOauth2="{x:Bind AuthVm.IsOauth2, Mode=OneWay}"
+                    IsParentAuth="{x:Bind AuthVm.IsParentAuth, Mode=OneWay}"
+                    Log="{x:Bind AuthVm.Log, Mode=OneWay}"
+                    OAuth1AccessToken="{x:Bind AuthVm.OAuth1AccessToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1AccessTokenUrl="{x:Bind AuthVm.OAuth1AccessTokenUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1AuthorizationUrl="{x:Bind AuthVm.OAuth1AuthorizationUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1CallbackUrl="{x:Bind AuthVm.OAuth1CallbackUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1ConsumerKey="{x:Bind AuthVm.OAuth1ConsumerKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1ConsumerSecret="{x:Bind AuthVm.OAuth1ConsumerSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1RequestTokenUrl="{x:Bind AuthVm.OAuth1RequestTokenUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth1TokenSecret="{x:Bind AuthVm.OAuth1TokenSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2AccessToken="{x:Bind AuthVm.OAuth2AccessToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2AccessTokenUrl="{x:Bind AuthVm.OAuth2AccessTokenUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2AuthUrl="{x:Bind AuthVm.OAuth2AuthUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2CallbackUrl="{x:Bind AuthVm.OAuth2CallbackUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2ClientId="{x:Bind AuthVm.OAuth2ClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2ClientSecret="{x:Bind AuthVm.OAuth2ClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2GrantTypeIndex="{x:Bind AuthVm.OAuth2GrantTypeIndex, Mode=TwoWay}"
+                    OAuth2RefreshToken="{x:Bind AuthVm.OAuth2RefreshToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OAuth2Scope="{x:Bind AuthVm.OAuth2Scope, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    RefreshTokenClicked="{x:Bind AuthVm.RefreshToken}" />
+            </PivotItem>
+
+            <!--  Queries  -->
+            <PivotItem>
+                <PivotItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="Queries" />
+                        <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.QueryCount, Mode=OneWay}" />
+                    </StackPanel>
+                </PivotItem.Header>
+
+                <uc:ParameterListView
+                    AddVariableClicked="{x:Bind ViewModel.AddVariableClicked}"
+                    EnvironmentConatiner="{x:Bind ViewModel.EnvironmentContainer}"
+                    ItemsSource="{x:Bind ViewModel.SelectedCollection.Url.Queries, Mode=OneWay}"
+                    ParameterDeleted="{x:Bind ViewModel.ParameterDeleted}"
+                    ParameterType="Parameter"
+                    ValuesUpdated="{x:Bind ViewModel.QueryValuesUpdated}" />
+            </PivotItem>
+
+            <!--  Headers  -->
+            <PivotItem>
+                <PivotItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="Headers" />
+                        <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.HeaderCount, Mode=OneWay}" />
+                    </StackPanel>
+                </PivotItem.Header>
+                <uc:ParameterListView
+                    AddVariableClicked="{x:Bind ViewModel.AddVariableClicked}"
+                    EnvironmentConatiner="{x:Bind ViewModel.EnvironmentContainer}"
+                    ItemsSource="{x:Bind ViewModel.SelectedCollection.Headers, Mode=OneWay}"
+                    ParameterDeleted="{x:Bind ViewModel.ParameterDeleted}"
+                    ParameterType="Header"
+                    ValuesUpdated="{x:Bind ViewModel.HeaderValuesUpdated}" />
+            </PivotItem>
+        </utilities:PivotOverride>
+    </Grid>
+</Page>

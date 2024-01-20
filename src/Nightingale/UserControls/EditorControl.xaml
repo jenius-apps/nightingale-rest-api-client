@@ -1,0 +1,138 @@
+﻿<UserControl
+    x:Class="Nightingale.UserControls.EditorControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:actipro="using:ActiproSoftware.UI.Xaml.Controls.SyntaxEditor"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <Grid>
+        <actipro:SyntaxEditor
+            x:Name="Editor"
+            ActualThemeChanged="Editor_ActualThemeChanged"
+            Background="Transparent"
+            BorderThickness="0"
+            CanSplitHorizontally="False"
+            CaretBrush="{ThemeResource ApplicationForegroundThemeBrush}"
+            DocumentTextChanged="ActiproEditor_DocumentTextChanged"
+            FontSize="12"
+            Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+            IsCurrentLineHighlightingEnabled="True"
+            IsLineNumberMarginVisible="False"
+            IsSelectionMarginVisible="False"
+            KeyDown="ActiproEditor_KeyDown"
+            LineNumberMarginBackground="Transparent" />
+
+        <controls:DropShadowPanel
+            x:Name="SearchPanel"
+            Margin="0,0,16,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Style="{StaticResource LightDropShadowStyle}"
+            Visibility="Collapsed">
+
+            <StackPanel
+                Margin="2,0"
+                Background="{ThemeResource Page1Background}"
+                Orientation="Horizontal">
+                <!--  TODO: Add count of results found. So like 1/14  -->
+                <TextBox
+                    x:Name="SearchBox"
+                    x:Uid="SearchBox"
+                    Width="120"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    BorderThickness="0"
+                    KeyDown="SearchBox_KeyDown"
+                    Style="{StaticResource UnderlinedTextBox}" />
+
+                <Button
+                    VerticalAlignment="Stretch"
+                    Click="SearchButtonClicked"
+                    Style="{StaticResource TransparentRevealButton}">
+                    <Button.Content>
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="14"
+                            Glyph="&#xE11A;" />
+                    </Button.Content>
+                    <ToolTipService.ToolTip>
+                        <TextBlock x:Uid="/ToolTips/SearchEditor" />
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button
+                    VerticalAlignment="Stretch"
+                    Click="{x:Bind CloseFindPanel}"
+                    Content="&#xE711;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Style="{ThemeResource TransparentRevealButton}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock x:Uid="Close" />
+                    </ToolTipService.ToolTip>
+                </Button>
+            </StackPanel>
+
+        </controls:DropShadowPanel>
+
+        <controls:DropShadowPanel
+            Margin="0,0,20,20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Style="{StaticResource LightDropShadowStyle}">
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    x:Uid="Beautify"
+                    Click="{x:Bind BeautifyClicked}"
+                    FontSize="11"
+                    Foreground="White">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Default">
+                                    <SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAccentColor}" />
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemAccentColorLight1}" />
+                                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource SystemAccentColorDark1}" />
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
+                                    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                    <ToolTipService.ToolTip>
+                        <TextBlock x:Uid="/ToolTips/BeautifyButton" />
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button
+                    Margin="4,0,0,0"
+                    Click="{x:Bind ToggleWrapClicked}"
+                    Content="Toggle wrap"
+                    FontSize="11"
+                    Foreground="White"
+                    ToolTipService.ToolTip="Temporarily toggles word wrap for this editor. Go to settings to change the default.">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Default">
+                                    <SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAccentColor}" />
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemAccentColorLight1}" />
+                                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource SystemAccentColorDark1}" />
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
+                                    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+
+                </Button>
+            </StackPanel>
+        </controls:DropShadowPanel>
+    </Grid>
+</UserControl>

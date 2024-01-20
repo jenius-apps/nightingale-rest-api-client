@@ -1,0 +1,18 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  projectPath: 'CoreTests/CoreTests.csproj'
+
+steps:
+- script: dotnet build --configuration $(buildConfiguration) $(projectPath)
+  displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '$(projectPath)'
+    arguments: '--configuration $(buildConfiguration)'

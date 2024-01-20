@@ -1,0 +1,607 @@
+﻿<UserControl
+    x:Class="Nightingale.UserControls.RequestControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:a="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mock="using:Nightingale.Mock"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:u="using:Nightingale.UserControls"
+    xmlns:utilities="using:Nightingale.Utilities"
+    xmlns:visualstate="using:Nightingale.VisualState"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <Grid x:Name="RootGrid" Loaded="RootGrid_Loaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="200" MinHeight="20" />
+            <RowDefinition Height="*" MinHeight="200" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <u:UrlBarControl
+                Grid.Column="0"
+                Margin="8,0,0,0"
+                BaseUrl="{x:Bind ViewModel.BaseUrl, Mode=OneWay}"
+                ItemsSource="{x:Bind UrlBarViewModel.Methods}"
+                MethodChanged="{x:Bind MethodChanged}"
+                SelectedMethod="{x:Bind ViewModel.Method, Mode=OneWay}"
+                SendAndDownloadButtonClicked="{x:Bind SendRequestAndDownloadClicked}"
+                SendButtonClicked="{x:Bind SendRequestClicked}"
+                UrlTextBoxEnterKeyPressed="{x:Bind ViewModel.SendRequestNoDownload}"
+                UrlTextBoxSuggestionSelected="{x:Bind UrlSuggestionClicked}"
+                UrlTextBoxTextChanged="{x:Bind UrlBarControl_UrlTextBoxTextChanged}" />
+
+            <u:StatusBar
+                Grid.Column="1"
+                Margin="4,0,0,0"
+                HorizontalAlignment="Right"
+                ResponseSuccessful="{x:Bind StatusBarViewModel.ResponseSuccessful, Mode=OneWay}"
+                SizeString="{x:Bind StatusBarViewModel.SizeString, Mode=OneWay}"
+                StatusCode="{x:Bind StatusBarViewModel.StatusCode, Mode=OneWay}"
+                StatusString="{x:Bind StatusBarViewModel.StatusString, Mode=OneWay}"
+                TestsAllPass="{x:Bind StatusBarViewModel.TestsAllPass, Mode=OneWay}"
+                TimeElapsedString="{x:Bind StatusBarViewModel.TimeElapsedString, Mode=OneWay}" />
+        </Grid>
+
+
+        <Rectangle
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Bottom"
+            Canvas.ZIndex="1"
+            Style="{ThemeResource HorizontalBorderRectangleStyle}" />
+
+        <Grid
+            x:Name="InputGrid"
+            Grid.Row="1"
+            Grid.RowSpan="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            SizeChanged="InputGrid_SizeChanged">
+
+            <utilities:PivotOverride SelectedIndex="{x:Bind ViewModel.RequestPivotIndex, Mode=TwoWay}">
+
+                <!--  Queries  -->
+                <PivotItem>
+                    <PivotItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="Queries" />
+                            <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.QueryCount, Mode=OneWay}" />
+                        </StackPanel>
+                    </PivotItem.Header>
+
+                    <u:ParameterListView
+                        AddVariableClicked="{x:Bind PageViewModel.AddVariableClicked}"
+                        EnvironmentConatiner="{x:Bind ViewModel.EnvironmentContainer}"
+                        ItemsSource="{x:Bind ViewModel.Request.Url.Queries, Mode=OneWay}"
+                        ParameterDeleted="{x:Bind PageViewModel.ParameterDeleted}"
+                        ParameterType="Parameter"
+                        ValuesUpdated="{x:Bind ViewModel.QueryValuesUpdated}" />
+                </PivotItem>
+
+                <!--  authentication  -->
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock x:Uid="Authentication" />
+                    </PivotItem.Header>
+
+                    <u:AuthControl
+                        Margin="0,4,0,0"
+                        x:DefaultBindMode="OneWay"
+                        AuthTypeIndex="{x:Bind AuthControlViewModel.AuthTypeIndex, Mode=TwoWay}"
+                        BasicPassword="{x:Bind AuthControlViewModel.BasicPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        BasicUsername="{x:Bind AuthControlViewModel.BasicUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        BearerToken="{x:Bind AuthControlViewModel.BearerToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        DigestPassword="{x:Bind AuthControlViewModel.DigestPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        DigestUsername="{x:Bind AuthControlViewModel.DigestUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        FetchOauth1TokenClicked="{x:Bind AuthControlViewModel.FetchOauth1Token}"
+                        FetchTokenClicked="{x:Bind AuthControlViewModel.FetchToken}"
+                        IsAuthCode="{x:Bind AuthControlViewModel.IsAuthorizationCode, Mode=OneWay}"
+                        IsAuthorizationCode="{x:Bind AuthControlViewModel.IsAuthorizationCode, Mode=OneWay}"
+                        IsBasicAuth="{x:Bind AuthControlViewModel.IsBasicAuth, Mode=OneWay}"
+                        IsBearerAuth="{x:Bind AuthControlViewModel.IsBearerAuth, Mode=OneWay}"
+                        IsClientCred="{x:Bind AuthControlViewModel.IsClientCredential, Mode=OneWay}"
+                        IsDigestAuth="{x:Bind AuthControlViewModel.IsDigestAuth}"
+                        IsImplicit="{x:Bind AuthControlViewModel.IsImplicitFlow, Mode=OneWay}"
+                        IsNoAuth="{x:Bind AuthControlViewModel.IsNoAuth, Mode=OneWay}"
+                        IsOauth1="{x:Bind AuthControlViewModel.IsOauth1, Mode=OneWay}"
+                        IsOauth2="{x:Bind AuthControlViewModel.IsOauth2, Mode=OneWay}"
+                        IsParentAuth="{x:Bind AuthControlViewModel.IsParentAuth, Mode=OneWay}"
+                        Log="{x:Bind AuthControlViewModel.Log, Mode=OneWay}"
+                        OAuth1AccessToken="{x:Bind AuthControlViewModel.OAuth1AccessToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1AccessTokenUrl="{x:Bind AuthControlViewModel.OAuth1AccessTokenUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1AuthorizationUrl="{x:Bind AuthControlViewModel.OAuth1AuthorizationUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1CallbackUrl="{x:Bind AuthControlViewModel.OAuth1CallbackUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1ConsumerKey="{x:Bind AuthControlViewModel.OAuth1ConsumerKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1ConsumerSecret="{x:Bind AuthControlViewModel.OAuth1ConsumerSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1RequestTokenUrl="{x:Bind AuthControlViewModel.OAuth1RequestTokenUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth1TokenSecret="{x:Bind AuthControlViewModel.OAuth1TokenSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2AccessToken="{x:Bind AuthControlViewModel.OAuth2AccessToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2AccessTokenUrl="{x:Bind AuthControlViewModel.OAuth2AccessTokenUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2AuthUrl="{x:Bind AuthControlViewModel.OAuth2AuthUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2CallbackUrl="{x:Bind AuthControlViewModel.OAuth2CallbackUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2ClientId="{x:Bind AuthControlViewModel.OAuth2ClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2ClientSecret="{x:Bind AuthControlViewModel.OAuth2ClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2GrantTypeIndex="{x:Bind AuthControlViewModel.OAuth2GrantTypeIndex, Mode=TwoWay}"
+                        OAuth2RefreshToken="{x:Bind AuthControlViewModel.OAuth2RefreshToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OAuth2Scope="{x:Bind AuthControlViewModel.OAuth2Scope, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        RefreshTokenClicked="{x:Bind AuthControlViewModel.RefreshToken}" />
+                </PivotItem>
+
+                <!--  Headers  -->
+                <PivotItem>
+                    <PivotItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="Headers" />
+                            <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.HeaderCount, Mode=OneWay}" />
+                        </StackPanel>
+                    </PivotItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <muxc:InfoBar
+                            Margin="0,4"
+                            FontSize="{StaticResource DefaultFontSize}"
+                            IsOpen="{x:Bind ViewModel.ShowAuthWarning, Mode=OneWay}"
+                            Message="Your 'Authorization' header will be ignored because you enabled an auth option in the Auth section."
+                            Visibility="Visible" />
+                        <u:ParameterListView
+                            Grid.Row="1"
+                            AddVariableClicked="{x:Bind PageViewModel.AddVariableClicked}"
+                            EnvironmentConatiner="{x:Bind ViewModel.EnvironmentContainer}"
+                            ItemsSource="{x:Bind ViewModel.Request.Headers, Mode=OneWay}"
+                            ParameterDeleted="{x:Bind PageViewModel.ParameterDeleted}"
+                            ParameterType="Header"
+                            ValuesUpdated="{x:Bind ViewModel.HeaderValuesUpdated}" />
+                    </Grid>
+
+                </PivotItem>
+
+                <!--  body  -->
+                <PivotItem Margin="0,0,0,0">
+                    <!--  Note the margin of this pivot item is 0,0,0,0 so that the editor can fill the entire space.  -->
+                    <PivotItem.Header>
+                        <TextBlock x:Uid="Body" />
+                    </PivotItem.Header>
+
+                    <u:RequestBodyControl
+                        Margin="0,4,0,0"
+                        BinaryFilePath="{x:Bind RequestBodyViewModel.BinaryFilePath, Mode=OneWay}"
+                        BinaryViewVisible="{x:Bind RequestBodyViewModel.BinaryViewVisible, Mode=OneWay}"
+                        BodyTypeComboBoxVisible="{x:Bind PageViewModel.IsTwoPaneLayout, Mode=OneWay}"
+                        BodyTypeIndex="{x:Bind RequestBodyViewModel.BodyTypeIndex, Mode=TwoWay}"
+                        FormDataItemDeleted="{x:Bind PageViewModel.ParameterDeleted}"
+                        FormDataList="{x:Bind RequestBodyViewModel.FormDataList, Mode=OneWay}"
+                        FormDataSelectFilesClicked="{x:Bind RequestBodyViewModel.FormDataSelectFilesClicked}"
+                        FormDataVisible="{x:Bind RequestBodyViewModel.FormDataVisible, Mode=OneWay}"
+                        FormEncodedAddVariableClicked="{x:Bind PageViewModel.AddVariableClicked}"
+                        FormEncodedList="{x:Bind RequestBodyViewModel.FormEncodedList, Mode=OneWay}"
+                        FormEncodedListViewVisible="{x:Bind RequestBodyViewModel.FormEncodedListViewVisible, Mode=OneWay}"
+                        JsonText="{x:Bind RequestBodyViewModel.JsonText, Mode=OneWay}"
+                        JsonTextChanged="{x:Bind RequestBodyViewModel.RequestBodyControl_JsonTextChanged}"
+                        JsonVisible="{x:Bind RequestBodyViewModel.JsonVisible, Mode=OneWay}"
+                        NoBodyVisible="{x:Bind RequestBodyViewModel.NoBodyVisible, Mode=OneWay}"
+                        PlainText="{x:Bind RequestBodyViewModel.PlainText, Mode=OneWay}"
+                        PlainTextChanged="{x:Bind RequestBodyViewModel.PlainTextChanged}"
+                        RadioButtonsVisible="{x:Bind PageViewModel.IsSinglePaneLayout, Mode=OneWay}"
+                        SelectBinaryFileClicked="{x:Bind RequestBodyViewModel.SelectBinaryFile}"
+                        TextVisible="{x:Bind RequestBodyViewModel.TextVisible, Mode=OneWay}"
+                        XmlText="{x:Bind RequestBodyViewModel.XmlText, Mode=OneWay}"
+                        XmlTextChanged="{x:Bind RequestBodyViewModel.RequestBodyControl_XmlextChanged}"
+                        XmlVisible="{x:Bind RequestBodyViewModel.XmlVisible, Mode=OneWay}" />
+                </PivotItem>
+
+                <!--  Chain  -->
+                <PivotItem>
+                    <PivotItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="Chain" />
+                            <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.ChainCount, Mode=OneWay}" />
+                        </StackPanel>
+                    </PivotItem.Header>
+                    <u:ChainingRulesControl
+                        ChainValuesUpdated="{x:Bind ViewModel.ChainValuesUpdated}"
+                        ChainingRuleDeleted="{x:Bind PageViewModel.ParameterDeleted}"
+                        ChainingRules="{x:Bind ViewModel.ChainingRules, Mode=OneWay}" />
+                </PivotItem>
+
+                <!--  Mock  -->
+                <PivotItem Header="Mock">
+                    <mock:MockDataView ViewModel="{x:Bind ViewModel.MockDataViewModel, Mode=OneWay}" />
+                </PivotItem>
+            </utilities:PivotOverride>
+        </Grid>
+
+        <Rectangle
+            x:Name="HeightBasedBorder"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Bottom"
+            Style="{ThemeResource HorizontalBorderRectangleStyle}"
+            Visibility="Visible" />
+        <Rectangle
+            x:Name="WidthBasedBorder"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            HorizontalAlignment="Right"
+            Style="{ThemeResource VerticalBorderRectangleStyle}"
+            Visibility="Collapsed" />
+
+        <toolkit:GridSplitter
+            x:Name="WidthBasedSplitter"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            HorizontalAlignment="Right"
+            Style="{StaticResource TallSplitterStyle}"
+            Visibility="Collapsed">
+            <toolkit:GridSplitter.RenderTransform>
+                <TranslateTransform X="3" />
+            </toolkit:GridSplitter.RenderTransform>
+        </toolkit:GridSplitter>
+
+        <toolkit:GridSplitter
+            x:Name="HeightBasedSplitter"
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Top"
+            Style="{StaticResource WideSplitterStyle}"
+            Visibility="Visible">
+            <toolkit:GridSplitter.RenderTransform>
+                <TranslateTransform Y="-3" />
+            </toolkit:GridSplitter.RenderTransform>
+        </toolkit:GridSplitter>
+
+        <Grid
+            x:Name="OutputGrid"
+            Grid.Row="2"
+            Grid.RowSpan="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+
+            <utilities:PivotOverride SelectedIndex="{x:Bind ViewModel.ResponsePivotIndex, Mode=TwoWay}" Visibility="{x:Bind ViewModel.ShowResponsePivot, Mode=OneWay}">
+
+                <!--  Response body  -->
+                <PivotItem Margin="0,0,0,0">
+                    <!--  Note the margin of this pivot item is 0,0,0,0 so that the editor can fill the entire space.  -->
+                    <PivotItem.Header>
+                        <TextBlock x:Uid="Body" />
+                    </PivotItem.Header>
+                    <u:OutputControl
+                        Margin="4,4,0,0"
+                        x:DefaultBindMode="OneWay"
+                        Body="{x:Bind BodyControlViewModel.Body}"
+                        BodyTypeIndex="{x:Bind BodyControlViewModel.BodyTypeIndex, Mode=TwoWay}"
+                        ContentVisible="{x:Bind BodyControlViewModel.ContentVisible, Mode=OneWay}"
+                        CopyClicked="{x:Bind BodyControlViewModel.CopyOutput}"
+                        EditorVisible="{x:Bind BodyControlViewModel.EditorVisible, Mode=OneWay}"
+                        ErrorMessage="{x:Bind BodyControlViewModel.ErrorMessage}"
+                        ErrorMessageVisible="{x:Bind BodyControlViewModel.ErrorMessageVisible}"
+                        HtmlPreviewVisible="{x:Bind BodyControlViewModel.HtmlPreviewVisible, Mode=OneWay}"
+                        HtmlText="{x:Bind BodyControlViewModel.Body}"
+                        ImageSource="{x:Bind BodyControlViewModel.ImageSource, Mode=OneWay}"
+                        IsBytesIndex="{x:Bind BodyControlViewModel.IsBytesIndex, Mode=OneWay}"
+                        IsHtmlIndex="{x:Bind BodyControlViewModel.IsHtmlIndex, Mode=OneWay}"
+                        IsImageIndex="{x:Bind BodyControlViewModel.IsImageIndex, Mode=OneWay}"
+                        IsJsonIndex="{x:Bind BodyControlViewModel.IsJsonIndex, Mode=OneWay}"
+                        IsTextIndex="{x:Bind BodyControlViewModel.IsTextIndex, Mode=OneWay}"
+                        IsXmlIndex="{x:Bind BodyControlViewModel.IsXmlIndex, Mode=OneWay}"
+                        NoContentMessageVisible="{x:Bind BodyControlViewModel.NoContentMessageVisible}"
+                        RawBytesString="{x:Bind BodyControlViewModel.RawBytesString}"
+                        RawBytesVisible="{x:Bind BodyControlViewModel.RawBytesVisible, Mode=OneWay}"
+                        SaveBodyClicked="{x:Bind BodyControlViewModel.SaveBody}"
+                        SyntaxType="{x:Bind BodyControlViewModel.SyntaxType, Mode=OneWay}"
+                        ToggleHtmlPreviewClicked="{x:Bind BodyControlViewModel.ToggleHtmlPreview}" />
+                </PivotItem>
+
+                <!--  Response headers  -->
+                <PivotItem Margin="0,0,0,0">
+                    <PivotItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="Headers" />
+                            <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.ResponseHeadersCount, Mode=OneWay}" />
+                        </StackPanel>
+                    </PivotItem.Header>
+                    <Grid>
+                        <ListView
+                            Margin="0,4,0,20"
+                            ItemsSource="{x:Bind ViewModel.ResponseHeaders, Mode=OneWay}"
+                            SelectionMode="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="12"
+                                            FontWeight="Bold"
+                                            IsTextSelectionEnabled="True"
+                                            Text="{Binding Key}" />
+                                        <TextBlock
+                                            Margin="0,0,0,4"
+                                            FontSize="12"
+                                            FontWeight="Light"
+                                            IsTextSelectionEnabled="True"
+                                            Text="{Binding Value}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Button
+                            Margin="0,0,16,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Click="{x:Bind ViewModel.CopyResponseHeaders}"
+                            Content="&#xE16F;"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="16"
+                            Style="{ThemeResource TransparentRevealButton}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock x:Uid="/ToolTips/CopyToClipboard" FontSize="{StaticResource DefaultFontSize}" />
+                            </ToolTipService.ToolTip>
+                        </Button>
+                    </Grid>
+                </PivotItem>
+
+                <!--  Response cookies  -->
+                <PivotItem Margin="0,0,0,0">
+                    <PivotItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="Cookies" />
+                            <TextBlock Style="{StaticResource SuperScriptTextBlockStyle}" Text="{x:Bind ViewModel.ResponseCookiesCount, Mode=OneWay}" />
+                        </StackPanel>
+                    </PivotItem.Header>
+
+                    <Grid>
+                        <ListView
+                            Margin="0,4,0,20"
+                            ItemsSource="{x:Bind ViewModel.ResponseCookies, Mode=OneWay}"
+                            SelectionMode="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="12"
+                                            FontWeight="Bold"
+                                            IsTextSelectionEnabled="True"
+                                            Text="{Binding Key}" />
+                                        <TextBlock
+                                            Margin="0,0,0,4"
+                                            FontSize="12"
+                                            FontWeight="Light"
+                                            IsTextSelectionEnabled="True"
+                                            Text="{Binding Value}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <StackPanel
+                            Margin="0,0,16,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Orientation="Horizontal">
+                            <Button Click="{x:Bind PageViewModel.ManageCookiesClicked}" Style="{StaticResource TransparentRevealButton}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock x:Uid="/ToolTips/CookieManager" FontSize="{StaticResource DefaultFontSize}" />
+                                </ToolTipService.ToolTip>
+                                <Button.Content>
+                                    <Image Height="16" Source="{ThemeResource CookieIcon}" />
+                                </Button.Content>
+                            </Button>
+                            <Button
+                                Click="{x:Bind ViewModel.CopyResponseCookies}"
+                                Content="&#xE16F;"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="16"
+                                Style="{ThemeResource TransparentRevealButton}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock x:Uid="/ToolTips/CopyToClipboard" FontSize="{StaticResource DefaultFontSize}" />
+                                </ToolTipService.ToolTip>
+                            </Button>
+
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+
+                <!--  Response log  -->
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock x:Uid="Log" />
+                    </PivotItem.Header>
+
+                    <ScrollViewer
+                        Margin="0,4,0,0"
+                        ScrollViewer.HorizontalScrollMode="Disabled"
+                        ScrollViewer.VerticalScrollMode="Auto">
+                        <TextBlock
+                            FontFamily="Consolas"
+                            FontSize="11"
+                            IsTextSelectionEnabled="True"
+                            Opacity="1"
+                            Text="{x:Bind ViewModel.ResponseLog, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </ScrollViewer>
+                </PivotItem>
+
+            </utilities:PivotOverride>
+
+            <!--  error response placeholder  -->
+            <ScrollViewer x:Name="ErrorResponsePlaceHolder" x:Load="{x:Bind ViewModel.IsErrorResponse, Mode=OneWay}">
+                <StackPanel Margin="0,80,0,0">
+                    <FontIcon
+                        HorizontalAlignment="Center"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="{StaticResource EmojiHeightPlaceholder}"
+                        Glyph="&#xED55;"
+                        Opacity="0.7" />
+                    <TextBlock
+                        MaxWidth="300"
+                        Margin="20"
+                        HorizontalAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        Opacity="0.7"
+                        Text="Oops, something went wrong with the request and we lost our grip on it."
+                        TextWrapping="Wrap" />
+
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button
+                            Click="{x:Bind ViewModel.Troubleshoot}"
+                            Content="Troubleshoot"
+                            Style="{StaticResource BaseRevealButton}" />
+                        <ToggleButton
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Center"
+                            Click="{x:Bind ViewModel.ToggleStackTrace}"
+                            IsChecked="{x:Bind ViewModel.IsStackTraceVisible, Mode=OneWay}">
+                            <TextBlock FontSize="{StaticResource DefaultFontSize}" Text="Stack trace" />
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <TextBlock
+                        x:Name="StackTraceText"
+                        Margin="40,20"
+                        HorizontalAlignment="Center"
+                        x:Load="{x:Bind ViewModel.IsStackTraceVisible, Mode=OneWay}"
+                        FontFamily="Consolas"
+                        FontSize="{StaticResource DefaultFontSize}"
+                        IsTextSelectionEnabled="True"
+                        Text="{x:Bind ViewModel.Response.Body, Mode=OneWay}"
+                        TextWrapping="Wrap">
+                        <a:Implicit.ShowAnimations>
+                            <a:OpacityAnimation
+                                From="0"
+                                To="0.7"
+                                Duration="0:0:0.2" />
+                            <a:TranslationAnimation
+                                From="0,-12,0"
+                                To="0"
+                                Duration="0:0:0.2" />
+                        </a:Implicit.ShowAnimations>
+                        <a:Implicit.HideAnimations>
+                            <a:OpacityAnimation
+                                From="0.7"
+                                To="0"
+                                Duration="0:0:0.2" />
+                            <a:TranslationAnimation
+                                From="0"
+                                To="0,-12,0"
+                                Duration="0:0:0.2" />
+
+                        </a:Implicit.HideAnimations>
+                    </TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--  clear response button  -->
+            <Button
+                Margin="0,4,16,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="{x:Bind ClearResponse}"
+                Style="{StaticResource TransparentRevealButton}"
+                ToolTipService.ToolTip="Clear response">
+                <FontIcon
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Glyph="&#xE74D;" />
+            </Button>
+
+            <!--  output loading animation  -->
+            <Grid
+                Grid.RowSpan="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}"
+                Visibility="{x:Bind ViewModel.Loading, Mode=OneWay}">
+                <StackPanel
+                    Margin="40,48,40,40"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <muxc:ProgressRing
+                        HorizontalAlignment="Center"
+                        IsActive="True"
+                        Style="{StaticResource LargeProgressRing}" />
+                    <Button
+                        x:Uid="Cancel"
+                        Margin="0,48,0,0"
+                        HorizontalAlignment="Center"
+                        BorderThickness="1"
+                        Click="{x:Bind ViewModel.Cancel}"
+                        Style="{ThemeResource ButtonRevealStyle}" />
+                </StackPanel>
+
+                <!--<a:Implicit.ShowAnimations>
+                    <a:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.2" />
+                </a:Implicit.ShowAnimations>
+                <a:Implicit.HideAnimations>
+                    <a:OpacityAnimation
+                        From="1.0"
+                        To="0"
+                        Duration="0:0:0.2" />
+                </a:Implicit.HideAnimations>-->
+            </Grid>
+
+            <!--  No request yet graphic  -->
+            <Grid x:Name="NoRequestSentYet" x:Load="{x:Bind ViewModel.NoRequestSentYet, Mode=OneWay}">
+                <StackPanel VerticalAlignment="Center">
+                    <FontIcon
+                        FontFamily="{StaticResource FluentUiFont}"
+                        FontSize="72"
+                        Foreground="{StaticResource SystemAccentColor}"
+                        Glyph="&#xEB57;" />
+
+                    <TextBlock
+                        x:Uid="FeelsLonely"
+                        Margin="0,20,0,0"
+                        Style="{StaticResource PlaceholderTextblock}" />
+                    <TextBlock
+                        x:Uid="EnterUrlAndSend"
+                        Margin="0,4,0,0"
+                        Style="{StaticResource PlaceholderTextblock}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <visualstate:BooleanStateTrigger DataValue="{x:Bind PageViewModel.IsTwoPaneLayout, Mode=OneWay}" TriggerValue="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="OutputGrid.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="OutputGrid.(Grid.RowSpan)" Value="2" />
+                        <Setter Target="OutputGrid.(Grid.Row)" Value="1" />
+                        <Setter Target="OutputGrid.(Grid.Column)" Value="1" />
+                        <Setter Target="HeightBasedSplitter.Visibility" Value="Collapsed" />
+                        <Setter Target="HeightBasedBorder.Visibility" Value="Collapsed" />
+                        <Setter Target="WidthBasedSplitter.Visibility" Value="Visible" />
+                        <Setter Target="WidthBasedBorder.Visibility" Value="Visible" />
+                        <Setter Target="InputGrid.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="InputGrid.(Grid.RowSpan)" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</UserControl>

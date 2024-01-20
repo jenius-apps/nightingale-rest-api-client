@@ -1,0 +1,557 @@
+﻿<Page
+    x:Class="Nightingale.Views.WorkspacePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Nightingale.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Nightingale.Core.Workspaces.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:u="using:Nightingale.UserControls"
+    xmlns:utilities="using:Nightingale.Utilities"
+    xmlns:visualstate="using:Nightingale.VisualState"
+    xmlns:vm="using:Nightingale.ViewModels"
+    xmlns:wct="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light" Source="ms-appx:///XamlResources/ThemeResourceLight.xaml" />
+                <ResourceDictionary x:Key="Dark" Source="ms-appx:///XamlResources/ThemeResourceDark.xaml" />
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid
+        x:Name="MainGrid"
+        Background="{ThemeResource Page1Background}"
+        SizeChanged="MainGridSizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                x:Name="SideBarColumn"
+                Width="{x:Bind ViewModel.UserSidebarWidth, Mode=OneWay}"
+                MinWidth="0"
+                MaxWidth="400" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  sidebar  -->
+        <Grid
+            Grid.Column="0"
+            Background="{ThemeResource SidebarBackground}"
+            SizeChanged="Grid_SizeChanged">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  environments section  -->
+            <Grid Grid.Row="0" Margin="8,8,8,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--  env combo box  -->
+                <ComboBox
+                    Grid.Column="0"
+                    AutomationProperties.Name="Environment selector"
+                    ItemTemplate="{StaticResource EnvComboBoxItemTemplate}"
+                    ItemsSource="{x:Bind ViewModel.WorkspaceEnvironments, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedEnv, Mode=TwoWay}"
+                    Style="{StaticResource DefaultComboBoxStyle}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock x:Uid="/ToolTips/ChangeEnv" />
+                    </ToolTipService.ToolTip>
+                </ComboBox>
+
+
+                <!--  Manage env button  -->
+                <Button
+                    Grid.Column="1"
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Top"
+                    Click="EnvQuickEditClicked"
+                    Style="{StaticResource TransparentRevealButton}">
+                    <AutomationProperties.Name>
+                        Open environments menu
+                    </AutomationProperties.Name>
+                    <ToolTipService.ToolTip>
+                        <TextBlock x:Uid="/ToolTips/ManageEnv" FontSize="{StaticResource DefaultFontSize}" />
+                    </ToolTipService.ToolTip>
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="E" Modifiers="Control" />
+                    </Button.KeyboardAccelerators>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="16"
+                                Glyph="&#xE12B;" />
+                        </StackPanel>
+                    </Button.Content>
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout x:Name="EnvFlyout" Placement="BottomEdgeAlignedLeft">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock FontSize="20" Text="Quick edit environment" />
+
+                                <u:ParameterListView
+                                    Grid.Row="1"
+                                    Width="420"
+                                    Margin="0,20,0,0"
+                                    ItemsSource="{x:Bind ViewModel.SelectedEnv.Variables, Mode=OneWay}"
+                                    ParameterType="EnvVariable" />
+
+                                <HyperlinkButton
+                                    Grid.Row="2"
+                                    HorizontalAlignment="Right"
+                                    Click="{x:Bind OpenEnvManagerClicked}"
+                                    Content="Open environments manager"
+                                    FontSize="12" />
+                            </Grid>
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </Button>
+
+            </Grid>
+
+            <utilities:PivotOverride
+                Grid.Row="1"
+                Margin="0,8,0,0"
+                Padding="0,-16,0,0"
+                Canvas.ZIndex="-1"
+                SelectionChanged="Pivot_SelectionChanged">
+                <PivotItem
+                    Header="Items"
+                    Style="{StaticResource NoMarginPivotItemStyle}"
+                    Tag="ItemsPivot">
+
+                    <!--  workspace tree  -->
+                    <u:ItemTreeView
+                        AddCollectionToParentClicked="{x:Bind ViewModel.AddCollectionToParent}"
+                        AddCollectionToRootClicked="{x:Bind ViewModel.AddCollectionToRoot}"
+                        AddRequestToParentClicked="{x:Bind ViewModel.AddRequestToParent}"
+                        AddRequestToRootClicked="{x:Bind ViewModel.AddRequestToRoot}"
+                        CloneItemClicked="{x:Bind ViewModel.CloneWorkspaceItem}"
+                        ContextMenuEnabled="True"
+                        DeleteAllClicked="{x:Bind ViewModel.DeleteAll}"
+                        DeleteItemClicked="{x:Bind ViewModel.DeleteTreeItem}"
+                        DeployServerClicked="{x:Bind ViewModel.DeployMockServer}"
+                        EditItemClicked="{x:Bind ViewModel.EditTreeItem}"
+                        ExportClicked="{x:Bind ViewModel.OnTreeViewExportClicked}"
+                        GenerateCodeClicked="{x:Bind ViewModel.GenerateCode}"
+                        ItemInvoked="{x:Bind ViewModel.InvokeItem}"
+                        ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                        ReorderEnabled="True"
+                        SelectedItem="{x:Bind ViewModel.SelectedWorkspace.CurrentItem, Mode=TwoWay}" />
+                </PivotItem>
+
+                <PivotItem
+                    Header="History"
+                    Style="{StaticResource NoMarginPivotItemStyle}"
+                    Tag="HistoryPivot">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Margin="8,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <!--  refresh  -->
+                            <Button
+                                Click="{x:Bind HistoryViewModel.RefreshAsync}"
+                                Style="{StaticResource TransparentRevealButton}"
+                                ToolTipService.ToolTip="Refresh history list">
+                                <FontIcon
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="16"
+                                    Glyph="&#xE149;" />
+                            </Button>
+
+                            <!--  delete all  -->
+                            <Button
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                Click="{x:Bind HistoryViewModel.ClearHistory}"
+                                Style="{StaticResource TransparentRevealButton}"
+                                ToolTipService.ToolTip="Delete all history items"
+                                Visibility="{x:Bind HistoryViewModel.IsDeleteAllVisible, Mode=OneWay}">
+                                <FontIcon
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="16"
+                                    Glyph="&#xE107;" />
+                            </Button>
+                        </Grid>
+
+                        <!--  history  -->
+                        <ListView
+                            Grid.Row="1"
+                            Holding="ListView_Holding"
+                            ItemsSource="{x:Bind HistoryViewModel.HistoryList, Mode=OneWay}"
+                            RightTapped="ListView_RightTapped"
+                            SelectionMode="Single"
+                            Tapped="ListView_Tapped">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:HistoryItem">
+                                    <Grid Padding="0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            VerticalAlignment="Center"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="{x:Bind Method, Mode=OneWay, Converter={StaticResource MethodColourConverter}}"
+                                            Text="{x:Bind Method, Mode=OneWay, Converter={StaticResource HttpMethodShortName}}" />
+
+                                        <Grid Grid.Column="1" Margin="8,0,0,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock FontSize="{StaticResource DefaultFontSize}" Text="{x:Bind Name, Mode=OneWay}" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                FontSize="{StaticResource DefaultFontSize}"
+                                                Opacity="0.5"
+                                                Text="{x:Bind LastUsedDate}" />
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.Resources>
+                                <MenuFlyout x:Name="HistoryListFlyout">
+                                    <MenuFlyout.Items>
+                                        <MenuFlyoutItem
+                                            x:Uid="Delete"
+                                            Click="{x:Bind HistoryViewModel.DeleteContextSelectedItem}"
+                                            Icon="Delete" />
+                                    </MenuFlyout.Items>
+                                </MenuFlyout>
+                            </ListView.Resources>
+                        </ListView>
+
+                        <muxc:ProgressRing
+                            Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsActive="{x:Bind HistoryViewModel.HistoryLoading, Mode=OneWay}"
+                            Style="{StaticResource LargeProgressRing}" />
+
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="0,120,0,0"
+                            Opacity="0.7"
+                            Visibility="{x:Bind HistoryViewModel.IsEmptyPlaceHolderVisible, Mode=OneWay}">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                FontSize="{StaticResource EmojiHeightPlaceholder}"
+                                Text="&#xE81C;" />
+                            <TextBlock
+                                Margin="20"
+                                HorizontalAlignment="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="Your last few requests will be shown here. Click refresh to view the latest."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+            </utilities:PivotOverride>
+
+            <!--  border  -->
+            <Rectangle
+                Grid.RowSpan="3"
+                HorizontalAlignment="Right"
+                Style="{ThemeResource VerticalBorderRectangleStyle}" />
+        </Grid>
+
+        <!--  sidebar grid splitter  -->
+        <controls:GridSplitter
+            Grid.Column="0"
+            Width="4"
+            MinWidth="4"
+            HorizontalAlignment="Right"
+            Background="Transparent"
+            GripperForeground="Transparent"
+            ResizeBehavior="BasedOnAlignment">
+            <controls:GridSplitter.RenderTransform>
+                <TranslateTransform X="0" />
+            </controls:GridSplitter.RenderTransform>
+        </controls:GridSplitter>
+
+        <wct:TabView
+            x:Name="RequestTabView"
+            Grid.Column="1"
+            Margin="0,4,0,0"
+            AllowDrop="True"
+            CanCloseTabs="True"
+            CanDragItems="True"
+            CanReorderItems="True"
+            ItemsSource="{x:Bind ViewModel.Tabs}"
+            SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
+            Visibility="{x:Bind ViewModel.TabsVisible, Mode=OneWay}">
+
+            <!--  toggle side bar button  -->
+            <wct:TabView.TabStartHeader>
+                <Button
+                    Height="32"
+                    AutomationProperties.Name="Toggle side bar"
+                    Click="{x:Bind ViewModel.ToggleSideBar}"
+                    Style="{StaticResource TabViewActionButtonStyle}"
+                    ToolTipService.ToolTip="Click to hide or show the side bar">
+
+                    <Grid>
+                        <!--  close pane  -->
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="16"
+                            Glyph="&#xEA49;"
+                            Visibility="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" />
+
+                        <!--  open pane  -->
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="16"
+                            Glyph="&#xEA5B;"
+                            Visibility="{x:Bind ViewModel.IsSideBarHidden, Mode=OneWay}" />
+                    </Grid>
+                </Button>
+            </wct:TabView.TabStartHeader>
+
+
+            <wct:TabView.ItemHeaderTemplate>
+                <DataTemplate x:DataType="vm:RequestViewModel">
+                    <Grid
+                        Background="Transparent"
+                        PointerEntered="{x:Bind ShowSaveButton}"
+                        PointerExited="{x:Bind HideSaveButton}"
+                        ToolTipService.ToolTip="{x:Bind ViewModel.Request.Name, Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" MinWidth="92" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Width="30"
+                            VerticalAlignment="Center"
+                            FontSize="11"
+                            FontWeight="SemiBold"
+                            Foreground="{x:Bind ViewModel.Request.Method, Mode=OneWay, Converter={StaticResource MethodColourConverter}}"
+                            Text="{x:Bind ViewModel.Request.Method, Mode=OneWay, Converter={StaticResource HttpMethodShortName}}" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="6,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Text="{x:Bind ViewModel.Request.Name, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis" />
+
+                        <!--  Note transparent bg below is required for pointer events to fire over this grid  -->
+                        <Grid
+                            Grid.Column="2"
+                            Width="28"
+                            Margin="0,0,-16,0"
+                            Background="Transparent">
+
+                            <Ellipse
+                                Width="9"
+                                Height="9"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Right"
+                                Fill="{ThemeResource SystemAccentColorLight2}"
+                                Visibility="{x:Bind EllipseVisible, Mode=OneWay}" />
+
+                            <Button
+                                HorizontalAlignment="Right"
+                                AutomationProperties.Name="Save temporary item to workspace"
+                                Click="SaveTabClicked"
+                                Style="{StaticResource TabViewItemCloseButtonStyle}"
+                                ToolTipService.ToolTip="Save temporary item to workspace"
+                                Visibility="{x:Bind SaveButtonVisible, Mode=OneWay}">
+                                <FontIcon
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="16"
+                                    Glyph="&#xE105;" />
+                            </Button>
+                        </Grid>
+
+                        <Grid.ContextFlyout>
+                            <muxc:CommandBarFlyout Placement="BottomEdgeAlignedLeft">
+                                <muxc:CommandBarFlyout.SecondaryCommands>
+                                    <AppBarButton
+                                        Command="{x:Bind SaveTabCommand}"
+                                        CommandParameter="{x:Bind ViewModel.Request}"
+                                        Icon="Save"
+                                        Label="Save"
+                                        ToolTipService.ToolTip="Save"
+                                        Visibility="{x:Bind ViewModel.Request.IsTemporary, Mode=OneWay}" />
+                                    <AppBarButton
+                                        Command="{x:Bind DuplicateTabCommand}"
+                                        CommandParameter="{x:Bind ViewModel.Request}"
+                                        Icon="Copy"
+                                        Label="Duplicate"
+                                        ToolTipService.ToolTip="Duplicate" />
+                                    <AppBarButton
+                                        Command="{x:Bind RenameTabCommand}"
+                                        CommandParameter="{x:Bind ViewModel.Request}"
+                                        Icon="Rename"
+                                        Label="Rename"
+                                        ToolTipService.ToolTip="Rename" />
+                                    <AppBarButton
+                                        Command="{x:Bind CloseTabCommand}"
+                                        CommandParameter="{x:Bind ViewModel.Request}"
+                                        Label="Close this"
+                                        ToolTipService.ToolTip="Close">
+                                        <AppBarButton.Icon>
+                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE10A;" />
+                                        </AppBarButton.Icon>
+                                    </AppBarButton>
+                                    <AppBarButton
+                                        Command="{x:Bind CloseOthersCommand}"
+                                        CommandParameter="{x:Bind ViewModel.Request}"
+                                        Icon="Delete"
+                                        Label="Close other tabs"
+                                        ToolTipService.ToolTip="Close other tabs" />
+                                </muxc:CommandBarFlyout.SecondaryCommands>
+                            </muxc:CommandBarFlyout>
+                        </Grid.ContextFlyout>
+                    </Grid>
+                </DataTemplate>
+            </wct:TabView.ItemHeaderTemplate>
+
+            <!--  Overriding item header props  -->
+            <wct:TabView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource Light3PageBackgroundColour}" />
+                            <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="{StaticResource Light3PageBackgroundColour}" />
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource Dark3PageBackgroundColour}" />
+                            <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="{StaticResource Dark3PageBackgroundColour}" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                    <x:Double x:Key="TabViewItemHeaderMinHeight">32</x:Double>
+                    <x:Double x:Key="TabViewItemHeaderMinWidth">200</x:Double>
+                    <x:Double x:Key="TabViewItemHeaderMaxWidth">200</x:Double>
+                </ResourceDictionary>
+            </wct:TabView.Resources>
+
+            <!--  Add tab button  -->
+            <wct:TabView.TabActionHeader>
+                <Button
+                    AutomationProperties.Name="Add tab"
+                    Click="{x:Bind ViewModel.AddTempTab}"
+                    Style="{StaticResource TabViewActionButtonStyle}"
+                    ToolTipService.ToolTip="Create new request tab">
+                    <Viewbox>
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="13"
+                            Glyph="&#xE109;" />
+                    </Viewbox>
+                </Button>
+            </wct:TabView.TabActionHeader>
+
+            <wct:TabView.ItemTemplate>
+                <DataTemplate x:DataType="vm:RequestViewModel">
+                    <u:RequestControl
+                        AuthControlViewModel="{x:Bind AuthControlViewModel}"
+                        BodyControlViewModel="{x:Bind BodyControlViewModel}"
+                        PageViewModel="{x:Bind PageViewModel}"
+                        RequestBodyViewModel="{x:Bind RequestBodyViewModel}"
+                        StatusBarViewModel="{x:Bind StatusBarViewModel}"
+                        UrlBarViewModel="{x:Bind UrlBarViewModel}"
+                        ViewModel="{x:Bind ViewModel}" />
+                </DataTemplate>
+            </wct:TabView.ItemTemplate>
+        </wct:TabView>
+
+        <!--
+            Animation required as workaround to UI looking
+            glitchy when navigating between items.
+        -->
+        <Frame
+            x:Name="ItemFrame"
+            Grid.Column="1"
+            Visibility="{x:Bind ViewModel.FrameVisible, Mode=OneWay}">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <PopupThemeTransition />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+
+        <u:WelcomeScreen
+            x:Name="WelcomeScreenControl"
+            Grid.Column="1"
+            Margin="0,36,0,0"
+            x:Load="{x:Bind ViewModel.WelcomeScreenVisible, Mode=OneWay}"
+            NewCollectionClicked="{x:Bind ViewModel.NewCollection}"
+            NewRequestClicked="{x:Bind ViewModel.NewRequest}"
+            NewTabClicked="{x:Bind ViewModel.AddTempTab}" />
+
+        <Button
+            Grid.Column="1"
+            Margin="0,10,24,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Click="{x:Bind ViewModel.HideFrame}"
+            Style="{StaticResource TabViewItemCloseButtonStyle}"
+            Visibility="{x:Bind ViewModel.FrameVisible, Mode=OneWay}">
+            <SymbolIcon Symbol="Cancel" />
+        </Button>
+
+        <muxc:TeachingTip
+            Title="Export complete"
+            CloseButtonContent="Close"
+            IsLightDismissEnabled="True"
+            IsOpen="{x:Bind ViewModel.ExportFlyoutVisible, Mode=TwoWay}"
+            PreferredPlacement="LeftBottom"
+            Subtitle="Your collection was successfully exported." />
+
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <visualstate:BooleanStateTrigger DataValue="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" TriggerValue="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SideBarColumn.MinWidth" Value="160" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <visualstate:BooleanStateTrigger DataValue="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" TriggerValue="False" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SideBarColumn.MinWidth" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>

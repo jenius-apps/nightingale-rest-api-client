@@ -1,0 +1,69 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  textbox overrides  -->
+    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="White" />
+    <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="Gray" />
+    <SolidColorBrush x:Key="TextControlButtonForeground" Color="White" />
+
+    <SolidColorBrush x:Key="BorderRectangleFill" Color="Black" />
+    <SolidColorBrush x:Key="Page1Background" Color="{StaticResource Dark1PageBackgroundColour}" />
+    <SolidColorBrush x:Key="Page2Background" Color="{StaticResource Dark2PageBackgroundColour}" />
+    <SolidColorBrush x:Key="Page3Background" Color="{StaticResource Dark3PageBackgroundColour}" />
+    <SolidColorBrush x:Key="SidebarBackground" Color="{StaticResource Dark2PageBackgroundColour}" />
+    <!--<SolidColorBrush x:Key="SidebarBackground" Color="{StaticResource DarkSidebarBackgroundColour}" />-->
+
+    <LinearGradientBrush x:Key="FakeDropShadowBrush" StartPoint="0.5,0" EndPoint="0.5,0.8">
+        <GradientStop Offset="0" Color="#70000000" />
+        <GradientStop Offset="1" Color="#00000000" />
+    </LinearGradientBrush>
+
+    <!--  cookie image  -->
+    <BitmapImage x:Key="CookieIcon" UriSource="ms-appx:///Assets/cookie-white2.png" />
+
+    <AcrylicBrush
+        x:Key="HeaderAcrylicBrush"
+        BackgroundSource="HostBackdrop"
+        FallbackColor="{StaticResource Dark3PageBackgroundColour}"
+        TintColor="{StaticResource Dark3PageBackgroundColour}"
+        TintOpacity="0.8" />
+
+    <Style x:Key="HeaderRectangleStyle" TargetType="Rectangle">
+        <Setter Property="Visibility" Value="Collapsed" />
+    </Style>
+
+    <Style x:Key="GridHeaderStyle" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource HeaderAcrylicBrush}" />
+    </Style>
+
+    <!--  app bar buttons  -->
+    <Style x:Key="CookieAppBarButtonStyle" TargetType="AppBarButton">
+        <Setter Property="Icon">
+            <Setter.Value>
+                <!--  cookie image  -->
+                <BitmapIcon UriSource="ms-appx:///Assets/cookie-white2.png" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--<Style x:Key="MainPageDropShadowStyle" TargetType="c:DropShadowPanel">
+        <Setter Property="Color" Value="Black"/>
+        <Setter Property="OffsetY" Value="2"/>
+        <Setter Property="ShadowOpacity" Value="0.5"/>
+        <Setter Property="BlurRadius" Value="8"/>
+    </Style>-->
+
+    <Style
+        x:Key="VerticalBorderRectangleStyle"
+        BasedOn="{StaticResource BaseVerticalBorderRectangleStyle}"
+        TargetType="Rectangle">
+        <Setter Property="Fill" Value="{StaticResource BorderRectangleFill}" />
+    </Style>
+
+    <Style
+        x:Key="HorizontalBorderRectangleStyle"
+        BasedOn="{StaticResource BaseHorizontalBorderRectangleStyle}"
+        TargetType="Rectangle">
+        <Setter Property="Fill" Value="{StaticResource BorderRectangleFill}" />
+    </Style>
+
+</ResourceDictionary>
