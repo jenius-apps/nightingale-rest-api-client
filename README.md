@@ -18,9 +18,11 @@ Starting on January 19, 2024, Nightingale became open source. As developers brow
 
 ### What will change for users now that it's open source?
 
-- Nothing. The app will remain on the Microsoft Store to download for free.
+- Nothing. The app will remain on the Microsoft Store to download for free. You might just get more updates, so make sure you have your auto-updates setting turned on!
 
 ## Build instructions
+
+// TODO: These steps need further improvement.
 
 1. Retrieve an evaluation copy of Actipro's control library from here: https://www.actiprosoftware.com/download/controls/universal.
 2. After filling out the form, downloading their package, and installing their SDK, you will need to update the SDK reference in the Nightingale project in Visual Studio.
