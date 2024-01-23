@@ -5,6 +5,7 @@
     xmlns:actipro="using:ActiproSoftware.UI.Xaml.Controls.SyntaxEditor"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:editor="using:WinUIEditor"
     xmlns:local="using:Nightingale.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="300"
@@ -12,6 +13,8 @@
     mc:Ignorable="d">
 
     <Grid>
+        <editor:CodeEditorControl x:Name="NewEditor" HighlightingLanguage="json" />
+
         <actipro:SyntaxEditor
             x:Name="Editor"
             ActualThemeChanged="Editor_ActualThemeChanged"
@@ -26,7 +29,8 @@
             IsLineNumberMarginVisible="False"
             IsSelectionMarginVisible="False"
             KeyDown="ActiproEditor_KeyDown"
-            LineNumberMarginBackground="Transparent" />
+            LineNumberMarginBackground="Transparent"
+            Visibility="Collapsed" />
 
         <controls:DropShadowPanel
             x:Name="SearchPanel"

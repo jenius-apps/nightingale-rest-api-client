@@ -171,6 +171,7 @@ namespace Nightingale.UserControls
         {
             ViewModel.Text = s;
             Editor.Document.SetText(s);
+            NewEditor.Editor.SetText(s);
         }
 
         private async Task ApplySyntaxType(SyntaxType syntax)
