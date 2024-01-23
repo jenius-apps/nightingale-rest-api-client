@@ -8,7 +8,7 @@ Download Nightingale here: https://www.microsoft.com/en-us/p/nightingale-rest-ap
 
 ### Source code
 
-Starting on January 19, 2024, Nightingale became open source. As developers browse the code, they will see that the code is messy, disorganized, and poorly structured. This is because development of Nightingale started nearly a decade prior as a hobby project. Not only that, the creator -- Daniel Paulino -- only had a couple years of C# experience under his belt. This is why the source code you see today may not be as professional as you might prefer. So why open source the code today? A tool like Nightingale is perfectly situated to be supported by the open source community. A tool for developers, built by developers. Open sourcing the app has always been part of the plan, the lack of experience in the early days held it back. Now, I'm happy to release the source code.
+Starting on January 19, 2024, Nightingale became open source. As developers browse the code, they will see that the code is messy, disorganized, and poorly structured. This is because development of Nightingale started nearly a decade prior as a hobby project. Not only that, I only had a couple years of C# experience under my belt at the time. This is why the source code you see today may not be as professional as you might prefer. So why open source the code today? A tool like Nightingale is perfectly situated to be supported by the open source community. A tool for developers, built by developers. Open sourcing the app has always been part of the plan, but my lack of experience in the early days held it back. Now, I'm happy to release the source code. The goal is to improve it to the same level of code quality as [Ambie](https://github.com/jenius-apps/ambie).
 
 ### What's next? 
 
@@ -18,9 +18,11 @@ Starting on January 19, 2024, Nightingale became open source. As developers brow
 
 ### What will change for users now that it's open source?
 
-- Nothing. The app will remain on the Microsoft Store to download for free.
+- Nothing. The app will remain on the Microsoft Store to download for free. You might just get more updates, so make sure you have your auto-updates setting turned on!
 
 ## Build instructions
+
+// TODO: These steps need further improvement.
 
 1. Retrieve an evaluation copy of Actipro's control library from here: https://www.actiprosoftware.com/download/controls/universal.
 2. After filling out the form, downloading their package, and installing their SDK, you will need to update the SDK reference in the Nightingale project in Visual Studio.
