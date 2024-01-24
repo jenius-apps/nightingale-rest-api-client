@@ -37,6 +37,28 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <visualstate:BooleanStateTrigger DataValue="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" TriggerValue="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SideBarColumn.MinWidth" Value="160" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <visualstate:BooleanStateTrigger DataValue="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" TriggerValue="False" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SideBarColumn.MinWidth" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <!--  sidebar  -->
         <Grid
             Grid.Column="0"
@@ -296,8 +318,32 @@
             </controls:GridSplitter.RenderTransform>
         </controls:GridSplitter>
 
-        <wct:TabView
+        <muxc:TabView
             x:Name="RequestTabView"
+            Grid.Column="1"
+            Margin="0,4,0,0"
+            AddTabButtonClick="{x:Bind ViewModel.AddTempTab}"
+            AllowDrop="True"
+            CanDragTabs="True"
+            CanReorderTabs="True"
+            SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
+            TabItemsSource="{x:Bind ViewModel.Tabs}"
+            Visibility="{x:Bind ViewModel.TabsVisible, Mode=OneWay}">
+            <muxc:TabView.TabItemTemplate>
+                <DataTemplate x:DataType="vm:RequestViewModel">
+                    <u:RequestControl
+                        AuthControlViewModel="{x:Bind AuthControlViewModel}"
+                        BodyControlViewModel="{x:Bind BodyControlViewModel}"
+                        PageViewModel="{x:Bind PageViewModel}"
+                        RequestBodyViewModel="{x:Bind RequestBodyViewModel}"
+                        StatusBarViewModel="{x:Bind StatusBarViewModel}"
+                        UrlBarViewModel="{x:Bind UrlBarViewModel}"
+                        ViewModel="{x:Bind ViewModel}" />
+                </DataTemplate>
+            </muxc:TabView.TabItemTemplate>
+        </muxc:TabView>
+
+        <wct:TabView
             Grid.Column="1"
             Margin="0,4,0,0"
             AllowDrop="True"
@@ -306,7 +352,7 @@
             CanReorderItems="True"
             ItemsSource="{x:Bind ViewModel.Tabs}"
             SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
-            Visibility="{x:Bind ViewModel.TabsVisible, Mode=OneWay}">
+            Visibility="Collapsed">
 
             <!--  toggle side bar button  -->
             <wct:TabView.TabStartHeader>
@@ -531,27 +577,5 @@
             IsOpen="{x:Bind ViewModel.ExportFlyoutVisible, Mode=TwoWay}"
             PreferredPlacement="LeftBottom"
             Subtitle="Your collection was successfully exported." />
-
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <visualstate:BooleanStateTrigger DataValue="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" TriggerValue="True" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="SideBarColumn.MinWidth" Value="160" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <visualstate:BooleanStateTrigger DataValue="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" TriggerValue="False" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="SideBarColumn.MinWidth" Value="0" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

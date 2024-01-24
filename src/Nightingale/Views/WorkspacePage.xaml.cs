@@ -44,7 +44,7 @@ namespace Nightingale.Views
         {
             if (e.PropertyName == nameof(ViewModel.SelectedTab))
             {
-                RequestTabView.ScrollIntoView(ViewModel.SelectedTab);
+                //RequestTabView.ScrollIntoView(ViewModel.SelectedTab);
             }
         }
 
