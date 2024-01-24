@@ -8,7 +8,7 @@
   xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
   xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2"  
   xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
-  IgnorableNamespaces="uap rescap desktop4 iot2">
+  IgnorableNamespaces="uap desktop rescap desktop4 iot2">
 
   <Identity
     Name="75bf4b83-a7ae-402f-87cb-67e9fcb743a6"
@@ -59,7 +59,11 @@
             <desktop:ParameterGroup GroupId="ServerGroup" Parameters="/Server"/>
           </desktop:FullTrustProcess>
         </desktop:Extension>
-        <uap:Extension Category="windows.fileTypeAssociation">
+		<desktop:Extension Category="windows.fullTrustProcess" Executable="Nightingale.DesktopExtension\Nightingale.DesktopExtension.exe"/>
+		<uap:Extension Category="windows.appService">
+	      <uap:AppService Name="NightingaleAppService" />
+		</uap:Extension>
+		<uap:Extension Category="windows.fileTypeAssociation">
           <uap:FileTypeAssociation Name="ncf">
             <uap:SupportedFileTypes>
               <uap:FileType ContentType="application/json">.ncf</uap:FileType>

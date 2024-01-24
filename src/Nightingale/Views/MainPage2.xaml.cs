@@ -18,6 +18,8 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Media;
 using Nightingale.Core.Settings;
 using Windows.UI;
+using Nightingale.DesktopExtension;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -224,6 +226,12 @@ namespace Nightingale.Views
         {
             Analytics.TrackEvent(Telemetry.EmailDev);
             whatsNewFlyout.ShowAt(sender as FrameworkElement);
+        }
+
+        private async void OnClick(object sender, RoutedEventArgs e)
+        {
+            var x = await App.TestAppService.SumAsync(1, 2);
+            Debug.WriteLine(x);
         }
     }
 }

@@ -415,5 +415,11 @@
             x:Load="{x:Bind ViewModel.Loading, Mode=OneWay}"
             IsActive="true"
             Style="{StaticResource LargeProgressRing}" />
+
+        <Button
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Click="OnClick"
+            Content="Run test" />
     </Grid>
 </Page>

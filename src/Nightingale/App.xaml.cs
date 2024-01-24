@@ -20,6 +20,7 @@ using Windows.Storage;
 using Nightingale.Views;
 using Autofac;
 using Nightingale.Core.Services;
+using Nightingale.DesktopExtension;
 
 namespace Nightingale
 {
@@ -28,6 +29,8 @@ namespace Nightingale
     /// </summary>
     sealed partial class App : Application
     {
+        public static TestAppService TestAppService { get; private set; } = new();
+
         public static IContainer Container { get; private set; }
 
         public static Frame RootFrame { get; set; }
@@ -40,6 +43,13 @@ namespace Nightingale
         {
             this.InitializeComponent();
             ThemeController.ThemeChanged += ThemeController_ThemeChanged;
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            TestAppService.OnBackgroundActivated(args);
         }
 
         private void ThemeController_ThemeChanged(object sender, EventArgs e)
