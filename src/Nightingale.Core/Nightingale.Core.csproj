@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>JeniusApps.Nightingale.Core</PackageId>
+	<Nullable>enable</Nullable>
+	<PackageId>JeniusApps.Nightingale.Core</PackageId>
     <Version>0.1.4-beta</Version>
     <Company>JeniusApps</Company>
     <Authors>Daniel Paulino</Authors>
@@ -22,6 +23,10 @@
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="MimeMapping" Version="1.0.1.37" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PolySharp" Version="1.14.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
