@@ -346,6 +346,32 @@
                 </ResourceDictionary>
             </muxc:TabView.Resources>
 
+            <muxc:TabView.TabStripHeader>
+                <Button
+                    Height="32"
+                    AutomationProperties.Name="Toggle side bar"
+                    Background="Transparent"
+                    Click="{x:Bind ViewModel.ToggleSideBar}"
+                    ToolTipService.ToolTip="Click to hide or show the side bar">
+
+                    <Grid>
+                        <!--  close pane  -->
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="12"
+                            Glyph="&#xEA49;"
+                            Visibility="{x:Bind ViewModel.IsSideBarVisible, Mode=OneWay}" />
+
+                        <!--  open pane  -->
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="12"
+                            Glyph="&#xEA5B;"
+                            Visibility="{x:Bind ViewModel.IsSideBarHidden, Mode=OneWay}" />
+                    </Grid>
+                </Button>
+            </muxc:TabView.TabStripHeader>
+
             <muxc:TabView.TabItemTemplate>
                 <DataTemplate x:DataType="vm:RequestViewModel">
                     <muxc:TabViewItem CloseRequested="{x:Bind CloseThis}">
