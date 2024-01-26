@@ -26,7 +26,7 @@
 
     <Grid
         x:Name="MainGrid"
-        Background="{ThemeResource Page1Background}"
+        Background="{ThemeResource Page3Background}"
         SizeChanged="MainGridSizeChanged">
         <Grid.ColumnDefinitions>
             <ColumnDefinition
@@ -322,6 +322,7 @@
             x:Name="RequestTabView"
             Grid.Column="1"
             Margin="0,4,0,0"
+            VerticalAlignment="Stretch"
             AddTabButtonClick="{x:Bind ViewModel.AddTempTab}"
             AllowDrop="True"
             CanDragTabs="True"
@@ -329,6 +330,21 @@
             SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
             TabItemsSource="{x:Bind ViewModel.Tabs}"
             Visibility="{x:Bind ViewModel.TabsVisible, Mode=OneWay}">
+
+            <muxc:TabView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource Light3PageBackgroundColour}" />
+                            <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="{StaticResource Light3PageBackgroundColour}" />
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource Dark1PageBackgroundColour}" />
+                            <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="{StaticResource Dark3PageBackgroundColour}" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </muxc:TabView.Resources>
 
             <muxc:TabView.TabItemTemplate>
                 <DataTemplate x:DataType="vm:RequestViewModel">
