@@ -91,6 +91,11 @@ namespace Nightingale.ViewModels
             SaveButtonVisible = false;
         }
 
+        public void CloseThis()
+        {
+            CloseTabCommand.Execute(ViewModel.Request);
+        }
+
         private async void SaveToWorkspace(Item item)
         {
             Analytics.TrackEvent(Telemetry.TabContext, Telemetry.Props(Telemetry.TabContextSave));

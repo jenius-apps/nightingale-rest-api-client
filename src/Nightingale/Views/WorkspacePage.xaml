@@ -329,16 +329,120 @@
             SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
             TabItemsSource="{x:Bind ViewModel.Tabs}"
             Visibility="{x:Bind ViewModel.TabsVisible, Mode=OneWay}">
+
             <muxc:TabView.TabItemTemplate>
                 <DataTemplate x:DataType="vm:RequestViewModel">
-                    <u:RequestControl
-                        AuthControlViewModel="{x:Bind AuthControlViewModel}"
-                        BodyControlViewModel="{x:Bind BodyControlViewModel}"
-                        PageViewModel="{x:Bind PageViewModel}"
-                        RequestBodyViewModel="{x:Bind RequestBodyViewModel}"
-                        StatusBarViewModel="{x:Bind StatusBarViewModel}"
-                        UrlBarViewModel="{x:Bind UrlBarViewModel}"
-                        ViewModel="{x:Bind ViewModel}" />
+                    <muxc:TabViewItem CloseRequested="{x:Bind CloseThis}">
+                        <muxc:TabViewItem.Header>
+                            <Grid
+                                Background="Transparent"
+                                PointerEntered="{x:Bind ShowSaveButton}"
+                                PointerExited="{x:Bind HideSaveButton}"
+                                ToolTipService.ToolTip="{x:Bind ViewModel.Request.Name, Mode=OneWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" MinWidth="92" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Width="30"
+                                    VerticalAlignment="Center"
+                                    FontSize="11"
+                                    FontWeight="SemiBold"
+                                    Foreground="{x:Bind ViewModel.Request.Method, Mode=OneWay, Converter={StaticResource MethodColourConverter}}"
+                                    Text="{x:Bind ViewModel.Request.Method, Mode=OneWay, Converter={StaticResource HttpMethodShortName}}" />
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="6,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Normal"
+                                    Text="{x:Bind ViewModel.Request.Name, Mode=OneWay}"
+                                    TextTrimming="CharacterEllipsis" />
+
+                                <!--  Note transparent bg below is required for pointer events to fire over this grid  -->
+                                <Grid
+                                    Grid.Column="2"
+                                    Width="28"
+                                    Margin="48,0,0,0"
+                                    Background="Transparent">
+
+                                    <Ellipse
+                                        Width="9"
+                                        Height="9"
+                                        Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        Fill="{ThemeResource SystemAccentColorLight2}"
+                                        Visibility="{x:Bind EllipseVisible, Mode=OneWay}" />
+
+                                    <Button
+                                        HorizontalAlignment="Right"
+                                        AutomationProperties.Name="Save temporary item to workspace"
+                                        Click="SaveTabClicked"
+                                        Style="{StaticResource TabViewItemCloseButtonStyle}"
+                                        ToolTipService.ToolTip="Save temporary item to workspace"
+                                        Visibility="{x:Bind SaveButtonVisible, Mode=OneWay}">
+                                        <FontIcon
+                                            FontFamily="Segoe MDL2 Assets"
+                                            FontSize="16"
+                                            Glyph="&#xE105;" />
+                                    </Button>
+                                </Grid>
+
+                                <Grid.ContextFlyout>
+                                    <muxc:CommandBarFlyout Placement="BottomEdgeAlignedLeft">
+                                        <muxc:CommandBarFlyout.SecondaryCommands>
+                                            <AppBarButton
+                                                Command="{x:Bind SaveTabCommand}"
+                                                CommandParameter="{x:Bind ViewModel.Request}"
+                                                Icon="Save"
+                                                Label="Save"
+                                                ToolTipService.ToolTip="Save"
+                                                Visibility="{x:Bind ViewModel.Request.IsTemporary, Mode=OneWay}" />
+                                            <AppBarButton
+                                                Command="{x:Bind DuplicateTabCommand}"
+                                                CommandParameter="{x:Bind ViewModel.Request}"
+                                                Icon="Copy"
+                                                Label="Duplicate"
+                                                ToolTipService.ToolTip="Duplicate" />
+                                            <AppBarButton
+                                                Command="{x:Bind RenameTabCommand}"
+                                                CommandParameter="{x:Bind ViewModel.Request}"
+                                                Icon="Rename"
+                                                Label="Rename"
+                                                ToolTipService.ToolTip="Rename" />
+                                            <AppBarButton
+                                                Command="{x:Bind CloseTabCommand}"
+                                                CommandParameter="{x:Bind ViewModel.Request}"
+                                                Label="Close this"
+                                                ToolTipService.ToolTip="Close">
+                                                <AppBarButton.Icon>
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE10A;" />
+                                                </AppBarButton.Icon>
+                                            </AppBarButton>
+                                            <AppBarButton
+                                                Command="{x:Bind CloseOthersCommand}"
+                                                CommandParameter="{x:Bind ViewModel.Request}"
+                                                Icon="Delete"
+                                                Label="Close other tabs"
+                                                ToolTipService.ToolTip="Close other tabs" />
+                                        </muxc:CommandBarFlyout.SecondaryCommands>
+                                    </muxc:CommandBarFlyout>
+                                </Grid.ContextFlyout>
+                            </Grid>
+                        </muxc:TabViewItem.Header>
+                        <u:RequestControl
+                            AuthControlViewModel="{x:Bind AuthControlViewModel}"
+                            BodyControlViewModel="{x:Bind BodyControlViewModel}"
+                            PageViewModel="{x:Bind PageViewModel}"
+                            RequestBodyViewModel="{x:Bind RequestBodyViewModel}"
+                            StatusBarViewModel="{x:Bind StatusBarViewModel}"
+                            UrlBarViewModel="{x:Bind UrlBarViewModel}"
+                            ViewModel="{x:Bind ViewModel}" />
+                    </muxc:TabViewItem>
                 </DataTemplate>
             </muxc:TabView.TabItemTemplate>
         </muxc:TabView>
