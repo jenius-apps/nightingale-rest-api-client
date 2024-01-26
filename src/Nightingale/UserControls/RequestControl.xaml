@@ -17,7 +17,7 @@
 
     <Grid
         x:Name="RootGrid"
-        Background="{StaticResource Page3Background}"
+        Background="{ThemeResource Page3Background}"
         Loaded="RootGrid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

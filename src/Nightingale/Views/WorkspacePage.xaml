@@ -335,7 +335,7 @@
                 <ResourceDictionary>
                     <ResourceDictionary.ThemeDictionaries>
                         <ResourceDictionary x:Key="Light">
-                            <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource Light3PageBackgroundColour}" />
+                            <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource Light1PageBackgroundColour}" />
                             <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="{StaticResource Light3PageBackgroundColour}" />
                         </ResourceDictionary>
                         <ResourceDictionary x:Key="Dark">
