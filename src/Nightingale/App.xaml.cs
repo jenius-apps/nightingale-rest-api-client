@@ -18,8 +18,8 @@ using Windows.Foundation.Metadata;
 using Nightingale.Core.Interfaces;
 using Windows.Storage;
 using Nightingale.Views;
-using Autofac;
 using Nightingale.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Nightingale
 {
@@ -28,8 +28,6 @@ namespace Nightingale
     /// </summary>
     sealed partial class App : Application
     {
-        public static IContainer Container { get; private set; }
-
         public static Frame RootFrame { get; set; }
 
         /// <summary>
@@ -76,7 +74,7 @@ namespace Nightingale
 
         private void ActivateActipro()
         {
-            var appsettings = Container.Resolve<IAppSettings>();
+            var appsettings = _serviceProvider?.GetRequiredService<IAppSettings>();
             ActiproSoftware.Products.ActiproLicenseManager.RegisterLicense(
                 appsettings.ActiproLicensee,
                 appsettings.ActiproLicenseKey);
@@ -86,7 +84,7 @@ namespace Nightingale
         {
             /// Initialize analytics
             AppCenter.SetCountryCode(new GeographicRegion().CodeTwoLetter);
-            AppCenter.Start(Container.Resolve<IAppSettings>().TelemetryApiKey, new Type[] { typeof(Analytics), typeof(Crashes) });
+            AppCenter.Start(_serviceProvider?.GetRequiredService<IAppSettings>().TelemetryApiKey, [typeof(Analytics), typeof(Crashes)]);
 #if DEBUG
             bool telemetryEnabled = false;
 #else
@@ -132,7 +130,7 @@ namespace Nightingale
                     // configuring the new page by passing required information as a navigation
                     // parameter
                     var storage = await InitializeDefaultStorageAsync();
-                    SetupContainer(storage);
+                    _serviceProvider = ConfigureServices(storage);
                     await InitializeTelemetryAsync();
                     ActivateActipro();
                     rootFrame.Navigate(typeof(MainPage2));
@@ -161,7 +159,7 @@ namespace Nightingale
             }
 
             // If app was not open, then begin startup sequence.
-            SetupContainer(documentStorage);
+            _serviceProvider = ConfigureServices(documentStorage);
             await InitializeTelemetryAsync();
             ActivateActipro();
             await InitializeLocalHostPermissionAsync();
@@ -236,11 +234,6 @@ namespace Nightingale
             });
 
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-        }
-
-        private static void SetupContainer(IStorage storage)
-        {
-            Container = ContainerSetup.Create(storage);
         }
     }
 }
