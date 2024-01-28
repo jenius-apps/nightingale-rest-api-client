@@ -1,7 +1,7 @@
 ﻿using JeniusApps.Nightingale.Converters.Curl;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Nightingale.Core.Exceptions;
 using Nightingale.Core.ImportConverters.Nightingale;

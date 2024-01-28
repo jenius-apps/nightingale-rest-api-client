@@ -1,23 +1,23 @@
-﻿using Autofac;
-using System;
+﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Interfaces;
+using Nightingale.Core.Settings;
+using Nightingale.Dialogs;
 using Nightingale.Handlers;
 using Nightingale.Navigation;
-using Nightingale.ViewModels;
-using System.Collections.Generic;
-using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml;
-using Nightingale.Dialogs;
-using Microsoft.AppCenter.Analytics;
 using Nightingale.Utilities;
+using Nightingale.ViewModels;
+using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel.Core;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Media;
-using Nightingale.Core.Settings;
+using Windows.ApplicationModel.Resources;
 using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -47,7 +47,7 @@ namespace Nightingale.Views
             ThemeController.BackgroundImageChanged += ChangeBackground;
             ThemeController.ThemeChanged += ChangeBackgroundImageTheme;
 
-            ViewModel = App.Container.Resolve<MainPageViewModel>();
+            ViewModel = App.Services.GetRequiredService<MainPageViewModel>();
         }
 
         private void ChangeBackgroundImageTheme(object sender, EventArgs e)
@@ -141,11 +141,11 @@ namespace Nightingale.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var storage = App.Container.Resolve<IStorage>();
+            var storage = App.Services.GetRequiredService<IStorage>();
             ViewModel.ActiveFileName = storage.GetFileName();
 
             // Configure navigation service to point to the proper frame.
-            var navigationService = App.Container.Resolve<IWorkspaceNavigationService>();
+            var navigationService = App.Services.GetRequiredService<IWorkspaceNavigationService>();
             navigationService.SetFrame(this.WorkspaceFrame);
 
             // Set task bar title
@@ -155,7 +155,7 @@ namespace Nightingale.Views
             }
 
             // Resolve the kb shortcut handler because it functions as a singleton.
-            App.Container.Resolve<KbShortcutsHandler>();
+            App.Services.GetRequiredService<KbShortcutsHandler>();
             await ViewModel.LoadAsync();
         }
 

@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Models;
 using Nightingale.History;
 using Nightingale.Tabs.Factories;
@@ -13,13 +13,13 @@ namespace Nightingale.Navigation
 {
     public sealed class WorkspaceNavigationService : BaseNavigationService, IWorkspaceNavigationService
     {
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
         private readonly ITabCollectionViewFactory _tabsFactory;
         private readonly ITabCollectionContainer _tabsContainer;
         private readonly Dictionary<Workspace, WorkspaceViewModel> _cache = new Dictionary<Workspace, WorkspaceViewModel>();
 
         public WorkspaceNavigationService(
-            ILifetimeScope scope,
+            IServiceProvider scope,
             ITabCollectionViewFactory tabsFactory,
             ITabCollectionContainer tabsContainer)
         {
@@ -42,7 +42,7 @@ namespace Nightingale.Navigation
             else
             {
                 var viewModel = await GetVmAsync(workspace);
-                HistoryViewModel historyViewModel = _scope.Resolve<HistoryViewModel>();
+                HistoryViewModel historyViewModel = _scope.GetRequiredService<HistoryViewModel>();
                 historyViewModel.Initialize(workspace);
 
                 var args = new WorkspaceNavigationArgs
@@ -64,7 +64,7 @@ namespace Nightingale.Navigation
                 return result;
             }
 
-            WorkspaceViewModel viewModel = _scope.Resolve<WorkspaceViewModel>();
+            WorkspaceViewModel viewModel = _scope.GetRequiredService<WorkspaceViewModel>();
             viewModel.SelectedWorkspace = workspace;
             TabCollectionView tabs = await _tabsFactory.Create(workspace);
             viewModel.Tabs = tabs;

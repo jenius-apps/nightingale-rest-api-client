@@ -1,17 +1,16 @@
-﻿using Autofac;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Nightingale.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
 
 namespace Nightingale.Dialogs
 {
     public class EnvironmentDialogService : BaseDialogService, IEnvironmentDialogService
     {
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
 
-        public EnvironmentDialogService(ILifetimeScope scope)
+        public EnvironmentDialogService(IServiceProvider scope)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
         }
@@ -29,7 +28,7 @@ namespace Nightingale.Dialogs
 
             var dialog = new ManageEnvironmentsDialog
             {
-                ViewModel = _scope.Resolve<EnvironmentsViewModel>()
+                ViewModel = _scope.GetRequiredService<EnvironmentsViewModel>()
             };
             dialog.ViewModel.Initialize(list);
             await dialog.ShowAsync();

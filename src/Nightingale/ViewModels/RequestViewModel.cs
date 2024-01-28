@@ -1,5 +1,5 @@
-﻿using Microsoft.AppCenter.Analytics;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.AppCenter.Analytics;
 using Nightingale.Core.Models;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Core.Workspaces.Services;

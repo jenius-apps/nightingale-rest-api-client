@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Microsoft.AppCenter.Analytics;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Dialogs;
 using Nightingale.Core.Export;
 using Nightingale.Core.Models;
@@ -26,12 +26,12 @@ namespace Nightingale.Dialogs
         public static string NewRequestDialogTitle = "📝 " + ResourceLoader.GetForCurrentView().GetString("NewRequest/Text");
         public static string NewCollectionDialogTitle = "📂 " + ResourceLoader.GetForCurrentView().GetString("NewCollection/Text");
         public static string EditItemDialogTitle = "✏ " + ResourceLoader.GetForCurrentView().GetString("EditName");
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
         private readonly IUserSettings _userSettings;
         private readonly IItemFactory _itemFactory;
 
         public DialogService(
-            ILifetimeScope scope,
+            IServiceProvider scope,
             IUserSettings userSettings,
             IItemFactory itemFactory)
         {
@@ -65,7 +65,7 @@ namespace Nightingale.Dialogs
             IsDialogActive = true;
             var dialog = new MvpDialog
             {
-                MvpViewModel = _scope.Resolve<MvpViewModel>(),
+                MvpViewModel = _scope.GetRequiredService<MvpViewModel>(),
                 RequestedTheme = ThemeController.GetTheme()
             };
             await dialog.ShowAsync();
@@ -316,7 +316,7 @@ namespace Nightingale.Dialogs
 
             IsDialogActive = true;
             var dialog = new ImportDialog();
-            dialog.ViewModel = _scope.Resolve<ImportPostmanViewModel>();
+            dialog.ViewModel = _scope.GetRequiredService<ImportPostmanViewModel>();
             await dialog.ShowAsync();
             IsDialogActive = false;
 
