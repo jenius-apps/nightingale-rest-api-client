@@ -26,6 +26,28 @@
             <RowDefinition Height="*" MinHeight="200" />
         </Grid.RowDefinitions>
 
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <visualstate:BooleanStateTrigger DataValue="{x:Bind PageViewModel.IsTwoPaneLayout, Mode=OneWay}" TriggerValue="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="OutputGrid.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="OutputGrid.(Grid.RowSpan)" Value="2" />
+                        <Setter Target="OutputGrid.(Grid.Row)" Value="1" />
+                        <Setter Target="OutputGrid.(Grid.Column)" Value="1" />
+                        <Setter Target="HeightBasedSplitter.Visibility" Value="Collapsed" />
+                        <Setter Target="HeightBasedBorder.Visibility" Value="Collapsed" />
+                        <Setter Target="WidthBasedSplitter.Visibility" Value="Visible" />
+                        <Setter Target="WidthBasedBorder.Visibility" Value="Visible" />
+                        <Setter Target="InputGrid.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="InputGrid.(Grid.RowSpan)" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -581,27 +603,5 @@
                 </StackPanel>
             </Grid>
         </Grid>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <visualstate:BooleanStateTrigger DataValue="{x:Bind PageViewModel.IsTwoPaneLayout, Mode=OneWay}" TriggerValue="True" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="OutputGrid.(Grid.ColumnSpan)" Value="1" />
-                        <Setter Target="OutputGrid.(Grid.RowSpan)" Value="2" />
-                        <Setter Target="OutputGrid.(Grid.Row)" Value="1" />
-                        <Setter Target="OutputGrid.(Grid.Column)" Value="1" />
-                        <Setter Target="HeightBasedSplitter.Visibility" Value="Collapsed" />
-                        <Setter Target="HeightBasedBorder.Visibility" Value="Collapsed" />
-                        <Setter Target="WidthBasedSplitter.Visibility" Value="Visible" />
-                        <Setter Target="WidthBasedBorder.Visibility" Value="Visible" />
-                        <Setter Target="InputGrid.(Grid.ColumnSpan)" Value="1" />
-                        <Setter Target="InputGrid.(Grid.RowSpan)" Value="2" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>

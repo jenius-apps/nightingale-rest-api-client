@@ -189,7 +189,6 @@
     <Compile Include="Editor\XmlSyntaxLanguage.cs" />
     <Compile Include="CustomEventArgs\AddedItemArgs.cs" />
     <Compile Include="CustomEventArgs\DeletedItemArgs.cs" />
-    <Compile Include="Handlers\ContainerSetup.cs" />
     <Compile Include="Handlers\DocumentStorage.cs" />
     <Compile Include="Handlers\KbShortcutsHandler.cs" />
     <Compile Include="Handlers\ResponseFileWriter.cs" />
