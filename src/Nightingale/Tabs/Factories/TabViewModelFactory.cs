@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Core.Workspaces.Services;
 using Nightingale.Navigation;
@@ -16,9 +16,9 @@ namespace Nightingale.Tabs.Factories
     public class TabViewModelFactory : ITabViewModelFactory
     {
         private readonly IWorkspaceItemNavigationService _navService;
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
 
-        public TabViewModelFactory(ILifetimeScope scope, IWorkspaceItemNavigationService navService)
+        public TabViewModelFactory(IServiceProvider scope, IWorkspaceItemNavigationService navService)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
             _navService = navService ?? throw new ArgumentNullException(nameof(navService));
@@ -35,8 +35,8 @@ namespace Nightingale.Tabs.Factories
             var navigationParameters = await _navService.GetNavParams(item);
             var result = new RequestViewModel(
                 navigationParameters as RequestPageParameters,
-                _scope.Resolve<IWorkspaceTreeModifier>(),
-                _scope.Resolve<ITabCollectionContainer>());
+                _scope.GetRequiredService<IWorkspaceTreeModifier>(),
+                _scope.GetRequiredService<ITabCollectionContainer>());
             return result;
         }
     }

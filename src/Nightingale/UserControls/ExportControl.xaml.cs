@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Models;
 using Nightingale.Core.ViewModels;
 using Windows.UI.Xaml.Controls;
@@ -10,7 +10,7 @@ namespace Nightingale.UserControls
         public ExportControl()
         {
             this.InitializeComponent();
-            this.DataContext = App.Container.Resolve<ExportControlViewModel>();
+            this.DataContext = App.Services.GetRequiredService<ExportControlViewModel>();
         }
 
         public ExportControlViewModel ViewModel => (ExportControlViewModel)this.DataContext;
