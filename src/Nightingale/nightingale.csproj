@@ -677,6 +677,9 @@
     <PackageReference Include="Win2D.uwp">
       <Version>1.27.1</Version>
     </PackageReference>
+    <PackageReference Include="WinUIEdit.Uwp">
+      <Version>0.0.1-prerelease</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nightingale.Core\Nightingale.Core.csproj">
