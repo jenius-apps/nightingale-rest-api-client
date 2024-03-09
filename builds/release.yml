@@ -61,6 +61,8 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+    nugetConfigPath: 'src/nuget.config'
+    feedsToUse: 'config'
 
 - task: DotNetCoreCLI@2
   inputs:

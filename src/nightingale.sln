@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nightingale", "Nightingale\Nightingale.csproj", "{4AE08123-B5E6-449E-BED5-7C7FD04EF1B1}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "CoreTests\CoreTests.csproj", "{9F31BD51-9FFB-4322-94AB-892A92372CB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalServer", "LocalServer\LocalServer.csproj", "{2FFD5420-80F1-4DE7-B6FE-A49A7F88E595}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nightingale.DesktopExtension", "Nightingale.DesktopExtension\Nightingale.DesktopExtension.csproj", "{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,6 +159,26 @@ Global
 		{2FFD5420-80F1-4DE7-B6FE-A49A7F88E595}.Release|x64.Build.0 = Release|Any CPU
 		{2FFD5420-80F1-4DE7-B6FE-A49A7F88E595}.Release|x86.ActiveCfg = Release|Any CPU
 		{2FFD5420-80F1-4DE7-B6FE-A49A7F88E595}.Release|x86.Build.0 = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|ARM.Build.0 = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|x64.Build.0 = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Debug|x86.Build.0 = Debug|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|ARM.Build.0 = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|ARM64.Build.0 = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|x64.ActiveCfg = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|x64.Build.0 = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|x86.ActiveCfg = Release|Any CPU
+		{AB9D98C3-83FD-48B2-A1ED-305064A3C3D4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

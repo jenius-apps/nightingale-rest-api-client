@@ -225,5 +225,11 @@ namespace Nightingale.Views
             Analytics.TrackEvent(Telemetry.EmailDev);
             whatsNewFlyout.ShowAt(sender as FrameworkElement);
         }
+
+        private async void OnClick(object sender, RoutedEventArgs e)
+        {
+            //var x = await App.TestAppService.SumAsync(1, 2);
+            //Debug.WriteLine(x);
+        }
     }
 }
