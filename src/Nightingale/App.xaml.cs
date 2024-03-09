@@ -93,7 +93,10 @@ namespace Nightingale
 #if DEBUG
             bool telemetryEnabled = false;
 #else
-            bool telemetryEnabled = UserSettings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
+            if (_serviceProvider?.GetRequiredService<IUserSettings>() is { } settings)
+            {
+                bool telemetryEnabled = settings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
+            }
 #endif
             await AppCenter.SetEnabledAsync(telemetryEnabled);
         }
