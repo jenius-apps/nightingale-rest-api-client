@@ -2,47 +2,54 @@
 using Nightingale.Handlers;
 using System;
 
-namespace Nightingale.VisualState
+#nullable enable
+
+namespace Nightingale.VisualState;
+
+public class VisualStatePublisher : IVisualStatePublisher
 {
-    public class VisualStatePublisher : IVisualStatePublisher
+    private readonly IUserSettings _userSettings;
+    private bool _tempLayoutSinglePane = false;
+
+    public event EventHandler? SideBarVisibilityChanged;
+    public event EventHandler? PaneLayoutToggled;
+
+    public VisualStatePublisher(IUserSettings userSettings)
     {
-        public event EventHandler SideBarVisibilityChanged;
-        public event EventHandler PaneLayoutToggled;
+        _userSettings = userSettings;
+    }
 
-        private bool _tempLayoutSinglePane = false;
+    /// <inheritdoc/>
+    public bool GetSideBarVisibility()
+    {
+        return _userSettings.Get<bool>(SettingsConstants.SideBarVisible);
+    }
 
-        /// <inheritdoc/>
-        public bool GetSideBarVisibility()
+    public void SetSideBarVisibility(bool value)
+    {
+        _userSettings.Set<bool>(SettingsConstants.SideBarVisible, value);
+        SideBarVisibilityChanged?.Invoke(this, new EventArgs());
+    }
+
+    public void SetPaneLayoutSideBySide(bool value)
+    {
+        _userSettings.Set<bool>(SettingsConstants.PaneLayoutSideBySide, value);
+        PaneLayoutToggled?.Invoke(this, new EventArgs());
+    }
+
+    public void SetTempSinglePane(bool value)
+    {
+        _tempLayoutSinglePane = value;
+        PaneLayoutToggled?.Invoke(this, new EventArgs());
+    }
+
+    public bool IsLayoutTwoPane()
+    {
+        if (_tempLayoutSinglePane)
         {
-            return UserSettings.Get<bool>(SettingsConstants.SideBarVisible);
+            return false;
         }
 
-        public void SetSideBarVisibility(bool value)
-        {
-            UserSettings.Set<bool>(SettingsConstants.SideBarVisible, value);
-            SideBarVisibilityChanged?.Invoke(this, new EventArgs());
-        }
-
-        public void SetPaneLayoutSideBySide(bool value)
-        {
-            UserSettings.Set<bool>(SettingsConstants.PaneLayoutSideBySide, value);
-            PaneLayoutToggled?.Invoke(this, new EventArgs());
-        }
-
-        public void SetTempSinglePane(bool value)
-        {
-            _tempLayoutSinglePane = value;
-            PaneLayoutToggled?.Invoke(this, new EventArgs());
-        }
-
-        public bool IsLayoutTwoPane()
-        {
-            if (_tempLayoutSinglePane)
-            {
-                return false;
-            }
-
-            return UserSettings.Get<bool>(SettingsConstants.PaneLayoutSideBySide);
-        }
+        return _userSettings.Get<bool>(SettingsConstants.PaneLayoutSideBySide);
     }
 }

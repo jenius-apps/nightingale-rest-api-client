@@ -17,6 +17,7 @@ namespace Nightingale.ViewModels
     {
         private readonly IEnvironmentListModifier _envListModifier;
         private readonly IParameterStorageAccessor _parameterStorageAccessor;
+        private readonly IUserSettings _userSettings;
         private string _newEnvName;
         private bool _premiumMessageVisible;
         private bool _addButtonEnabled = true;
@@ -24,15 +25,17 @@ namespace Nightingale.ViewModels
 
         public EnvironmentsViewModel(
             IEnvironmentListModifier listModifier,
-            IParameterStorageAccessor parameterStorageAccessor)
+            IParameterStorageAccessor parameterStorageAccessor,
+            IUserSettings userSettings)
         {
-            _envListModifier = listModifier ?? throw new ArgumentNullException(nameof(listModifier));
-            _parameterStorageAccessor = parameterStorageAccessor ?? throw new ArgumentNullException(nameof(parameterStorageAccessor));
+            _envListModifier = listModifier;
+            _parameterStorageAccessor = parameterStorageAccessor;
+            _userSettings = userSettings;
         }
 
         public bool EnvQuickEditOn
         {
-            get => UserSettings.Get<bool>(SettingsConstants.EnableEnvQuickEdit);
+            get => _userSettings.Get<bool>(SettingsConstants.EnableEnvQuickEdit);
             set
             {
                 if (value == EnvQuickEditOn)
@@ -40,7 +43,7 @@ namespace Nightingale.ViewModels
                     return;
                 }
 
-                UserSettings.Set<bool>(SettingsConstants.EnableEnvQuickEdit, value);
+                _userSettings.Set<bool>(SettingsConstants.EnableEnvQuickEdit, value);
                 Analytics.TrackEvent("Settings changed: EnableEnvQuickEdit", new Dictionary<string, string>
                 {
                     { "Value", value ? "true" : "false" },

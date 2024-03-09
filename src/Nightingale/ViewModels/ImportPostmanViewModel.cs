@@ -40,6 +40,7 @@ namespace Nightingale.ViewModels
         private readonly INcfImporter _ncfImporter;
         private readonly ICurlConverter _curlConverter;
         private readonly IODataImporter _odataImporter;
+        private readonly IUserSettings _userSettings;
         private string _message = "";
 
         public ImportPostmanViewModel(
@@ -49,22 +50,23 @@ namespace Nightingale.ViewModels
             INcfImporter ncfImporter,
             ISwaggerImporter swaggerImporter,
             IODataImporter odataImporter,
-            ICurlConverter curlConverter)
+            ICurlConverter curlConverter,
+            IUserSettings userSettings)
         {
-            _odataImporter = odataImporter ?? throw new ArgumentNullException(nameof(odataImporter));
-            _filePicker = filePicker ?? throw new ArgumentNullException(nameof(filePicker));
-            _postmanImporter = postmanImporter ?? throw new ArgumentNullException(nameof(postmanImporter));
-            _swaggerImporter = swaggerImporter ?? throw new ArgumentNullException(nameof(swaggerImporter));
-            _insomniaImporter = insomniaImporter ?? throw new ArgumentNullException(nameof(insomniaImporter));
-            _curlConverter = curlConverter ?? throw new ArgumentNullException(nameof(curlConverter));
-            _ncfImporter = ncfImporter ?? throw new ArgumentNullException(nameof(ncfImporter));
+            _odataImporter = odataImporter;
+            _filePicker = filePicker;
+            _postmanImporter = postmanImporter;
+            _swaggerImporter = swaggerImporter;
+            _insomniaImporter = insomniaImporter;
+            _curlConverter = curlConverter;
+            _ncfImporter = ncfImporter;
         }
 
         public int ImportTypeSelected
         {
             get
             {
-                int lastTypeUsed = UserSettings.Get<int>(SettingsConstants.LastImportTypeUsed);
+                int lastTypeUsed = _userSettings.Get<int>(SettingsConstants.LastImportTypeUsed);
 
                 return Enum.IsDefined(typeof(ImportType), lastTypeUsed)
                     ? lastTypeUsed
@@ -74,7 +76,7 @@ namespace Nightingale.ViewModels
             {
                 if (ImportTypeSelected != value && Enum.IsDefined(typeof(ImportType), value))
                 {
-                    UserSettings.Set<int>(SettingsConstants.LastImportTypeUsed, value);
+                    _userSettings.Set<int>(SettingsConstants.LastImportTypeUsed, value);
                     OnPropertyChanged(nameof(CurlBoxVisible));
                     OnPropertyChanged(nameof(DragDropVislble));
                 }

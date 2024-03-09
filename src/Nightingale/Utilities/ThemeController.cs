@@ -1,4 +1,5 @@
-﻿using Nightingale.Core.Settings;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Nightingale.Core.Settings;
 using Nightingale.CustomEventArgs;
 using Nightingale.Handlers;
 using System;
@@ -25,7 +26,7 @@ namespace Nightingale.Utilities
 
         public static void ChangeBackgroundImage(string imageName)
         {
-            UserSettings.Set<string>(SettingsConstants.BackgroundImage, imageName);
+            App.Services.GetRequiredService<IUserSettings>().Set<string>(SettingsConstants.BackgroundImage, imageName);
             BackgroundImageChanged?.Invoke(new ThemeController(), new AddedItemArgs<string>(imageName));
         }
     }
