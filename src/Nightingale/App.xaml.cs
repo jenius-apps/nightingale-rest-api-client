@@ -90,12 +90,12 @@ namespace Nightingale
             /// Initialize analytics
             AppCenter.SetCountryCode(new GeographicRegion().CodeTwoLetter);
             AppCenter.Start(_serviceProvider?.GetRequiredService<IAppSettings>().TelemetryApiKey, [typeof(Analytics), typeof(Crashes)]);
-#if DEBUG
             bool telemetryEnabled = false;
+#if DEBUG
 #else
-            if (_serviceProvider?.GetRequiredService<IUserSettings>() is { } settings)
+            if (_serviceProvider?.GetRequiredService<Core.Settings.IUserSettings>() is { } settings)
             {
-                bool telemetryEnabled = settings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
+                telemetryEnabled = settings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
             }
 #endif
             await AppCenter.SetEnabledAsync(telemetryEnabled);
