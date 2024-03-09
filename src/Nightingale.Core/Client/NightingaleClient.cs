@@ -256,7 +256,7 @@ namespace Nightingale.Core.Client
             {
                 string key = _varRes.ResolveVariable(activeQuery.Key, useCache: true);
                 string value = _varRes.ResolveVariable(activeQuery.Value, useCache: true);
-                queries.Add($"{key}={value}");
+                queries.Add($"{key}{(value?.Trim().Length > 0 ? "=" : "")}{value}");
             }
 
             return queries.Count == 0 ? "" : string.Join("&", queries);
