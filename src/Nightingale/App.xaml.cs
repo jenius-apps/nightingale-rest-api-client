@@ -75,6 +75,11 @@ namespace Nightingale
         private void ActivateActipro()
         {
             var appsettings = _serviceProvider?.GetRequiredService<IAppSettings>();
+            if (string.IsNullOrEmpty(appsettings.ActiproLicensee) || string.IsNullOrEmpty(appsettings.ActiproLicenseKey))
+            {
+                return;
+            }
+
             ActiproSoftware.Products.ActiproLicenseManager.RegisterLicense(
                 appsettings.ActiproLicensee,
                 appsettings.ActiproLicenseKey);
