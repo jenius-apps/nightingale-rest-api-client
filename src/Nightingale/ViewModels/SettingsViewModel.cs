@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.AppCenter.Analytics;
+using JeniusApps.Common.Telemetry;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Nightingale.Core.Helpers.Interfaces;
 using Nightingale.Core.Settings;
@@ -14,10 +14,14 @@ public partial class SettingsViewModel : ObservableObject
 {
     private readonly IRecentUrlCache _recentUrlCache;
     private readonly IUserSettings _userSettings;
+    private readonly ITelemetry _telemetry;
 
-    public SettingsViewModel(IUserSettings userSettings)
+    public SettingsViewModel(
+        IUserSettings userSettings,
+        ITelemetry telemetry)
     {
         _userSettings = userSettings;
+        _telemetry = telemetry;
         _timeoutText = _userSettings.Get<double>(SettingsConstants.TimeoutSecondsKey).ToString();
     }
 
@@ -41,7 +45,7 @@ public partial class SettingsViewModel : ObservableObject
             }
 
             _userSettings.Set<bool>(SettingsConstants.ConfirmDeletion, value);
-            Analytics.TrackEvent("Settings changed: confirm deletion", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: confirm deletion", new Dictionary<string, string>
             {
                 { "Value", value ? "true" : "false" }
             });
@@ -59,7 +63,7 @@ public partial class SettingsViewModel : ObservableObject
             }
 
             _userSettings.Set<bool>(SettingsConstants.EnableEnvQuickEdit, value);
-            Analytics.TrackEvent("Settings changed: EnableEnvQuickEdit", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: EnableEnvQuickEdit", new Dictionary<string, string>
             {
                 { "Value", value ? "true" : "false" },
                 { "Location", "settings" }
@@ -78,7 +82,7 @@ public partial class SettingsViewModel : ObservableObject
             }
 
             _userSettings.Set<bool>(SettingsConstants.ShowMvpBadge, value);
-            Analytics.TrackEvent("Settings changed: ShowMvpBadge", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: ShowMvpBadge", new Dictionary<string, string>
             {
                 { "Value", value ? "true" : "false" },
             });
@@ -96,7 +100,7 @@ public partial class SettingsViewModel : ObservableObject
             }
 
             _userSettings.Set<bool>(SettingsConstants.AutoSaveInterval, value);
-            Analytics.TrackEvent("Settings changed: AutoSaveInterval", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: AutoSaveInterval", new Dictionary<string, string>
             {
                 { "Value", value ? "true" : "false" },
             });
@@ -114,7 +118,7 @@ public partial class SettingsViewModel : ObservableObject
             }
 
             _userSettings.Set<bool>(SettingsConstants.HistoryEnabled, value);
-            Analytics.TrackEvent("Settings changed: history enabled", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: history enabled", new Dictionary<string, string>
             {
                 { "Value", value ? "true" : "false" }
             });
@@ -129,7 +133,7 @@ public partial class SettingsViewModel : ObservableObject
             if (value == TelemetryOn)
                 return;
 
-            Analytics.TrackEvent("Settings changed: telemetry", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: telemetry", new Dictionary<string, string>
             {
                 { "Value", value.ToString() }
             });
@@ -152,7 +156,7 @@ public partial class SettingsViewModel : ObservableObject
             _userSettings.Set<bool>(SettingsConstants.AutoSaveEnabled, value);
             OnPropertyChanged(nameof(AutoSaveOn));
 
-            Analytics.TrackEvent("Settings changed: Auto save", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: Auto save", new Dictionary<string, string>
             {
                 { "Value", value.ToString() }
             });
@@ -172,7 +176,7 @@ public partial class SettingsViewModel : ObservableObject
             _userSettings.Set<bool>(SettingsConstants.AlwaysWrapURL, value);
             OnPropertyChanged(nameof(AlwaysWrapUrlOn));
 
-            Analytics.TrackEvent("Settings changed: always wrap", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: always wrap", new Dictionary<string, string>
             {
                 { "Value", value.ToString() }
             });
@@ -192,7 +196,7 @@ public partial class SettingsViewModel : ObservableObject
             _userSettings.Set<bool>(SettingsConstants.WordWrapEditor, value);
             OnPropertyChanged(nameof(WordWrapEnabled));
 
-            Analytics.TrackEvent("Settings changed: word wrap editor", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: word wrap editor", new Dictionary<string, string>
             {
                 { "Value", value.ToString() }
             });
@@ -208,7 +212,7 @@ public partial class SettingsViewModel : ObservableObject
                 return;
 
             _userSettings.Set<bool>(SettingsConstants.SslValidationKey, value);
-            Analytics.TrackEvent("Settings changed: SSL validation", new Dictionary<string, string>
+            _telemetry.TrackEvent("Settings changed: SSL validation", new Dictionary<string, string>
             {
                 { "Value", value.ToString() }
             });
@@ -238,7 +242,7 @@ public partial class SettingsViewModel : ObservableObject
         set
         {
             ThemeController.ChangeTheme((SelectedTheme)value);
-            Analytics.TrackEvent("Theme changed", new Dictionary<string, string>
+            _telemetry.TrackEvent("Theme changed", new Dictionary<string, string>
             {
                 { "Theme", ((SelectedTheme)value).ToString() }
             });
@@ -275,7 +279,7 @@ public partial class SettingsViewModel : ObservableObject
     {
         get
         {
-            var version = SystemInformation.ApplicationVersion;
+            var version = SystemInformation.Instance.ApplicationVersion;
             return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
     }
@@ -381,6 +385,6 @@ public partial class SettingsViewModel : ObservableObject
 
     private async void ChangeTelemetry(bool value)
     {
-        await Analytics.SetEnabledAsync(value);
+        await _telemetry.SetEnabledAsync(value);
     }
 }

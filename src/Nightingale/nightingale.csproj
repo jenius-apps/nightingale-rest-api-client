@@ -636,17 +636,14 @@
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>8.2.2</Version>
     </PackageReference>
+    <PackageReference Include="JeniusApps.Common.Uwp">
+      <Version>0.0.35-preview</Version>
+    </PackageReference>
     <PackageReference Include="JeniusApps.Insomnia.NET">
       <Version>0.0.4-preview</Version>
     </PackageReference>
     <PackageReference Include="JeniusApps.Nightingale.Converters">
       <Version>4.2.3-preview</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>5.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>5.0.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
       <Version>8.0.0</Version>

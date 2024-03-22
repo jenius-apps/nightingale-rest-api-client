@@ -1,25 +1,22 @@
-﻿using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+﻿using JeniusApps.Common.Telemetry;
+using Microsoft.Extensions.DependencyInjection;
+using Nightingale.Core.Interfaces;
+using Nightingale.Core.Services;
 using Nightingale.Handlers;
+using Nightingale.Utilities;
+using Nightingale.Views;
 using System;
+using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Globalization;
+using Windows.Foundation.Metadata;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Nightingale.Utilities;
-using Windows.Foundation.Metadata;
-using Nightingale.Core.Interfaces;
-using Windows.Storage;
-using Nightingale.Views;
-using Nightingale.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Nightingale
 {
@@ -85,22 +82,6 @@ namespace Nightingale
                 appsettings.ActiproLicenseKey);
         }
 
-        private async Task InitializeTelemetryAsync()
-        {
-            /// Initialize analytics
-            AppCenter.SetCountryCode(new GeographicRegion().CodeTwoLetter);
-            AppCenter.Start(_serviceProvider?.GetRequiredService<IAppSettings>().TelemetryApiKey, [typeof(Analytics), typeof(Crashes)]);
-            bool telemetryEnabled = false;
-#if DEBUG
-#else
-            if (_serviceProvider?.GetRequiredService<Core.Settings.IUserSettings>() is { } settings)
-            {
-                telemetryEnabled = settings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
-            }
-#endif
-            await AppCenter.SetEnabledAsync(telemetryEnabled);
-        }
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -139,7 +120,6 @@ namespace Nightingale
                     // parameter
                     var storage = await InitializeDefaultStorageAsync();
                     _serviceProvider = ConfigureServices(storage);
-                    await InitializeTelemetryAsync();
                     ActivateActipro();
                     rootFrame.Navigate(typeof(MainPage2));
                 }
@@ -168,7 +148,6 @@ namespace Nightingale
 
             // If app was not open, then begin startup sequence.
             _serviceProvider = ConfigureServices(documentStorage);
-            await InitializeTelemetryAsync();
             ActivateActipro();
             await InitializeLocalHostPermissionAsync();
             rootFrame = new Frame();
@@ -181,12 +160,12 @@ namespace Nightingale
             rootFrame.Navigate(documentStorage == null ? typeof(Views.InvalidFilePage) : typeof(Views.MainPage2), documentStorage);
             rootFrame.BackStack.Clear();
             Window.Current.Activate();
-            Analytics.TrackEvent(Telemetry.NcfFileLaunched);
+            _serviceProvider.GetRequiredService<ITelemetry>().TrackEvent(Telemetry.NcfFileLaunched);
         }
 
         private async Task<DocumentStorage> InitializeDocumentStorageAsync(Windows.Storage.IStorageItem file)
         {
-            if (file is Windows.Storage.StorageFile storageFile)
+            if (file is StorageFile storageFile)
             {
                 try
                 {
@@ -196,7 +175,7 @@ namespace Nightingale
                 }
                 catch
                 {
-                    Analytics.TrackEvent(Telemetry.NcfFileInvalid);
+                    _serviceProvider?.GetRequiredService<ITelemetry>().TrackEvent(Telemetry.NcfFileInvalid);
                 }
             }
 
