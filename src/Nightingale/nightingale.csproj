@@ -637,7 +637,7 @@
       <Version>8.2.2</Version>
     </PackageReference>
     <PackageReference Include="JeniusApps.Common.Uwp">
-      <Version>0.0.35-preview</Version>
+      <Version>0.0.36-preview</Version>
     </PackageReference>
     <PackageReference Include="JeniusApps.Insomnia.NET">
       <Version>0.0.4-preview</Version>

@@ -79,8 +79,9 @@ partial class App
         collection.AddSingleton<IRecentUrlCache, RecentUrlCache>(s => new RecentUrlCache(s.GetRequiredService<IRecentUrlStorageAccessor>(), _rootParentId));
         collection.AddSingleton<ITelemetry, SentryTelemetry>(s =>
         {
-            var apiKey = s.GetRequiredService<IAppSettings>().TelemetryApiKey;
-            return new SentryTelemetry(apiKey);
+            string apiKey = s.GetRequiredService<IAppSettings>().TelemetryApiKey;
+            bool isEnabled = s.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.TelemetryEnabledKey);
+            return new SentryTelemetry(apiKey, isEnabled);
         });
 
         IServiceProvider provider = collection.BuildServiceProvider();

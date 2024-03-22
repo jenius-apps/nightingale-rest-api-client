@@ -383,8 +383,8 @@ public partial class SettingsViewModel : ObservableObject
         await StoreHandler.ShowRatingReviewDialog();
     }
 
-    private async void ChangeTelemetry(bool value)
+    private void ChangeTelemetry(bool value)
     {
-        await _telemetry.SetEnabledAsync(value);
+        _telemetry.SetEnabled(value);
     }
 }
