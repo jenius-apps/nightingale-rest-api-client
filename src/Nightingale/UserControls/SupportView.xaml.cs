@@ -28,27 +28,22 @@ namespace Nightingale.UserControls
 
         private async void Rate()
         {
-            Telemetry.Support(Telemetry.SupportRate);
             await StoreHandler.ShowRatingReviewDialog();
         }
         private async void Github()
         {
-            Telemetry.Support(Telemetry.SupportGitHub);
             await Launcher.LaunchUriAsync(new Uri("https://www.github.com/jenius-apps/nightingale-rest-api-client"));
         }
         private async void Paypal()
         {
-            Telemetry.Support(Telemetry.SupportPaypal);
             await Launcher.LaunchUriAsync(new Uri("https://paypal.me/kidjenius"));
         }
         private void Share()
         {
-            Telemetry.Support(Telemetry.SupportShare);
             DataTransferManager.ShowShareUI();
         }
         private void Mvp()
         {
-            Telemetry.Support(Telemetry.SupportMvp);
             MvpClicked?.Invoke(this, new EventArgs());
         }
     }

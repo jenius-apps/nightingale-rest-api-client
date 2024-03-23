@@ -1,5 +1,4 @@
 ﻿using JeniusApps.Common.Telemetry;
-using Microsoft.AppCenter.Crashes;
 using Nightingale.Core.Cookies;
 using Nightingale.Core.Dialogs;
 using Nightingale.Core.Export;
@@ -379,7 +378,7 @@ public class MainPageViewModel : ViewModelBase
             }
             catch (Exception e)
             {
-                Crashes.TrackError(e, new Dictionary<string, string>
+                _telemetry.TrackError(e, new Dictionary<string, string>
                 {
                     { "filepath", _lastExportedFilePath }
                 });

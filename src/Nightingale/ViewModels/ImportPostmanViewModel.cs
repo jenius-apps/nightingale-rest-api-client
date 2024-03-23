@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using JeniusApps.Common.Telemetry;
 using JeniusApps.Nightingale.Converters.Curl;
-using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Nightingale.Core.Exceptions;
 using Nightingale.Core.ImportConverters.Nightingale;
@@ -228,7 +227,7 @@ public class ImportPostmanViewModel : ObservableObject
             }
             catch (Exception e)
             {
-                Crashes.TrackError(e, new Dictionary<string, string>
+                _telemetry.TrackError(e, new Dictionary<string, string>
                 {
                     { "message", e.Message },
                     { "Call stack", e.StackTrace }

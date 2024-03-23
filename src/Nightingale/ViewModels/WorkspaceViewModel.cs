@@ -1,28 +1,27 @@
-﻿using Nightingale.Core.Extensions;
+﻿using JeniusApps.Common.Telemetry;
+using Nightingale.Core.Export;
+using Nightingale.Core.Extensions;
+using Nightingale.Core.Mock.Services;
 using Nightingale.Core.Models;
-using Nightingale.Handlers;
-using Nightingale.VisualState;
-using Nightingale.Navigation;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Nightingale.ViewModels.Factories;
-using Nightingale.Views;
-using Environment = Nightingale.Core.Models.Environment;
 using Nightingale.Core.Settings;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Core.Workspaces.Services;
 using Nightingale.CustomEventArgs;
 using Nightingale.Dialogs;
-using System.Linq;
-using System;
+using Nightingale.Handlers;
+using Nightingale.Navigation;
 using Nightingale.Tabs.Services;
 using Nightingale.Utilities;
+using Nightingale.ViewModels.Factories;
+using Nightingale.Views;
+using Nightingale.VisualState;
+using System;
 using System.Collections.Generic;
-using Nightingale.Core.Mock.Services;
-using Nightingale.Core.Export;
-using Microsoft.AppCenter.Crashes;
-using JeniusApps.Common.Telemetry;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Environment = Nightingale.Core.Models.Environment;
 
 namespace Nightingale.ViewModels;
 
@@ -401,7 +400,7 @@ public class WorkspaceViewModel : ViewModelBase
         }
         catch (Exception e)
         {
-            Crashes.TrackError(e);
+            _telemetry.TrackError(e);
         }
     }
 
