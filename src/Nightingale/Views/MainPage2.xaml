@@ -5,7 +5,6 @@
     xmlns:core="using:Nightingale.Core.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Nightingale.Views"
-    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:m="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:Nightingale.UserControls"

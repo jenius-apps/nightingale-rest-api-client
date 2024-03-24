@@ -648,9 +648,6 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>7.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Lottie">
-      <Version>7.1.1</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.3</Version>
     </PackageReference>

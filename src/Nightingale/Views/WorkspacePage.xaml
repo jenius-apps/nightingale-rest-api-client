@@ -12,7 +12,6 @@
     xmlns:utilities="using:Nightingale.Utilities"
     xmlns:visualstate="using:Nightingale.VisualState"
     xmlns:vm="using:Nightingale.ViewModels"
-    xmlns:wct="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -423,10 +422,10 @@
 
                                     <Button
                                         Margin="0,0,12,0"
+                                        Padding="0"
                                         HorizontalAlignment="Right"
                                         AutomationProperties.Name="Save temporary item to workspace"
                                         Click="SaveTabClicked"
-                                        Style="{StaticResource TabViewItemCloseButtonStyle}"
                                         ToolTipService.ToolTip="Save temporary item to workspace"
                                         Visibility="{x:Bind SaveButtonVisible, Mode=OneWay}">
                                         <FontIcon
@@ -521,7 +520,6 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Click="{x:Bind ViewModel.HideFrame}"
-            Style="{StaticResource TabViewItemCloseButtonStyle}"
             Visibility="{x:Bind ViewModel.FrameVisible, Mode=OneWay}">
             <SymbolIcon Symbol="Cancel" />
         </Button>
