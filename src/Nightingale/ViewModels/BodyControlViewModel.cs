@@ -1,366 +1,369 @@
-﻿using Microsoft.AppCenter.Analytics;
-using System;
-using System.Linq;
-using Nightingale.Utilities;
-using Nightingale.Core.Interfaces;
-using Nightingale.Core.Helpers;
+﻿using JeniusApps.Common.Telemetry;
 using Nightingale.Core.Enums;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Media;
+using Nightingale.Core.Helpers;
+using Nightingale.Core.Interfaces;
 using Nightingale.Core.Models;
+using Nightingale.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
-namespace Nightingale.ViewModels
+namespace Nightingale.ViewModels;
+
+public class BodyControlViewModel : ObservableBase
 {
-    public class BodyControlViewModel : ObservableBase
+    private readonly IResponseFileWriter _fileWriter;
+    private readonly ITelemetry _telemetry;
+    private IWorkspaceResponse _workspaceResponse;
+    private int _bodyTypeIndex;
+
+    public BodyControlViewModel(
+        IResponseFileWriter fileWriter,
+        ITelemetry telemetry)
     {
-        private readonly IResponseFileWriter _fileWriter;
-        private IWorkspaceResponse _workspaceResponse;
-        private int _bodyTypeIndex;
+        _fileWriter = fileWriter;
+        _telemetry = telemetry;
+    }
 
-        public BodyControlViewModel(IResponseFileWriter fileWriter)
+    public IWorkspaceResponse WorkspaceResponse
+    {
+        get => _workspaceResponse;
+        set
         {
-            _fileWriter = fileWriter ?? throw new ArgumentNullException(nameof(fileWriter));
-        }
-
-        public IWorkspaceResponse WorkspaceResponse
-        {
-            get => _workspaceResponse;
-            set
+            if (_workspaceResponse == value)
             {
-                if (_workspaceResponse == value)
-                {
-                    return;
-                }
+                return;
+            }
 
-                _workspaceResponse = value;
+            _workspaceResponse = value;
 
-                if (_workspaceResponse != null)
-                {
-                    BodyTypeIndex = (int)GetContentType(_workspaceResponse.ContentType);
-                }
+            if (_workspaceResponse != null)
+            {
+                BodyTypeIndex = (int)GetContentType(_workspaceResponse.ContentType);
+            }
 
-                RaisePropertyChanged("Body");
-                RaisePropertyChanged("ContentVisible");
-                RaisePropertyChanged("ErrorMessage");
-                RaisePropertyChanged("ErrorMessageVisible");
-                RaisePropertyChanged("NoContentMessageVisible");
-                RaisePropertyChanged(nameof(HtmlPreviewVisible));
-                UpdateIndexProperties();
+            RaisePropertyChanged("Body");
+            RaisePropertyChanged("ContentVisible");
+            RaisePropertyChanged("ErrorMessage");
+            RaisePropertyChanged("ErrorMessageVisible");
+            RaisePropertyChanged("NoContentMessageVisible");
+            RaisePropertyChanged(nameof(HtmlPreviewVisible));
+            UpdateIndexProperties();
+        }
+    }
+
+    public string ResponseContentType
+    {
+        get => WorkspaceResponse?.ContentType ?? string.Empty;
+    }
+
+    public string RawBytesString
+    {
+        get => WorkspaceResponse?.RawBytes == null ? "" : string.Join(" ", WorkspaceResponse.RawBytes.Select(x => (int)x).ToArray());
+    }
+
+    public int BodyTypeIndex
+    {
+        get => _bodyTypeIndex;
+        set
+        {
+            _bodyTypeIndex = value >= 0 && value < Enum.GetNames(typeof(ContentType)).Length ? value : 0;
+            RaisePropertyChanged("BodyTypeIndex");
+            RaisePropertyChanged("SyntaxType");
+            RaisePropertyChanged("EditorVisible");
+            RaisePropertyChanged("RawBytesVisible");
+            RaisePropertyChanged(nameof(IsHtmlIndex));
+            RaisePropertyChanged(nameof(IsImageIndex));
+
+            if (_bodyTypeIndex == (int)ContentType.Bytes)
+            {
+                RaisePropertyChanged("RawBytesString");
+            }
+
+            if (_bodyTypeIndex == (int)ContentType.Image)
+            {
+                LoadImageAsync();
             }
         }
+    }
 
-        public string ResponseContentType
+    /// <summary>
+    /// Displays the image in the UI.
+    /// </summary>
+    public ImageSource ImageSource
+    {
+        get => _imageSource;
+        set
         {
-            get => WorkspaceResponse?.ContentType ?? string.Empty;
+            _imageSource = value;
+            RaisePropertyChanged();
         }
+    }
+    private ImageSource _imageSource;
 
-        public string RawBytesString
-        {
-            get => WorkspaceResponse?.RawBytes == null ? "" : string.Join(" ", WorkspaceResponse.RawBytes.Select(x => (int)x).ToArray());
-        }
+    public bool ErrorMessageVisible
+    {
+        get => WorkspaceResponse?.Successful == false && NoContentVisible;
+    }
 
-        public int BodyTypeIndex
+    public string ErrorMessage
+    {
+        get => WorkspaceResponse == null || WorkspaceResponse.Successful 
+            ? "" 
+            : $"{WorkspaceResponse.StatusCode.ToString()} {WorkspaceResponse.StatusDescription}";
+    }
+
+    public bool NoContentMessageVisible
+    {
+        get => WorkspaceResponse?.Successful == true && NoContentVisible;
+    }
+
+    public bool IsTextIndex
+    {
+        get => BodyTypeIndex == (int)ContentType.Text;
+    }
+
+    public bool IsJsonIndex
+    {
+        get => BodyTypeIndex == (int)ContentType.Json;
+    }
+
+    public bool IsHtmlIndex
+    {
+        get => BodyTypeIndex == (int)ContentType.Html;
+    }
+
+    public bool IsXmlIndex
+    {
+        get => BodyTypeIndex == (int)ContentType.Xml;
+    }
+
+    public bool IsBytesIndex
+    {
+        get => BodyTypeIndex == (int)ContentType.Bytes;
+    }
+
+    /// <summary>
+    /// Flag for if "Image" is currently
+    /// the selected index in the UI.
+    /// </summary>
+    public bool IsImageIndex
+    {
+        get => BodyTypeIndex == (int)ContentType.Image;
+    }
+
+    public string Body
+    {
+        get => TextBeautifier.Beautify(WorkspaceResponse?.Body ?? "", GetContentType(ResponseContentType));
+    }
+
+    public bool NoContentVisible
+    {
+        get => string.IsNullOrEmpty(Body);
+    }
+
+    public bool ContentVisible
+    {
+        get => !NoContentVisible;
+    }
+
+    public bool EditorVisible
+    {
+        get => ContentVisible &&
+            (BodyTypeIndex == (int)ContentType.Text
+            || BodyTypeIndex == (int)ContentType.Xml
+            || BodyTypeIndex == (int)ContentType.Html
+            || BodyTypeIndex == (int)ContentType.Json);
+    }
+
+    /// <summary>
+    /// Returns the syntax highlighting that should
+    /// be used with the editor.
+    /// </summary>
+    public SyntaxType SyntaxType
+    {
+        get
         {
-            get => _bodyTypeIndex;
-            set
+            switch ((ContentType)BodyTypeIndex)
             {
-                _bodyTypeIndex = value >= 0 && value < Enum.GetNames(typeof(ContentType)).Length ? value : 0;
-                RaisePropertyChanged("BodyTypeIndex");
-                RaisePropertyChanged("SyntaxType");
-                RaisePropertyChanged("EditorVisible");
-                RaisePropertyChanged("RawBytesVisible");
-                RaisePropertyChanged(nameof(IsHtmlIndex));
-                RaisePropertyChanged(nameof(IsImageIndex));
-
-                if (_bodyTypeIndex == (int)ContentType.Bytes)
-                {
-                    RaisePropertyChanged("RawBytesString");
-                }
-
-                if (_bodyTypeIndex == (int)ContentType.Image)
-                {
-                    LoadImageAsync();
-                }
+                case ContentType.Json:
+                    return SyntaxType.Json;
+                case ContentType.Xml:
+                    return SyntaxType.Xml;
+                case ContentType.Html:
+                    return SyntaxType.Html;
+                default:
+                    return SyntaxType.Plain;
             }
         }
+    }
 
-        /// <summary>
-        /// Displays the image in the UI.
-        /// </summary>
-        public ImageSource ImageSource
+    /// <summary>
+    /// Visibility flag for an HTML webview preview.
+    /// </summary>
+    public bool HtmlPreviewVisible
+    {
+        get => _htmlPreviewVisible;
+        set
         {
-            get => _imageSource;
-            set
+            if (_htmlPreviewVisible != value)
             {
-                _imageSource = value;
+                _htmlPreviewVisible = value;
                 RaisePropertyChanged();
             }
         }
-        private ImageSource _imageSource;
+    }
+    private bool _htmlPreviewVisible;
 
-        public bool ErrorMessageVisible
+    public bool RawBytesVisible
+    {
+        get => BodyTypeIndex == (int)ContentType.Bytes && ContentVisible;
+    }
+
+    /// <summary>
+    /// Toggles <see cref="HtmlPreviewVisible"/>.
+    /// </summary>
+    public void ToggleHtmlPreview()
+    {
+        HtmlPreviewVisible = !HtmlPreviewVisible;
+        _telemetry.TrackEvent(Telemetry.HtmlPreviewToggled);
+    }
+
+    /// <summary>
+    /// Clears response and resets properties.
+    /// </summary>
+    public void Dispose()
+    {
+        ImageSource = null;
+        HtmlPreviewVisible = false;
+    }
+
+    /// <summary>
+    /// Takes the raw bytes property and attempts to
+    /// load an image based on it.
+    /// </summary>
+    /// <remarks>
+    /// Ref: https://marcominerva.wordpress.com/2013/04/15/how-to-convert-a-byte-array-to-image-in-a-windows-store-app/
+    /// </remarks>
+    private async void LoadImageAsync()
+    {
+        if (WorkspaceResponse?.RawBytes == null)
         {
-            get => WorkspaceResponse?.Successful == false && NoContentVisible;
+            return;
         }
 
-        public string ErrorMessage
+        try
         {
-            get => WorkspaceResponse == null || WorkspaceResponse.Successful 
-                ? "" 
-                : $"{WorkspaceResponse.StatusCode.ToString()} {WorkspaceResponse.StatusDescription}";
-        }
-
-        public bool NoContentMessageVisible
-        {
-            get => WorkspaceResponse?.Successful == true && NoContentVisible;
-        }
-
-        public bool IsTextIndex
-        {
-            get => BodyTypeIndex == (int)ContentType.Text;
-        }
-
-        public bool IsJsonIndex
-        {
-            get => BodyTypeIndex == (int)ContentType.Json;
-        }
-
-        public bool IsHtmlIndex
-        {
-            get => BodyTypeIndex == (int)ContentType.Html;
-        }
-
-        public bool IsXmlIndex
-        {
-            get => BodyTypeIndex == (int)ContentType.Xml;
-        }
-
-        public bool IsBytesIndex
-        {
-            get => BodyTypeIndex == (int)ContentType.Bytes;
-        }
-
-        /// <summary>
-        /// Flag for if "Image" is currently
-        /// the selected index in the UI.
-        /// </summary>
-        public bool IsImageIndex
-        {
-            get => BodyTypeIndex == (int)ContentType.Image;
-        }
-
-        public string Body
-        {
-            get => TextBeautifier.Beautify(WorkspaceResponse?.Body ?? "", GetContentType(ResponseContentType));
-        }
-
-        public bool NoContentVisible
-        {
-            get => string.IsNullOrEmpty(Body);
-        }
-
-        public bool ContentVisible
-        {
-            get => !NoContentVisible;
-        }
-
-        public bool EditorVisible
-        {
-            get => ContentVisible &&
-                (BodyTypeIndex == (int)ContentType.Text
-                || BodyTypeIndex == (int)ContentType.Xml
-                || BodyTypeIndex == (int)ContentType.Html
-                || BodyTypeIndex == (int)ContentType.Json);
-        }
-
-        /// <summary>
-        /// Returns the syntax highlighting that should
-        /// be used with the editor.
-        /// </summary>
-        public SyntaxType SyntaxType
-        {
-            get
+            using (InMemoryRandomAccessStream ms = new InMemoryRandomAccessStream())
             {
-                switch ((ContentType)BodyTypeIndex)
+                // Writes the image byte array in an InMemoryRandomAccessStream
+                // that is needed to set the source of BitmapImage.
+                using (DataWriter writer = new DataWriter(ms.GetOutputStreamAt(0)))
                 {
-                    case ContentType.Json:
-                        return SyntaxType.Json;
-                    case ContentType.Xml:
-                        return SyntaxType.Xml;
-                    case ContentType.Html:
-                        return SyntaxType.Html;
-                    default:
-                        return SyntaxType.Plain;
+                    writer.WriteBytes(WorkspaceResponse.RawBytes);
+                    await writer.StoreAsync();
                 }
-            }
-        }
 
-        /// <summary>
-        /// Visibility flag for an HTML webview preview.
-        /// </summary>
-        public bool HtmlPreviewVisible
-        {
-            get => _htmlPreviewVisible;
-            set
+                var image = new BitmapImage();
+                await image.SetSourceAsync(ms);
+
+                // Updates the UI
+                ImageSource = image;
+            }
+
+            _telemetry.TrackEvent("Response image load success", new Dictionary<string, string>
             {
-                if (_htmlPreviewVisible != value)
-                {
-                    _htmlPreviewVisible = value;
-                    RaisePropertyChanged();
-                }
-            }
+                { "content type", ResponseContentType }
+            });
         }
-        private bool _htmlPreviewVisible;
-
-        public bool RawBytesVisible
+        catch
         {
-            get => BodyTypeIndex == (int)ContentType.Bytes && ContentVisible;
-        }
-
-        /// <summary>
-        /// Toggles <see cref="HtmlPreviewVisible"/>.
-        /// </summary>
-        public void ToggleHtmlPreview()
-        {
-            HtmlPreviewVisible = !HtmlPreviewVisible;
-            Analytics.TrackEvent(Telemetry.HtmlPreviewToggled);
-        }
-
-        /// <summary>
-        /// Clears response and resets properties.
-        /// </summary>
-        public void Dispose()
-        {
+            _telemetry.TrackEvent("Response image load failed", new Dictionary<string, string>
+            {
+                { "content type", ResponseContentType }
+            });
             ImageSource = null;
-            HtmlPreviewVisible = false;
         }
+    }
 
-        /// <summary>
-        /// Takes the raw bytes property and attempts to
-        /// load an image based on it.
-        /// </summary>
-        /// <remarks>
-        /// Ref: https://marcominerva.wordpress.com/2013/04/15/how-to-convert-a-byte-array-to-image-in-a-windows-store-app/
-        /// </remarks>
-        private async void LoadImageAsync()
+    public async void CopyOutput()
+    {
+        if ((ContentType)BodyTypeIndex == ContentType.Bytes)
         {
-            if (WorkspaceResponse?.RawBytes == null)
-            {
-                return;
-            }
-
-            try
-            {
-                using (InMemoryRandomAccessStream ms = new InMemoryRandomAccessStream())
-                {
-                    // Writes the image byte array in an InMemoryRandomAccessStream
-                    // that is needed to set the source of BitmapImage.
-                    using (DataWriter writer = new DataWriter(ms.GetOutputStreamAt(0)))
-                    {
-                        writer.WriteBytes(WorkspaceResponse.RawBytes);
-                        await writer.StoreAsync();
-                    }
-
-                    var image = new BitmapImage();
-                    await image.SetSourceAsync(ms);
-
-                    // Updates the UI
-                    ImageSource = image;
-                }
-
-                Analytics.TrackEvent("Response image load success", new Dictionary<string, string>
-                {
-                    { "content type", ResponseContentType }
-                });
-            }
-            catch
-            {
-                Analytics.TrackEvent("Response image load failed", new Dictionary<string, string>
-                {
-                    { "content type", ResponseContentType }
-                });
-                ImageSource = null;
-            }
+            Common.Copy(RawBytesString);
+            _telemetry.TrackEvent("Raw bytes copied");
         }
-
-        public async void CopyOutput()
+        else if ((ContentType)BodyTypeIndex == ContentType.Image && ImageSource != null)
         {
-            if ((ContentType)BodyTypeIndex == ContentType.Bytes)
-            {
-                Common.Copy(RawBytesString);
-                Analytics.TrackEvent("Raw bytes copied");
-            }
-            else if ((ContentType)BodyTypeIndex == ContentType.Image && ImageSource != null)
-            {
-                await Common.CopyImage(WorkspaceResponse?.RawBytes);
-                Analytics.TrackEvent("Image copied");
-            }
-            else
-            {
-                Common.Copy(Body);
-                Analytics.TrackEvent("Output copied");
-            }
+            await Common.CopyImage(WorkspaceResponse?.RawBytes);
+            _telemetry.TrackEvent("Image copied");
         }
-
-        /// <summary>
-        /// Extracts content type from response content type. 
-        /// E.g. "application/xml" will return "xml"
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        private ContentType GetContentType(string content)
+        else
         {
-            if (string.IsNullOrWhiteSpace(content))
-            {
-                return ContentType.Text;
-            }
+            Common.Copy(Body);
+            _telemetry.TrackEvent("Output copied");
+        }
+    }
 
-            if (content.Contains("json"))
-            {
-                return ContentType.Json;
-            }
-            else if (content.Contains("xml"))
-            {
-                return ContentType.Xml;
-            }
-            else if (content.Contains("html"))
-            {
-                return ContentType.Html;
-            }
-            else if (content.Contains("image/png") || content.Contains("image/jpeg") || content.Contains("image/jpg"))
-            {
-                return ContentType.Image;
-            }
-
+    /// <summary>
+    /// Extracts content type from response content type. 
+    /// E.g. "application/xml" will return "xml"
+    /// </summary>
+    /// <param name="content"></param>
+    /// <returns></returns>
+    private ContentType GetContentType(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
             return ContentType.Text;
         }
-        public async void SaveBody()
-        {
-            if (WorkspaceResponse?.Body == null || WorkspaceResponse?.ContentType == null)
-            {
-                return;
-            }
 
-            if (IsImageIndex && ImageSource != null)
-            {
-                await _fileWriter.WriteImageAsync(WorkspaceResponse.RawBytes);
-            }
-            else
-            {
-                await _fileWriter.WriteFileAsync(WorkspaceResponse);
-            }
+        if (content.Contains("json"))
+        {
+            return ContentType.Json;
+        }
+        else if (content.Contains("xml"))
+        {
+            return ContentType.Xml;
+        }
+        else if (content.Contains("html"))
+        {
+            return ContentType.Html;
+        }
+        else if (content.Contains("image/png") || content.Contains("image/jpeg") || content.Contains("image/jpg"))
+        {
+            return ContentType.Image;
         }
 
-        private void UpdateIndexProperties()
+        return ContentType.Text;
+    }
+    public async void SaveBody()
+    {
+        if (WorkspaceResponse?.Body == null || WorkspaceResponse?.ContentType == null)
         {
-            RaisePropertyChanged("IsTextIndex");
-            RaisePropertyChanged("IsJsonIndex");
-            RaisePropertyChanged("IsXmlIndex");
-            RaisePropertyChanged("IsHtmlIndex");
-            RaisePropertyChanged("IsBytesIndex");
-            RaisePropertyChanged("IsImageIndex");
+            return;
         }
+
+        if (IsImageIndex && ImageSource != null)
+        {
+            await _fileWriter.WriteImageAsync(WorkspaceResponse.RawBytes);
+        }
+        else
+        {
+            await _fileWriter.WriteFileAsync(WorkspaceResponse);
+        }
+    }
+
+    private void UpdateIndexProperties()
+    {
+        RaisePropertyChanged("IsTextIndex");
+        RaisePropertyChanged("IsJsonIndex");
+        RaisePropertyChanged("IsXmlIndex");
+        RaisePropertyChanged("IsHtmlIndex");
+        RaisePropertyChanged("IsBytesIndex");
+        RaisePropertyChanged("IsImageIndex");
     }
 }

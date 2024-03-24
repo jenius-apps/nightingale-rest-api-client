@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Extensions.DependencyInjection;
+using JeniusApps.Common.Telemetry;
 using JeniusApps.Nightingale.Converters.Curl;
 using JeniusApps.Nightingale.Converters.Insomnia;
 using JeniusApps.Nightingale.Converters.OData;
@@ -76,6 +77,12 @@ partial class App
         ConfigureServices(collection);
         collection.AddSingleton(storage);
         collection.AddSingleton<IRecentUrlCache, RecentUrlCache>(s => new RecentUrlCache(s.GetRequiredService<IRecentUrlStorageAccessor>(), _rootParentId));
+        collection.AddSingleton<ITelemetry, SentryTelemetry>(s =>
+        {
+            string apiKey = s.GetRequiredService<IAppSettings>().TelemetryApiKey;
+            bool isEnabled = s.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.TelemetryEnabledKey);
+            return new SentryTelemetry(apiKey, isEnabled);
+        });
 
         IServiceProvider provider = collection.BuildServiceProvider();
         return provider;

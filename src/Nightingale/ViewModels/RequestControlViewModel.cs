@@ -1,5 +1,4 @@
-﻿using Microsoft.AppCenter.Analytics;
-using Microsoft.Toolkit.Uwp.Connectivity;
+﻿using Microsoft.Toolkit.Uwp.Connectivity;
 using Nightingale.Core.Extensions;
 using Nightingale.Core.Helpers;
 using Nightingale.Core.Helpers.Interfaces;
@@ -22,591 +21,594 @@ using Windows.ApplicationModel.Resources;
 using Nightingale.Mock;
 using Windows.System;
 using JeniusApps.Nightingale.Converters.Curl;
+using JeniusApps.Common.Telemetry;
 
-namespace Nightingale.ViewModels
+namespace Nightingale.ViewModels;
+
+public class RequestControlViewModel : ViewModelBase
 {
-    public class RequestControlViewModel : ViewModelBase
+    public event EventHandler ResponseReceived;
+
+    private readonly IRequestSender _requestSender;
+    private readonly IResponseFileWriter _fileWriter;
+    private readonly IResponseValueExtractor _responseValueExtractor;
+    public readonly IEnvironmentContainer EnvironmentContainer;
+    private readonly IVariableResolver _variableResolver;
+    private readonly IVisualStatePublisher _visualStatePublisher;
+    private readonly IMessageBus _messageBus;
+    private readonly ICurlConverter _curlConverter;
+    private readonly IUserSettings _userSettings;
+    private readonly ITelemetry _telemetry;
+    private readonly ResourceLoader _resourceLoader;
+
+    private Item _request;
+    private CancellationTokenSource _cts;
+    private bool _loading;
+    private bool _areTestsRunning;
+    private bool _noRequestSentYet = true;
+
+    public RequestControlViewModel(
+        IRequestSender sender,
+        IResponseFileWriter fileWriter,
+        IResponseValueExtractor responseValueExtractor,
+        IEnvironmentContainer environmentContainer,
+        IVariableResolver variableResolver,
+        IVisualStatePublisher visualStatePublisher,
+        IMessageBus messageBus,
+        ICurlConverter curlConverter,
+        IUserSettings userSettings,
+        ITelemetry telemetry)
     {
-        public event EventHandler ResponseReceived;
+        _cts = new CancellationTokenSource();
+        _requestSender = sender;
+        _curlConverter = curlConverter;
+        _fileWriter = fileWriter;
+        _responseValueExtractor = responseValueExtractor;
+        EnvironmentContainer = environmentContainer;
+        _variableResolver = variableResolver;
+        _visualStatePublisher = visualStatePublisher;
+        _messageBus = messageBus;
+        _userSettings = userSettings;
+        _telemetry = telemetry;
+        _resourceLoader = ResourceLoader.GetForCurrentView();
 
-        private readonly IRequestSender _requestSender;
-        private readonly IResponseFileWriter _fileWriter;
-        private readonly IResponseValueExtractor _responseValueExtractor;
-        public readonly IEnvironmentContainer EnvironmentContainer;
-        private readonly IVariableResolver _variableResolver;
-        private readonly IVisualStatePublisher _visualStatePublisher;
-        private readonly IMessageBus _messageBus;
-        private readonly ICurlConverter _curlConverter;
-        private readonly IUserSettings _userSettings;
-        private readonly ResourceLoader _resourceLoader;
+        _visualStatePublisher.PaneLayoutToggled += VisualStatePublisher_PaneLayoutToggled;
+    }
 
-        private Item _request;
-        private CancellationTokenSource _cts;
-        private bool _loading;
-        private bool _areTestsRunning;
-        private bool _noRequestSentYet = true;
+    public MockDataViewModel MockDataViewModel { get; set; }
 
-        public RequestControlViewModel(
-            IRequestSender sender,
-            IResponseFileWriter fileWriter,
-            IResponseValueExtractor responseValueExtractor,
-            IEnvironmentContainer environmentContainer,
-            IVariableResolver variableResolver,
-            IVisualStatePublisher visualStatePublisher,
-            IMessageBus messageBus,
-            ICurlConverter curlConverter,
-            IUserSettings userSettings)
+    public Item Request
+    {
+        get => _request;
+        set
         {
-            _cts = new CancellationTokenSource();
-            _requestSender = sender;
-            _curlConverter = curlConverter;
-            _fileWriter = fileWriter;
-            _responseValueExtractor = responseValueExtractor;
-            EnvironmentContainer = environmentContainer;
-            _variableResolver = variableResolver;
-            _visualStatePublisher = visualStatePublisher;
-            _messageBus = messageBus;
-            _userSettings = userSettings;
-            _resourceLoader = ResourceLoader.GetForCurrentView();
-
-            _visualStatePublisher.PaneLayoutToggled += VisualStatePublisher_PaneLayoutToggled;
-        }
-
-        public MockDataViewModel MockDataViewModel { get; set; }
-
-        public Item Request
-        {
-            get => _request;
-            set
+            if (_request != null)
             {
-                if (_request != null)
-                {
-                    _request.Auth.TypeChanged -= Auth_TypeChanged;
-                }
-                _request = value;
-
-                if (_request != null)
-                {
-                    _request.Auth.TypeChanged += Auth_TypeChanged;
-                }
-
-                RaisePropertyChanged(string.Empty);
+                _request.Auth.TypeChanged -= Auth_TypeChanged;
             }
-        }
+            _request = value;
 
-        private void Auth_TypeChanged(object sender, EventArgs e)
-        {
-            UpdateAuthHeaderErrorMessage();
-        }
-
-        public bool ShowAuthWarning
-        {
-            get => _showAuthWarning;
-            set
+            if (_request != null)
             {
-                if (_showAuthWarning != value)
-                {
-                    _showAuthWarning = value;
-                    RaisePropertyChanged();
-                }
+                _request.Auth.TypeChanged += Auth_TypeChanged;
             }
-        }
-        private bool _showAuthWarning;
 
-        public bool PaneLayoutSideBySide
-        {
-            get => _visualStatePublisher.IsLayoutTwoPane();
+            RaisePropertyChanged(string.Empty);
         }
+    }
 
-        private void VisualStatePublisher_PaneLayoutToggled(object sender, EventArgs e)
-        {
-            RaisePropertyChanged(nameof(PaneLayoutSideBySide));
-        }
+    private void Auth_TypeChanged(object sender, EventArgs e)
+    {
+        UpdateAuthHeaderErrorMessage();
+    }
 
-        public string HeaderCount
+    public bool ShowAuthWarning
+    {
+        get => _showAuthWarning;
+        set
         {
-            get => Request?.Headers == null ? "" : Request.Headers.GetDisplayCount();
-        }
-
-        public string ChainCount
-        {
-            get => Request?.ChainingRules == null ? "" : Request.ChainingRules.GetDisplayCount();
-        }
-
-        public string QueryCount
-        {
-            get => Request?.Url?.Queries == null ? "" : Request?.Url?.Queries.GetDisplayCount();
-        }
-
-        public WorkspaceResponse Response
-        {
-            get => Request?.Response;
-            set
+            if (_showAuthWarning != value)
             {
-                if (Request != null)
-                {
-                    Request.Response = value;
-                    RaisePropertyChanged("Response");
-                    RaisePropertyChanged("ResponseHeaders");
-                    RaisePropertyChanged("ResponseCookies");
-                    RaisePropertyChanged("ApiTestResults");
-                    RaisePropertyChanged("ResponseLog");
-                    RaisePropertyChanged("ResponseHeadersCount");
-                    RaisePropertyChanged("ResponseCookiesCount");
-                    RaisePropertyChanged("ApiTestResultsCount");
-                    RaisePropertyChanged(nameof(IsErrorResponse));
-                    RaisePropertyChanged(nameof(ShowResponsePivot));
-                    IsStackTraceVisible = false; // reset to hidden
-                    ResponseReceived?.Invoke(this, new EventArgs());
-                }
-            }
-        }
-
-        public bool IsErrorResponse => Response?.StatusDescription == "Error";
-
-        public bool ShowResponsePivot => !IsErrorResponse;
-
-        public bool IsStackTraceVisible
-        {
-            get => _isStackTraceVisible;
-            set
-            {
-                _isStackTraceVisible = value;
+                _showAuthWarning = value;
                 RaisePropertyChanged();
             }
         }
-        private bool _isStackTraceVisible;
+    }
+    private bool _showAuthWarning;
 
-        public bool NoRequestSentYet
+    public bool PaneLayoutSideBySide
+    {
+        get => _visualStatePublisher.IsLayoutTwoPane();
+    }
+
+    private void VisualStatePublisher_PaneLayoutToggled(object sender, EventArgs e)
+    {
+        RaisePropertyChanged(nameof(PaneLayoutSideBySide));
+    }
+
+    public string HeaderCount
+    {
+        get => Request?.Headers == null ? "" : Request.Headers.GetDisplayCount();
+    }
+
+    public string ChainCount
+    {
+        get => Request?.ChainingRules == null ? "" : Request.ChainingRules.GetDisplayCount();
+    }
+
+    public string QueryCount
+    {
+        get => Request?.Url?.Queries == null ? "" : Request?.Url?.Queries.GetDisplayCount();
+    }
+
+    public WorkspaceResponse Response
+    {
+        get => Request?.Response;
+        set
         {
-            get => _noRequestSentYet && Response == null;
-            set
+            if (Request != null)
             {
-                _noRequestSentYet = value;
-                RaisePropertyChanged("NoRequestSentYet");
-            }
-        }
-
-        public string ResponseHeadersCount
-        {
-            get => Response?.Headers == null ? "" : (Response?.Headers.Count == 0 ? "" : Response?.Headers.Count.ToString());
-        }
-
-        public string ResponseCookiesCount
-        {
-            get => Response?.Cookies == null ? "" : (Response?.Cookies.Count == 0 ? "" : Response?.Cookies.Count.ToString());
-        }
-
-        public bool AreTestsRunning
-        {
-            get => _areTestsRunning;
-            set
-            {
-                if (_areTestsRunning != value)
-                {
-                    _areTestsRunning = value;
-                    RaisePropertyChanged("AreTestsRunning");
-                }
-            }
-        }
-
-        public string BaseUrl
-        {
-            get => Request?.Url?.ToString() ?? "";
-            set
-            {
-                if (Request == null)
-                {
-                    return;
-                }
-
-                Request.Url.Set(value);
-                RaisePropertyChanged("BaseUrl");
-            }
-        }
-
-        public string Method
-        {
-            get => Request?.Method;
-            set
-            {
-                if (Request == null)
-                {
-                    return;
-                }
-
-                Request.Method = value;
-                RaisePropertyChanged("Method");
-            }
-        }
-
-        public bool Loading
-        {
-            get => _loading;
-            set
-            {
-                _loading = value;
-                RaisePropertyChanged("Loading");
-            }
-        }
-
-        public RequestBody Body
-        {
-            get => Request?.Body;
-        }
-
-        public Authentication Authentication
-        {
-            get => Request?.Auth;
-        }
-
-        public ObservableCollection<Parameter> ChainingRules
-        {
-            get => Request?.ChainingRules;
-        }
-
-        public int RequestPivotIndex
-        {
-            get => (int)(Request?.GetProperty<long>(ItemPropertyExtensions.RequestPivotIndex) ?? 0);
-            set
-            {
-                if (Request?.Properties != null && RequestPivotIndex != value)
-                {
-                    Request.SetProperty(ItemPropertyExtensions.RequestPivotIndex, (long)value);
-                    RaisePropertyChanged("RequestPivotIndex");
-                }
-            }
-        }
-
-        public int ResponsePivotIndex
-        {
-            get => (int)(Request?.GetProperty<long>(ItemPropertyExtensions.ResponsePivotIndex) ?? 0);
-            set
-            {
-                if (Request?.Properties != null && ResponsePivotIndex != value)
-                {
-                    Request.SetProperty(ItemPropertyExtensions.ResponsePivotIndex, (long)value);
-                    RaisePropertyChanged("ResponsePivotIndex");
-                }
-            }
-        }
-
-        public IList<KeyValuePair<string, string>> ResponseHeaders
-        {
-            get
-            {
-                if (Response?.Headers == null || Response.Headers.Count == 0)
-                {
-                    return new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>(
-                             _resourceLoader.GetString("Headers/Text"),
-                            _resourceLoader.GetString("NoneFound"))
-                    };
-                }
-                else
-                {
-                    return Response.Headers;
-                }
-            }
-        }
-
-        public IList<KeyValuePair<string, string>> ResponseCookies
-        {
-            get
-            {
-                if (Response?.Cookies == null || Response.Cookies.Count == 0)
-                {
-                    return new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>(
-                             _resourceLoader.GetString("Cookies/Text"), 
-                            _resourceLoader.GetString("NoneFound"))
-                    };
-                }
-                else
-                {
-                    return Response.Cookies;
-                }
-            }
-        }
-
-        public string ResponseLog
-        {
-            get => Response?.Log;
-            set
-            {
-                if (Response == null)
-                {
-                    return;
-                }
-
-                Response.Log = value;
+                Request.Response = value;
+                RaisePropertyChanged("Response");
+                RaisePropertyChanged("ResponseHeaders");
+                RaisePropertyChanged("ResponseCookies");
+                RaisePropertyChanged("ApiTestResults");
                 RaisePropertyChanged("ResponseLog");
+                RaisePropertyChanged("ResponseHeadersCount");
+                RaisePropertyChanged("ResponseCookiesCount");
+                RaisePropertyChanged("ApiTestResultsCount");
+                RaisePropertyChanged(nameof(IsErrorResponse));
+                RaisePropertyChanged(nameof(ShowResponsePivot));
+                IsStackTraceVisible = false; // reset to hidden
+                ResponseReceived?.Invoke(this, new EventArgs());
             }
         }
+    }
 
-        public void PasteCurl(string curlString)
+    public bool IsErrorResponse => Response?.StatusDescription == "Error";
+
+    public bool ShowResponsePivot => !IsErrorResponse;
+
+    public bool IsStackTraceVisible
+    {
+        get => _isStackTraceVisible;
+        set
         {
-            var dtoItem = _curlConverter.Convert(curlString);
-            if (dtoItem == null)
+            _isStackTraceVisible = value;
+            RaisePropertyChanged();
+        }
+    }
+    private bool _isStackTraceVisible;
+
+    public bool NoRequestSentYet
+    {
+        get => _noRequestSentYet && Response == null;
+        set
+        {
+            _noRequestSentYet = value;
+            RaisePropertyChanged("NoRequestSentYet");
+        }
+    }
+
+    public string ResponseHeadersCount
+    {
+        get => Response?.Headers == null ? "" : (Response?.Headers.Count == 0 ? "" : Response?.Headers.Count.ToString());
+    }
+
+    public string ResponseCookiesCount
+    {
+        get => Response?.Cookies == null ? "" : (Response?.Cookies.Count == 0 ? "" : Response?.Cookies.Count.ToString());
+    }
+
+    public bool AreTestsRunning
+    {
+        get => _areTestsRunning;
+        set
+        {
+            if (_areTestsRunning != value)
+            {
+                _areTestsRunning = value;
+                RaisePropertyChanged("AreTestsRunning");
+            }
+        }
+    }
+
+    public string BaseUrl
+    {
+        get => Request?.Url?.ToString() ?? "";
+        set
+        {
+            if (Request == null)
             {
                 return;
             }
 
-            BaseUrl = dtoItem.Url.Base;
-            Method = dtoItem.Method;
-            Request.Headers.Clear();
-            foreach (var h in dtoItem.Headers)
-            {
-                Request.Headers.Add(new Parameter(h.Enabled, h.Key, h.Value, ParamType.Header));
-            }
-
-            Body.BodyType = (RequestBodyType)(int)dtoItem.Body.BodyType;
-            Body.JsonBody = dtoItem.Body.JsonBody;
-            Body.TextBody = dtoItem.Body.TextBody;
-            Body.XmlBody = dtoItem.Body.XmlBody;
-
-            ClearResponse();
-            Analytics.TrackEvent(Telemetry.CurlPaste);
-        }
-
-        public void QueryValuesUpdated()
-        {
+            Request.Url.Set(value);
             RaisePropertyChanged("BaseUrl");
-            RaisePropertyChanged("QueryCount");
         }
+    }
 
-        public void HeaderValuesUpdated()
+    public string Method
+    {
+        get => Request?.Method;
+        set
         {
-            RaisePropertyChanged(nameof(HeaderCount));
-            UpdateAuthHeaderErrorMessage();
-        }
-
-        private void UpdateAuthHeaderErrorMessage()
-        {
-            if (Request?.Headers != null 
-                && Request.Headers.Any(x => x.Key.Trim().Equals("Authorization", StringComparison.OrdinalIgnoreCase))
-                && Request.Auth.AuthType != AuthType.None)
-            {
-                ShowAuthWarning = true;
-            }
-            else
-            {
-                ShowAuthWarning = false;
-            }
-        }
-
-        public void ChainValuesUpdated() => RaisePropertyChanged("ChainCount");
-
-        public async void SendRequestNoDownload()
-        {
-            if (Loading)
+            if (Request == null)
             {
                 return;
             }
 
-            await SendRequest(false);
+            Request.Method = value;
+            RaisePropertyChanged("Method");
         }
+    }
 
-        public async void SendRequestAndDownload()
+    public bool Loading
+    {
+        get => _loading;
+        set
         {
-            if (Loading)
-            {
-                return;
-            }
-
-            await SendRequest(true);
-            Analytics.TrackEvent("Send and download button clicked");
+            _loading = value;
+            RaisePropertyChanged("Loading");
         }
+    }
 
-        private async Task SendRequest(bool downloadResponse)
+    public RequestBody Body
+    {
+        get => Request?.Body;
+    }
+
+    public Authentication Authentication
+    {
+        get => Request?.Auth;
+    }
+
+    public ObservableCollection<Parameter> ChainingRules
+    {
+        get => Request?.ChainingRules;
+    }
+
+    public int RequestPivotIndex
+    {
+        get => (int)(Request?.GetProperty<long>(ItemPropertyExtensions.RequestPivotIndex) ?? 0);
+        set
         {
-            if (Request == null || Loading)
+            if (Request?.Properties != null && RequestPivotIndex != value)
             {
-                return;
+                Request.SetProperty(ItemPropertyExtensions.RequestPivotIndex, (long)value);
+                RaisePropertyChanged("RequestPivotIndex");
             }
+        }
+    }
 
-            Loading = true;
-            NoRequestSentYet = false;
-
-            // Allow loading animation to begin
-            await Task.Delay(1);
-
-            string baseUrl = _variableResolver.ResolveVariable(BaseUrl);
-            if (!NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable 
-                && !baseUrl.Contains("localhost") 
-                && !baseUrl.Contains("127.0.0.1"))
+    public int ResponsePivotIndex
+    {
+        get => (int)(Request?.GetProperty<long>(ItemPropertyExtensions.ResponsePivotIndex) ?? 0);
+        set
+        {
+            if (Request?.Properties != null && ResponsePivotIndex != value)
             {
-                var dialog = new Windows.UI.Xaml.Controls.ContentDialog()
+                Request.SetProperty(ItemPropertyExtensions.ResponsePivotIndex, (long)value);
+                RaisePropertyChanged("ResponsePivotIndex");
+            }
+        }
+    }
+
+    public IList<KeyValuePair<string, string>> ResponseHeaders
+    {
+        get
+        {
+            if (Response?.Headers == null || Response.Headers.Count == 0)
+            {
+                return new List<KeyValuePair<string, string>>
                 {
-                    Title = _resourceLoader.GetString("ErrorTitle"),
-                    Content = _resourceLoader.GetString("InternetUnavailable"),
-                    CloseButtonText = _resourceLoader.GetString("Okay")
+                    new KeyValuePair<string, string>(
+                         _resourceLoader.GetString("Headers/Text"),
+                        _resourceLoader.GetString("NoneFound"))
                 };
-                await dialog.ShowAsync();
-                Loading = false;
+            }
+            else
+            {
+                return Response.Headers;
+            }
+        }
+    }
+
+    public IList<KeyValuePair<string, string>> ResponseCookies
+    {
+        get
+        {
+            if (Response?.Cookies == null || Response.Cookies.Count == 0)
+            {
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>(
+                         _resourceLoader.GetString("Cookies/Text"), 
+                        _resourceLoader.GetString("NoneFound"))
+                };
+            }
+            else
+            {
+                return Response.Cookies;
+            }
+        }
+    }
+
+    public string ResponseLog
+    {
+        get => Response?.Log;
+        set
+        {
+            if (Response == null)
+            {
                 return;
             }
 
-            if (!baseUrl.StartsWith("http://") && !baseUrl.StartsWith("https://"))
-            {
-                BaseUrl = $"http://{BaseUrl}";
-            }
+            Response.Log = value;
+            RaisePropertyChanged("ResponseLog");
+        }
+    }
 
-            if (baseUrl.Contains("localhost") || baseUrl.Contains("127.0.0.1"))
-            {
-                // trigger banner message
-                _messageBus.Publish(new Message("localhost"));
-            }
-            else
-            {
-                // resets banner message
-                _messageBus.Publish(new Message(null));
-            }
+    public void PasteCurl(string curlString)
+    {
+        var dtoItem = _curlConverter.Convert(curlString);
+        if (dtoItem == null)
+        {
+            return;
+        }
 
-            WorkspaceResponse response = await _requestSender.SendRequestAsync(
-                Request,
-                _cts.Token,
-                _userSettings.Get<bool>(SettingsConstants.HistoryEnabled));
+        BaseUrl = dtoItem.Url.Base;
+        Method = dtoItem.Method;
+        Request.Headers.Clear();
+        foreach (var h in dtoItem.Headers)
+        {
+            Request.Headers.Add(new Parameter(h.Enabled, h.Key, h.Value, ParamType.Header));
+        }
 
-            if (Request is HistoryItem)
+        Body.BodyType = (RequestBodyType)(int)dtoItem.Body.BodyType;
+        Body.JsonBody = dtoItem.Body.JsonBody;
+        Body.TextBody = dtoItem.Body.TextBody;
+        Body.XmlBody = dtoItem.Body.XmlBody;
+
+        ClearResponse();
+        _telemetry.TrackEvent(Telemetry.CurlPaste);
+    }
+
+    public void QueryValuesUpdated()
+    {
+        RaisePropertyChanged("BaseUrl");
+        RaisePropertyChanged("QueryCount");
+    }
+
+    public void HeaderValuesUpdated()
+    {
+        RaisePropertyChanged(nameof(HeaderCount));
+        UpdateAuthHeaderErrorMessage();
+    }
+
+    private void UpdateAuthHeaderErrorMessage()
+    {
+        if (Request?.Headers != null 
+            && Request.Headers.Any(x => x.Key.Trim().Equals("Authorization", StringComparison.OrdinalIgnoreCase))
+            && Request.Auth.AuthType != AuthType.None)
+        {
+            ShowAuthWarning = true;
+        }
+        else
+        {
+            ShowAuthWarning = false;
+        }
+    }
+
+    public void ChainValuesUpdated() => RaisePropertyChanged("ChainCount");
+
+    public async void SendRequestNoDownload()
+    {
+        if (Loading)
+        {
+            return;
+        }
+
+        await SendRequest(false);
+    }
+
+    public async void SendRequestAndDownload()
+    {
+        if (Loading)
+        {
+            return;
+        }
+
+        await SendRequest(true);
+        _telemetry.TrackEvent("Send and download button clicked");
+    }
+
+    private async Task SendRequest(bool downloadResponse)
+    {
+        if (Request == null || Loading)
+        {
+            return;
+        }
+
+        Loading = true;
+        NoRequestSentYet = false;
+
+        // Allow loading animation to begin
+        await Task.Delay(1);
+
+        string baseUrl = _variableResolver.ResolveVariable(BaseUrl);
+        if (!NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable 
+            && !baseUrl.Contains("localhost") 
+            && !baseUrl.Contains("127.0.0.1"))
+        {
+            var dialog = new Windows.UI.Xaml.Controls.ContentDialog()
             {
-                Analytics.TrackEvent("History request sent");
-            }
-            else
-            {
-                Analytics.TrackEvent("Request sent");
-            }
-
-            if (downloadResponse)
-            {
-                await _fileWriter.WriteFileAsync(response);
-            }
-
-            Response = response;
-
+                Title = _resourceLoader.GetString("ErrorTitle"),
+                Content = _resourceLoader.GetString("InternetUnavailable"),
+                CloseButtonText = _resourceLoader.GetString("Okay")
+            };
+            await dialog.ShowAsync();
             Loading = false;
-
-            ExecuteChainingRules();
+            return;
         }
 
-        public void MethodChanged(object sender, AddedItemArgs<string> args)
+        if (!baseUrl.StartsWith("http://") && !baseUrl.StartsWith("https://"))
         {
-            if (args == null || args.AddedItem == "CUSTOM")
+            BaseUrl = $"http://{BaseUrl}";
+        }
+
+        if (baseUrl.Contains("localhost") || baseUrl.Contains("127.0.0.1"))
+        {
+            // trigger banner message
+            _messageBus.Publish(new Message("localhost"));
+        }
+        else
+        {
+            // resets banner message
+            _messageBus.Publish(new Message(null));
+        }
+
+        WorkspaceResponse response = await _requestSender.SendRequestAsync(
+            Request,
+            _cts.Token,
+            _userSettings.Get<bool>(SettingsConstants.HistoryEnabled));
+
+        if (Request is HistoryItem)
+        {
+            _telemetry.TrackEvent("History request sent");
+        }
+        else
+        {
+            _telemetry.TrackEvent("Request sent");
+        }
+
+        if (downloadResponse)
+        {
+            await _fileWriter.WriteFileAsync(response);
+        }
+
+        Response = response;
+
+        Loading = false;
+
+        ExecuteChainingRules();
+    }
+
+    public void MethodChanged(object sender, AddedItemArgs<string> args)
+    {
+        if (args == null || args.AddedItem == "CUSTOM")
+        {
+            // Re-assign the previous method
+            this.Method = this.Method;
+            return;
+        }
+
+        this.Method = args.AddedItem;
+    }
+
+    public void ExecuteChainingRules()
+    {
+        if (ChainingRules == null || ChainingRules.Count == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < ChainingRules.Count; i++)
+        {
+            Parameter rule = ChainingRules[i];
+
+            if (!rule.Enabled || string.IsNullOrWhiteSpace(rule.Key) || string.IsNullOrWhiteSpace(rule.Value))
             {
-                // Re-assign the previous method
-                this.Method = this.Method;
-                return;
+                continue;
             }
 
-            this.Method = args.AddedItem;
-        }
-
-        public void ExecuteChainingRules()
-        {
-            if (ChainingRules == null || ChainingRules.Count == 0)
-            {
-                return;
-            }
-
-            for (int i = 0; i < ChainingRules.Count; i++)
-            {
-                Parameter rule = ChainingRules[i];
-
-                if (!rule.Enabled || string.IsNullOrWhiteSpace(rule.Key) || string.IsNullOrWhiteSpace(rule.Value))
-                {
-                    continue;
-                }
-
-                try
-                {
-                    string newValue = _responseValueExtractor.Extract(this.Response, rule.Value);
-                    EnvironmentContainer.UpdateVariableValue(rule.Key, newValue, shallow: false);
-                }
-                catch (Exception e)
-                {
-                    Analytics.TrackEvent("Chaing rule extraction failed", new Dictionary<string, string>
-                    {
-                        { "error", e.Message },
-                        { "chain rule property path", rule.Value }
-                    });
-                    ResponseLog += $"> Could not execute chain rule for path {rule.Value}. Error: {e.Message}.";
-                }
-            }
-
-            int chainRulesExecuted = ChainingRules
-                .Where(x => x.Enabled
-                    && !string.IsNullOrWhiteSpace(x.Key)
-                    && !string.IsNullOrWhiteSpace(x.Value))
-                .Count();
-
-            if (chainRulesExecuted > 0)
-            {
-                Analytics.TrackEvent("Chain rules executed", new Dictionary<string, string>
-                {
-                    { "count", chainRulesExecuted.ToString() }
-                });
-            }
-        }
-
-        public void ClearResponse()
-        {
-            Response = null;
-            Analytics.TrackEvent("Response cleared");
-        }
-
-        public void Cancel()
-        {
-            if (_cts != null)
-            {
-                _cts.Cancel();
-                _cts.Dispose();
-                _cts = new CancellationTokenSource();
-            }
-        }
-
-        public void CopyResponseHeaders()
-        {
-            CopyList(Response?.Headers);
-            Analytics.TrackEvent("Headers copied");
-        }
-
-        public void CopyResponseCookies()
-        {
-            CopyList(Response?.Cookies);
-            Analytics.TrackEvent("Cookies copied");
-        }
-
-        private void CopyList(IList<KeyValuePair<string,string>> list)
-        {
-            if (list == null || list.Count == 0)
-            {
-                Common.Copy("");
-                return;
-            }
-
-            var result = string.Join(
-                System.Environment.NewLine,
-                list.Select(x => $"{x.Key}: {x.Value}"));
-
-            Common.Copy(result);
-        }
-
-        public async void Troubleshoot()
-        {
             try
             {
-                await Launcher.LaunchUriAsync(new Uri("https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/docs/tsg.md"));
+                string newValue = _responseValueExtractor.Extract(this.Response, rule.Value);
+                EnvironmentContainer.UpdateVariableValue(rule.Key, newValue, shallow: false);
             }
-            catch
+            catch (Exception e)
             {
+                _telemetry.TrackEvent("Chaining rule extraction failed", new Dictionary<string, string>
+                {
+                    { "error", e.Message },
+                    { "chain rule property path", rule.Value }
+                });
+                ResponseLog += $"> Could not execute chain rule for path {rule.Value}. Error: {e.Message}.";
             }
         }
 
-        public void ToggleStackTrace()
+        int chainRulesExecuted = ChainingRules
+            .Where(x => x.Enabled
+                && !string.IsNullOrWhiteSpace(x.Key)
+                && !string.IsNullOrWhiteSpace(x.Value))
+            .Count();
+
+        if (chainRulesExecuted > 0)
         {
-            IsStackTraceVisible = !IsStackTraceVisible;
+            _telemetry.TrackEvent("Chain rules executed", new Dictionary<string, string>
+            {
+                { "count", chainRulesExecuted.ToString() }
+            });
         }
+    }
+
+    public void ClearResponse()
+    {
+        Response = null;
+        _telemetry.TrackEvent("Response cleared");
+    }
+
+    public void Cancel()
+    {
+        if (_cts != null)
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _cts = new CancellationTokenSource();
+        }
+    }
+
+    public void CopyResponseHeaders()
+    {
+        CopyList(Response?.Headers);
+        _telemetry.TrackEvent("Headers copied");
+    }
+
+    public void CopyResponseCookies()
+    {
+        CopyList(Response?.Cookies);
+        _telemetry.TrackEvent("Cookies copied");
+    }
+
+    private void CopyList(IList<KeyValuePair<string,string>> list)
+    {
+        if (list == null || list.Count == 0)
+        {
+            Common.Copy("");
+            return;
+        }
+
+        var result = string.Join(
+            System.Environment.NewLine,
+            list.Select(x => $"{x.Key}: {x.Value}"));
+
+        Common.Copy(result);
+    }
+
+    public async void Troubleshoot()
+    {
+        try
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/docs/tsg.md"));
+        }
+        catch
+        {
+        }
+    }
+
+    public void ToggleStackTrace()
+    {
+        IsStackTraceVisible = !IsStackTraceVisible;
     }
 }
