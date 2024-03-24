@@ -1,5 +1,5 @@
-﻿using JeniusApps.Nightingale.Converters.OData;
-using Microsoft.Toolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
+using JeniusApps.Nightingale.Converters.OData;
 using Newtonsoft.Json;
 using Nightingale.Core.Workspaces.Models;
 using System;

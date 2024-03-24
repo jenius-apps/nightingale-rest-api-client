@@ -15,7 +15,10 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <Grid x:Name="RootGrid" Loaded="RootGrid_Loaded">
+    <Grid
+        x:Name="RootGrid"
+        Background="{ThemeResource Page3Background}"
+        Loaded="RootGrid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />

@@ -95,6 +95,7 @@
                         Margin="4,0,0,0"
                         VerticalAlignment="Top"
                         Background="Transparent"
+                        BorderBrush="Transparent"
                         Click="PrivateButtonClicked"
                         Content="&#xE72E;"
                         FontFamily="Segoe MDL2 Assets"
@@ -205,10 +206,10 @@
                     Grid.Column="4"
                     Margin="4,0,0,0"
                     VerticalAlignment="Stretch"
-                    Background="Transparent"
                     Content="&#xE72E;"
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="16"
+                    Style="{StaticResource TransparentRevealButton}"
                     ToolTipService.ToolTip="Block value from being exported"
                     Visibility="{x:Bind ParameterType, Converter={StaticResource EnvTypeVisibility}}" />
 

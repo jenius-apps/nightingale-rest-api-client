@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JeniusApps.Common" Version="0.0.36-preview" />
     <PackageReference Include="JeniusApps.Insomnia.NET" Version="0.0.4-preview" />
     <PackageReference Include="JeniusApps.Nightingale.Converters" Version="4.2.3-preview" />
     <PackageReference Include="JeniusApps.Postman.NET" Version="0.2.4-preview" />

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using JeniusApps.Common.Telemetry;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Core.Workspaces.Services;
 using Nightingale.Navigation;
@@ -36,7 +37,8 @@ namespace Nightingale.Tabs.Factories
             var result = new RequestViewModel(
                 navigationParameters as RequestPageParameters,
                 _scope.GetRequiredService<IWorkspaceTreeModifier>(),
-                _scope.GetRequiredService<ITabCollectionContainer>());
+                _scope.GetRequiredService<ITabCollectionContainer>(),
+                _scope.GetRequiredService<ITelemetry>());
             return result;
         }
     }

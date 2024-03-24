@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using JeniusApps.Common.Telemetry;
 using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Mock.Services;
 using Nightingale.Core.Workspaces.Models;
@@ -41,7 +42,8 @@ namespace Nightingale.Navigation
                 requestControlViewModel.Request = item;
                 requestControlViewModel.MockDataViewModel = new Mock.MockDataViewModel(
                     item.MockData,
-                    _scope.GetRequiredService<IDeployService>());
+                    _scope.GetRequiredService<IDeployService>(),
+                    _scope.GetRequiredService<ITelemetry>());
                 authViewModel.ActiveAuthModel = item.Auth;
                 requestBodyViewModel.RequestBody = item.Body;
                 bodyControlViewModel.WorkspaceResponse = item.Response;

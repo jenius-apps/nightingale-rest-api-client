@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenter.Analytics;
+﻿using JeniusApps.Common.Telemetry;
 using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Dialogs;
 using Nightingale.Core.Export;
@@ -29,15 +29,18 @@ namespace Nightingale.Dialogs
         private readonly IServiceProvider _scope;
         private readonly IUserSettings _userSettings;
         private readonly IItemFactory _itemFactory;
+        private readonly ITelemetry _telemetry;
 
         public DialogService(
             IServiceProvider scope,
             IUserSettings userSettings,
-            IItemFactory itemFactory)
+            IItemFactory itemFactory,
+            ITelemetry telemetry)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
             _userSettings = userSettings ?? throw new ArgumentNullException(nameof(userSettings));
             _itemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
+            _telemetry = telemetry;
         }
 
         /// <inheritdoc/>
@@ -287,7 +290,7 @@ namespace Nightingale.Dialogs
 
             if (dialog.DeleteWithoutAsking)
             {
-                Analytics.TrackEvent(Telemetry.DeleteWithoutAskingChecked);
+                _telemetry.TrackEvent(Telemetry.DeleteWithoutAskingChecked);
                 await _userSettings.SetAsync(SettingsConstants.ConfirmDeletion, false);
             }
 
