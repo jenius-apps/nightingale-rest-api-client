@@ -106,18 +106,18 @@
             NavigateUri="https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/docs/environments.md" />
 
         <!--  master detail view  -->
-        <controls:MasterDetailsView
+        <controls:ListDetailsView
             Grid.Row="4"
             Margin="0,0,0,0"
             BackButtonBehavior="Manual"
             Background="Transparent"
             CompactModeThresholdWidth="100"
             ItemsSource="{x:Bind EnvironmentList, Mode=OneWay}"
-            MasterPaneWidth="168"
+            ListPaneWidth="168"
             SelectedItem="{x:Bind SelectedEnvironment, Mode=TwoWay}">
 
             <!--  master template  -->
-            <controls:MasterDetailsView.ItemTemplate>
+            <controls:ListDetailsView.ItemTemplate>
                 <DataTemplate x:DataType="vm:EnvItemViewModel">
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
@@ -156,10 +156,10 @@
                         </Button>
                     </Grid>
                 </DataTemplate>
-            </controls:MasterDetailsView.ItemTemplate>
+            </controls:ListDetailsView.ItemTemplate>
 
             <!--  details template  -->
-            <controls:MasterDetailsView.DetailsTemplate>
+            <controls:ListDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="vm:EnvItemViewModel">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -230,10 +230,10 @@
                             ParameterType="EnvVariable" />
                     </Grid>
                 </DataTemplate>
-            </controls:MasterDetailsView.DetailsTemplate>
+            </controls:ListDetailsView.DetailsTemplate>
 
             <!--  no selection template  -->
-            <controls:MasterDetailsView.NoSelectionContentTemplate>
+            <controls:ListDetailsView.NoSelectionContentTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -255,8 +255,8 @@
                             Style="{StaticResource PlaceholderTextblock}" />
                     </Grid>
                 </DataTemplate>
-            </controls:MasterDetailsView.NoSelectionContentTemplate>
-        </controls:MasterDetailsView>
+            </controls:ListDetailsView.NoSelectionContentTemplate>
+        </controls:ListDetailsView>
 
         <ToggleSwitch
             Grid.Row="5"
