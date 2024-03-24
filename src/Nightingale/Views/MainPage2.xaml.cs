@@ -52,7 +52,7 @@ namespace Nightingale.Views
 
         private void ChangeBackgroundImageTheme(object sender, EventArgs e)
         {
-            var imageName = UserSettings.Get<string>(SettingsConstants.BackgroundImage);
+            var imageName = App.Services.GetRequiredService<IUserSettings>().Get<string>(SettingsConstants.BackgroundImage);
             if (!string.IsNullOrWhiteSpace(imageName))
             {
                 var isDarkTheme = App.RootFrame.ActualTheme == ElementTheme.Dark;
@@ -71,7 +71,7 @@ namespace Nightingale.Views
 
         private void InitializeBackground()
         {
-            var imageName = UserSettings.Get<string>(SettingsConstants.BackgroundImage);
+            var imageName = App.Services.GetRequiredService<IUserSettings>().Get<string>(SettingsConstants.BackgroundImage);
             SetBackground(imageName);
         }
 

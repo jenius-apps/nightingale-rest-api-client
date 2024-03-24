@@ -75,6 +75,11 @@ namespace Nightingale
         private void ActivateActipro()
         {
             var appsettings = _serviceProvider?.GetRequiredService<IAppSettings>();
+            if (string.IsNullOrEmpty(appsettings.ActiproLicensee) || string.IsNullOrEmpty(appsettings.ActiproLicenseKey))
+            {
+                return;
+            }
+
             ActiproSoftware.Products.ActiproLicenseManager.RegisterLicense(
                 appsettings.ActiproLicensee,
                 appsettings.ActiproLicenseKey);
@@ -85,10 +90,13 @@ namespace Nightingale
             /// Initialize analytics
             AppCenter.SetCountryCode(new GeographicRegion().CodeTwoLetter);
             AppCenter.Start(_serviceProvider?.GetRequiredService<IAppSettings>().TelemetryApiKey, [typeof(Analytics), typeof(Crashes)]);
-#if DEBUG
             bool telemetryEnabled = false;
+#if DEBUG
 #else
-            bool telemetryEnabled = UserSettings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
+            if (_serviceProvider?.GetRequiredService<Core.Settings.IUserSettings>() is { } settings)
+            {
+                telemetryEnabled = settings.Get<bool>(Core.Settings.SettingsConstants.TelemetryEnabledKey);
+            }
 #endif
             await AppCenter.SetEnabledAsync(telemetryEnabled);
         }

@@ -54,6 +54,7 @@ public class MainPageViewModel : ViewModelBase
     private readonly IDeployService _deployService;
     private readonly IStorage _storage;
     private readonly IExportService _exportService;
+    private readonly IUserSettings _userSettings;
     private readonly string _workspaceRootId = "root";
     private Workspace _selectedWorkspace;
     private bool _saving;
@@ -81,26 +82,28 @@ public class MainPageViewModel : ViewModelBase
         IDeployService deployService,
         MvpViewModel mvpViewModel,
         IStorage storage,
-        IExportService exportService)
+        IExportService exportService,
+        IUserSettings userSettings)
     {
-        MvpViewModel = mvpViewModel ?? throw new ArgumentNullException(nameof(mvpViewModel));
-        _storage = storage ?? throw new ArgumentNullException(nameof(storage));
-        _workspaceStorageAccessor = workspaceStorageAccessor ?? throw new ArgumentNullException(nameof(workspaceStorageAccessor));
-        _workspaceListModifier = workspaceListModifier ?? throw new ArgumentNullException(nameof(workspaceListModifier));
-        _workspaceContainer = workspaceContainer ?? throw new ArgumentNullException(nameof(workspaceContainer));
-        _environmentContainer = environmentContainer ?? throw new ArgumentNullException(nameof(environmentContainer));
-        _cookieJar = cookieJar ?? throw new ArgumentNullException(nameof(cookieJar));
-        _workspaceNavigationService = workspaceNavigationService ?? throw new ArgumentNullException(nameof(workspaceNavigationService));
-        _cookieDialogService = cookieDialogService ?? throw new ArgumentNullException(nameof(cookieDialogService));
-        _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-        _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
-        _methodsContainer = methodsContainer ?? throw new ArgumentNullException(nameof(methodsContainer));
-        _workspaceTreeModifier = workspaceTreeModifier ?? throw new ArgumentNullException(nameof(workspaceTreeModifier));
-        _visualStatePublisher = visualStatePublisher ?? throw new ArgumentNullException(nameof(visualStatePublisher));
-        _environmentDialogService = environmentDialogService ?? throw new ArgumentNullException(nameof(environmentDialogService));
-        _tabContainer = tabContainer ?? throw new ArgumentNullException(nameof(tabContainer));
-        _deployService = deployService ?? throw new ArgumentNullException(nameof(deployService));
-        _exportService = exportService ?? throw new ArgumentNullException(nameof(exportService));
+        MvpViewModel = mvpViewModel;
+        _storage = storage;
+        _workspaceStorageAccessor = workspaceStorageAccessor;
+        _workspaceListModifier = workspaceListModifier;
+        _workspaceContainer = workspaceContainer ;
+        _environmentContainer = environmentContainer;
+        _cookieJar = cookieJar;
+        _workspaceNavigationService = workspaceNavigationService;
+        _cookieDialogService = cookieDialogService;
+        _dialogService = dialogService;
+        _messageBus = messageBus;
+        _methodsContainer = methodsContainer;
+        _workspaceTreeModifier = workspaceTreeModifier;
+        _visualStatePublisher = visualStatePublisher;
+        _environmentDialogService = environmentDialogService;
+        _tabContainer = tabContainer;
+        _deployService = deployService;
+        _exportService = exportService;
+        _userSettings = userSettings;
 
         this._workspaceItemNavigationService = workspaceItemNavigationService ?? throw new ArgumentNullException(nameof(workspaceItemNavigationService));
         UpdateRateButtonVisibility();
@@ -116,7 +119,7 @@ public class MainPageViewModel : ViewModelBase
 
         _visualStatePublisher.PaneLayoutToggled += PaneLayoutChanged;
 
-        if (UserSettings.Get<bool>(SettingsConstants.AutoSaveInterval))
+        if (_userSettings.Get<bool>(SettingsConstants.AutoSaveInterval))
         {
             _saveTimer = new Timer(TimerCallback, null, 300000 /* 5 minutes */, 300000);
         }
@@ -174,7 +177,7 @@ public class MainPageViewModel : ViewModelBase
     {
         var deferral = e.GetDeferral();
 
-        if (UserSettings.Get<bool>(SettingsConstants.AutoSaveEnabled))
+        if (_userSettings.Get<bool>(SettingsConstants.AutoSaveEnabled))
         {
             Saving = true;
             await _workspaceStorageAccessor.SaveWorkspacesAsync(Workspaces, _workspaceRootId, SelectedWorkspace?.Id);
@@ -639,7 +642,7 @@ public class MainPageViewModel : ViewModelBase
     {
         bool displayRateButton = await Task.Run(() =>
         {
-            bool IsAlreadyRated = UserSettings.Get<bool>(SettingsConstants.IsAppRated);
+            bool IsAlreadyRated = _userSettings.Get<bool>(SettingsConstants.IsAppRated);
             return IsAlreadyRated ? false : new Random().Next(2) == 0;
         });
 

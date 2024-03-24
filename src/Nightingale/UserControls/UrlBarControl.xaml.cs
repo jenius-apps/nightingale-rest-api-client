@@ -1,4 +1,5 @@
-﻿using Nightingale.Core.Settings;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Nightingale.Core.Settings;
 using Nightingale.CustomEventArgs;
 using Nightingale.Handlers;
 using Nightingale.Utilities;
@@ -25,7 +26,7 @@ namespace Nightingale.UserControls
         {
             this.InitializeComponent();
 
-            if (UserSettings.Get<bool>(SettingsConstants.AlwaysWrapURL))
+            if (App.Services.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.AlwaysWrapURL))
             {
                 VisualStateManager.GoToState(this, "Focused", false);
             }
@@ -72,7 +73,7 @@ namespace Nightingale.UserControls
             UrlTextBoxLostFocus?.Invoke(this, new EventArgs());
 
             // Only revert to normal if alwaysWrapUrl = true.
-            if (!UserSettings.Get<bool>(SettingsConstants.AlwaysWrapURL))
+            if (!App.Services.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.AlwaysWrapURL))
             {
                 VisualStateManager.GoToState(this, "Normal", false);
             }

@@ -141,6 +141,28 @@
                                 FontFamily="Segoe MDL2 Assets"
                                 Text="&#xE10B;" />
                         </StackPanel>
+
+                        <TextBlock
+                            Margin="0,12,0,4"
+                            Style="{StaticResource BaseTextblock}"
+                            Text="Request timeout in seconds (Requires restart)" />
+                        <Grid Margin="0,4,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                                Height="28"
+                                VerticalContentAlignment="Center"
+                                IsEnabled="{x:Bind ViewModel.TimeoutTextEnabled, Mode=OneWay}"
+                                MaxLength="4"
+                                Text="{x:Bind ViewModel.TimeoutText, Mode=TwoWay}" />
+                            <CheckBox
+                                Grid.Column="1"
+                                Margin="12,0,0,0"
+                                Content="Infinite timeout"
+                                IsChecked="{x:Bind ViewModel.InfiniteTimeoutEnabled, Mode=TwoWay}" />
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

@@ -37,6 +37,7 @@ namespace Nightingale.ViewModels
         private readonly IDeployService _deployService;
         private readonly KbShortcutsHandler _keyboardShortcutHandler;
         private readonly IExportService _exportService;
+        private readonly IUserSettings _userSettings;
         private Workspace _selectedWorkspace;
         private bool _exportFlyoutVisible;
 
@@ -49,17 +50,19 @@ namespace Nightingale.ViewModels
             ITabCollectionContainer tabContainer,
             KbShortcutsHandler keyboardShortcutHandler,
             IDeployService deployService,
-            IExportService exportService)
+            IExportService exportService,
+            IUserSettings userSettings)
         {
-            _exportService = exportService ?? throw new ArgumentNullException(nameof(exportService));
-            _workspaceModifier = workspaceModifier ?? throw new ArgumentNullException(nameof(workspaceModifier));
-            _visualStatePublisher = visualStatePublisher ?? throw new ArgumentNullException(nameof(visualStatePublisher));
-            _environmentDialogService = environmentDialogFactory ?? throw new ArgumentNullException(nameof(environmentDialogFactory));
-            _workspaceItemNavigationService = workspaceItemNavigationService ?? throw new ArgumentNullException(nameof(workspaceItemNavigationService));
-            _codeGeneratorViewModelFactory = codeGeneratorViewModelFactory ?? throw new ArgumentNullException(nameof(codeGeneratorViewModelFactory));
-            _tabContainer = tabContainer ?? throw new ArgumentNullException(nameof(tabContainer));
-            _deployService = deployService ?? throw new ArgumentNullException(nameof(deployService));
-            _keyboardShortcutHandler = keyboardShortcutHandler ?? throw new ArgumentNullException(nameof(keyboardShortcutHandler));
+            _exportService = exportService;
+            _workspaceModifier = workspaceModifier;
+            _visualStatePublisher = visualStatePublisher;
+            _environmentDialogService = environmentDialogFactory;
+            _workspaceItemNavigationService = workspaceItemNavigationService;
+            _codeGeneratorViewModelFactory = codeGeneratorViewModelFactory;
+            _tabContainer = tabContainer;
+            _deployService = deployService;
+            _keyboardShortcutHandler = keyboardShortcutHandler;
+            _userSettings = userSettings;
 
             _visualStatePublisher.SideBarVisibilityChanged -= _visualStatePublisher_SideBarVisibilityChanged;
             _visualStatePublisher.SideBarVisibilityChanged += _visualStatePublisher_SideBarVisibilityChanged;
@@ -89,7 +92,7 @@ namespace Nightingale.ViewModels
 
         public bool IsSideBarVisible
         {
-            get => UserSettings.Get<bool>(SettingsConstants.SideBarVisible);
+            get => _userSettings.Get<bool>(SettingsConstants.SideBarVisible);
             set
             {
                 if (IsSideBarVisible != value)
@@ -211,7 +214,7 @@ namespace Nightingale.ViewModels
         {
             get
             {
-                double widthValue = IsSideBarVisible ? UserSettings.Get<double>(SettingsConstants.SidebarWidth) : 0d;
+                double widthValue = IsSideBarVisible ? _userSettings.Get<double>(SettingsConstants.SidebarWidth) : 0d;
                 return new GridLength(widthValue, GridUnitType.Pixel);
             }
         }

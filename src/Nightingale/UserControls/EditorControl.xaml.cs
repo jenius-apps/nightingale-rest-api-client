@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nightingale.Handlers;
 using Nightingale.Core.Settings;
+using Microsoft.Extensions.DependencyInjection;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -54,7 +55,7 @@ namespace Nightingale.UserControls
                 Editor.InputBindings.Remove(binding);
             }
 
-            Editor.IsWordWrapEnabled = UserSettings.Get<bool>(SettingsConstants.WordWrapEditor);
+            Editor.IsWordWrapEnabled = App.Services.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.WordWrapEditor);
         }
 
         private void ThemeController_ThemeChanged(object sender, EventArgs e)

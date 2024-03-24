@@ -37,6 +37,7 @@ namespace Nightingale.ViewModels
         private readonly IVisualStatePublisher _visualStatePublisher;
         private readonly IMessageBus _messageBus;
         private readonly ICurlConverter _curlConverter;
+        private readonly IUserSettings _userSettings;
         private readonly ResourceLoader _resourceLoader;
 
         private Item _request;
@@ -53,17 +54,19 @@ namespace Nightingale.ViewModels
             IVariableResolver variableResolver,
             IVisualStatePublisher visualStatePublisher,
             IMessageBus messageBus,
-            ICurlConverter curlConverter)
+            ICurlConverter curlConverter,
+            IUserSettings userSettings)
         {
             _cts = new CancellationTokenSource();
-            _requestSender = sender ?? throw new ArgumentNullException(nameof(sender));
-            _curlConverter = curlConverter ?? throw new ArgumentNullException(nameof(curlConverter));
-            _fileWriter = fileWriter ?? throw new ArgumentNullException(nameof(fileWriter));
-            _responseValueExtractor = responseValueExtractor ?? throw new ArgumentNullException(nameof(responseValueExtractor));
-            EnvironmentContainer = environmentContainer ?? throw new ArgumentNullException(nameof(environmentContainer));
-            _variableResolver = variableResolver ?? throw new ArgumentNullException(nameof(variableResolver));
-            _visualStatePublisher = visualStatePublisher ?? throw new ArgumentNullException(nameof(visualStatePublisher));
-            _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
+            _requestSender = sender;
+            _curlConverter = curlConverter;
+            _fileWriter = fileWriter;
+            _responseValueExtractor = responseValueExtractor;
+            EnvironmentContainer = environmentContainer;
+            _variableResolver = variableResolver;
+            _visualStatePublisher = visualStatePublisher;
+            _messageBus = messageBus;
+            _userSettings = userSettings;
             _resourceLoader = ResourceLoader.GetForCurrentView();
 
             _visualStatePublisher.PaneLayoutToggled += VisualStatePublisher_PaneLayoutToggled;
@@ -465,7 +468,7 @@ namespace Nightingale.ViewModels
             WorkspaceResponse response = await _requestSender.SendRequestAsync(
                 Request,
                 _cts.Token,
-                UserSettings.Get<bool>(SettingsConstants.HistoryEnabled));
+                _userSettings.Get<bool>(SettingsConstants.HistoryEnabled));
 
             if (Request is HistoryItem)
             {

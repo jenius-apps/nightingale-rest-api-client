@@ -24,5 +24,9 @@ namespace Nightingale.Core.Settings
         /// <param name="settingKey">The settings key, generally found in <see cref="SettingsConstants"/>.</param>
         /// <returns>The desired value or returns the default value.</returns>
         Task<T> GetAsync<T>(string settingKey);
+
+        public T Get<T>(string settingKey);
+
+        public void Set<T>(string settingKey, object value);
     }
 }

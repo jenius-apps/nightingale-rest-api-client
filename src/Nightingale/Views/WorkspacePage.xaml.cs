@@ -1,4 +1,5 @@
-﻿using Nightingale.Core.Settings;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Nightingale.Core.Settings;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Handlers;
 using Nightingale.Navigation;
@@ -47,7 +48,7 @@ public sealed partial class WorkspacePage : Page
             var inputWidth = SideBarColumn.Width.Value;
             if (!double.IsNaN(inputWidth))
             {
-                UserSettings.Set<double>(SettingsConstants.SidebarWidth, inputWidth);
+                App.Services.GetRequiredService<IUserSettings>().Set<double>(SettingsConstants.SidebarWidth, inputWidth);
             }
         }
     }
@@ -139,7 +140,7 @@ public sealed partial class WorkspacePage : Page
 
     private void EnvQuickEditClicked(object sender, RoutedEventArgs e)
     {
-        if (UserSettings.Get<bool>(SettingsConstants.EnableEnvQuickEdit))
+        if (App.Services.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.EnableEnvQuickEdit))
         {
             if (sender is FrameworkElement fe)
             {

@@ -37,6 +37,8 @@ namespace Nightingale.Core.Settings
         public const string BackgroundImage = "BackgroundImage";
         public const string AlwaysWrapURL = "AlwaysWrapURL";
         public const string WordWrapEditor = "WordWrapEditor";
+        public const string TimeoutSecondsKey = "TimeOutSeconds";
+        public const string InfiniteTimeoutKey = "InfiniteTimeout";
 
         /// <summary>
         ///  Settings defaults.
@@ -69,7 +71,9 @@ namespace Nightingale.Core.Settings
             { AlwaysWrapURL, false },
             { WordWrapEditor, false },
             { BackgroundImage, "" },
-            { AutoSaveInterval, true }
+            { AutoSaveInterval, true },
+            { TimeoutSecondsKey, 100d },
+            { InfiniteTimeoutKey, false },
         };
     }
 }
