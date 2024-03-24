@@ -18,11 +18,17 @@ public partial class SettingsViewModel : ObservableObject
 
     public SettingsViewModel(
         IUserSettings userSettings,
-        ITelemetry telemetry)
+        ITelemetry telemetry,
+        IRecentUrlCache recentUrlCache,
+        BackgroundSettingsViewModel backgroundSettingsViewModel)
     {
         _userSettings = userSettings;
         _telemetry = telemetry;
         _timeoutText = _userSettings.Get<double>(SettingsConstants.TimeoutSecondsKey).ToString();
+        BackgroundSettingsViewModel = backgroundSettingsViewModel;
+        _recentUrlCache = recentUrlCache ?? throw new ArgumentNullException(nameof(recentUrlCache));
+        DeletingPasswords = false;
+        CanClearUrls = true;
     }
 
     private bool _loading;
@@ -282,16 +288,6 @@ public partial class SettingsViewModel : ObservableObject
             var version = SystemInformation.Instance.ApplicationVersion;
             return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
-    }
-
-    public SettingsViewModel(
-        IRecentUrlCache recentUrlCache,
-        BackgroundSettingsViewModel backgroundSettingsViewModel)
-    {
-        BackgroundSettingsViewModel = backgroundSettingsViewModel;
-        _recentUrlCache = recentUrlCache ?? throw new ArgumentNullException(nameof(recentUrlCache));
-        DeletingPasswords = false;
-        CanClearUrls = true;
     }
 
     public BackgroundSettingsViewModel BackgroundSettingsViewModel { get; set; }

@@ -349,9 +349,10 @@
             <muxc:TabView.TabStripHeader>
                 <Button
                     Height="32"
+                    Margin="4,0,0,0"
                     AutomationProperties.Name="Toggle side bar"
-                    Background="Transparent"
                     Click="{x:Bind ViewModel.ToggleSideBar}"
+                    Style="{StaticResource TransparentRevealButton}"
                     ToolTipService.ToolTip="Click to hide or show the side bar">
 
                     <Grid>
@@ -415,12 +416,13 @@
                                     <Ellipse
                                         Width="9"
                                         Height="9"
-                                        Margin="0,0,10,0"
+                                        Margin="0,0,14,0"
                                         HorizontalAlignment="Right"
                                         Fill="{ThemeResource SystemAccentColorLight2}"
                                         Visibility="{x:Bind EllipseVisible, Mode=OneWay}" />
 
                                     <Button
+                                        Margin="0,0,12,0"
                                         HorizontalAlignment="Right"
                                         AutomationProperties.Name="Save temporary item to workspace"
                                         Click="SaveTabClicked"
@@ -429,7 +431,7 @@
                                         Visibility="{x:Bind SaveButtonVisible, Mode=OneWay}">
                                         <FontIcon
                                             FontFamily="Segoe MDL2 Assets"
-                                            FontSize="16"
+                                            FontSize="14"
                                             Glyph="&#xE105;" />
                                     </Button>
                                 </Grid>

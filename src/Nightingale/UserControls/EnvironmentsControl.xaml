@@ -121,7 +121,7 @@
                 <DataTemplate x:DataType="vm:EnvItemViewModel">
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="102" />
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
@@ -136,6 +136,7 @@
                         <Button
                             Grid.Column="1"
                             Margin="4,0"
+                            Padding="8"
                             VerticalAlignment="Center"
                             Content="&#xE107;"
                             FontFamily="Segoe MDL2 Assets"

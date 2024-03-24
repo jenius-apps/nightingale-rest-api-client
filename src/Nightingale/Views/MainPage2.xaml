@@ -83,8 +83,7 @@
             x:Name="WorkspaceSwitcher"
             Grid.Row="0"
             HorizontalAlignment="Center"
-            Background="Transparent"
-            CornerRadius="0">
+            Style="{StaticResource TransparentDropDownButtonStyle}">
             <m:DropDownButton.Content>
                 <TextBlock Style="{StaticResource BaseTextblock}" Text="{x:Bind ViewModel.WorkspaceName, Mode=OneWay}" />
             </m:DropDownButton.Content>
