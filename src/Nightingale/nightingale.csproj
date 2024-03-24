@@ -176,9 +176,6 @@
     <Compile Include="Dialogs\TutorialDialog.xaml.cs">
       <DependentUpon>TutorialDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\MvpDialog.xaml.cs">
-      <DependentUpon>MvpDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Editor\HtmlSyntaxLanguage.cs" />
     <Compile Include="Editor\JavaScriptIndentProvider.cs" />
     <Compile Include="Editor\JavascriptOutliningSource.cs" />
@@ -294,9 +291,6 @@
     <Compile Include="UserControls\ChainingRulesControl.xaml.cs">
       <DependentUpon>ChainingRulesControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\SupportView.xaml.cs">
-      <DependentUpon>SupportView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\TutorialItem.xaml.cs">
       <DependentUpon>TutorialItem.xaml</DependentUpon>
     </Compile>
@@ -333,7 +327,6 @@
     <Compile Include="ViewModels\Factories\ICodeGeneratorViewModelFactory.cs" />
     <Compile Include="ViewModels\ImportPostmanViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\MvpViewModel.cs" />
     <Compile Include="ViewModels\RequestBodyViewModel.cs" />
     <Compile Include="ViewModels\RequestControlViewModel.cs" />
     <Compile Include="ViewModels\RequestPageViewModel.cs" />
@@ -474,10 +467,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\MvpDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Mock\MockDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -559,10 +548,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ChainingRulesControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\SupportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -667,7 +652,7 @@
       <Version>7.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.6</Version>
+      <Version>2.7.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>

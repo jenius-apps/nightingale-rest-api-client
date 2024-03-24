@@ -58,25 +58,6 @@ namespace Nightingale.Dialogs
         }
 
         /// <inheritdoc/>
-        public async Task OpenMvpAsync()
-        {
-            if (IsDialogActive)
-            {
-                return;
-            }
-
-            IsDialogActive = true;
-            var dialog = new MvpDialog
-            {
-                MvpViewModel = _scope.GetRequiredService<MvpViewModel>(),
-                RequestedTheme = ThemeController.GetTheme()
-            };
-            await dialog.ShowAsync();
-            IsDialogActive = false;
-        }
-
-
-        /// <inheritdoc/>
         public async Task TutorialAsync()
         {
             if (IsDialogActive)

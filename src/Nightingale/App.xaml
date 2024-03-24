@@ -103,6 +103,87 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="Orientation">
+                                        <VisualState x:Name="Portrait">
+
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TitleContentControl" Storyboard.TargetProperty="Margin">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PivotPortraitThemePadding}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Landscape">
+
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TitleContentControl" Storyboard.TargetProperty="Margin">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PivotLandscapeThemePadding}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="NavigationButtonsVisibility">
+                                        <VisualState x:Name="NavigationButtonsHidden" />
+                                        <VisualState x:Name="NavigationButtonsVisible">
+
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="Opacity">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="IsEnabled">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="Opacity">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="IsEnabled">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="PreviousButtonVisible">
+
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="Opacity">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="IsEnabled">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="NextButtonVisible">
+
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="Opacity">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="IsEnabled">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="HeaderStates">
+                                        <VisualState x:Name="HeaderDynamic" />
+                                        <VisualState x:Name="HeaderStatic">
+
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Header" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StaticHeader" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+
+                                </VisualStateManager.VisualStateGroups>
                                 <ContentControl
                                     x:Name="TitleContentControl"
                                     Margin="{StaticResource PivotPortraitThemePadding}"
@@ -119,16 +200,6 @@
                                                 Background="{ThemeResource PivotNextButtonBackground}"
                                                 BorderBrush="{ThemeResource PivotNextButtonBorderBrush}"
                                                 BorderThickness="{ThemeResource PivotNavButtonBorderThemeThickness}">
-                                                <FontIcon
-                                                    x:Name="Arrow"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                                    FontSize="12"
-                                                    Foreground="{ThemeResource PivotNextButtonForeground}"
-                                                    Glyph="&#xE0E3;"
-                                                    MirroredWhenRightToLeft="True"
-                                                    UseLayoutRounding="False" />
                                                 <VisualStateManager.VisualStateGroups>
                                                     <VisualStateGroup x:Name="CommonStates">
                                                         <VisualState x:Name="Normal" />
@@ -160,6 +231,16 @@
                                                         </VisualState>
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
+                                                <FontIcon
+                                                    x:Name="Arrow"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                                    FontSize="12"
+                                                    Foreground="{ThemeResource PivotNextButtonForeground}"
+                                                    Glyph="&#xE0E3;"
+                                                    MirroredWhenRightToLeft="True"
+                                                    UseLayoutRounding="False" />
                                             </Border>
                                         </ControlTemplate>
                                         <ControlTemplate x:Key="PreviousTemplate" TargetType="Button">
@@ -168,16 +249,6 @@
                                                 Background="{ThemeResource PivotPreviousButtonBackground}"
                                                 BorderBrush="{ThemeResource PivotPreviousButtonBorderBrush}"
                                                 BorderThickness="{ThemeResource PivotNavButtonBorderThemeThickness}">
-                                                <FontIcon
-                                                    x:Name="Arrow"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                                    FontSize="12"
-                                                    Foreground="{ThemeResource PivotPreviousButtonForeground}"
-                                                    Glyph="&#xE0E2;"
-                                                    MirroredWhenRightToLeft="True"
-                                                    UseLayoutRounding="False" />
                                                 <VisualStateManager.VisualStateGroups>
                                                     <VisualStateGroup x:Name="CommonStates">
                                                         <VisualState x:Name="Normal" />
@@ -209,6 +280,16 @@
                                                         </VisualState>
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
+                                                <FontIcon
+                                                    x:Name="Arrow"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                                    FontSize="12"
+                                                    Foreground="{ThemeResource PivotPreviousButtonForeground}"
+                                                    Glyph="&#xE0E2;"
+                                                    MirroredWhenRightToLeft="True"
+                                                    UseLayoutRounding="False" />
                                             </Border>
                                         </ControlTemplate>
                                     </Grid.Resources>
@@ -325,87 +406,6 @@
                                     </ScrollViewer>
 
                                 </Grid>
-
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="Orientation">
-                                        <VisualState x:Name="Portrait">
-
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TitleContentControl" Storyboard.TargetProperty="Margin">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PivotPortraitThemePadding}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Landscape">
-
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TitleContentControl" Storyboard.TargetProperty="Margin">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PivotLandscapeThemePadding}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-
-                                    </VisualStateGroup>
-                                    <VisualStateGroup x:Name="NavigationButtonsVisibility">
-                                        <VisualState x:Name="NavigationButtonsHidden" />
-                                        <VisualState x:Name="NavigationButtonsVisible">
-
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="Opacity">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="IsEnabled">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="Opacity">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="IsEnabled">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="PreviousButtonVisible">
-
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="Opacity">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PreviousButton" Storyboard.TargetProperty="IsEnabled">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="NextButtonVisible">
-
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="Opacity">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NextButton" Storyboard.TargetProperty="IsEnabled">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-
-                                    </VisualStateGroup>
-                                    <VisualStateGroup x:Name="HeaderStates">
-                                        <VisualState x:Name="HeaderDynamic" />
-                                        <VisualState x:Name="HeaderStatic">
-
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Header" Storyboard.TargetProperty="Visibility">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StaticHeader" Storyboard.TargetProperty="Visibility">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-
-                                    </VisualStateGroup>
-
-                                </VisualStateManager.VisualStateGroups>
                             </Grid>
 
                         </ControlTemplate>
@@ -437,25 +437,6 @@
                                 <Grid.RenderTransform>
                                     <TranslateTransform x:Name="ContentPresenterTranslateTransform" />
                                 </Grid.RenderTransform>
-                                <ContentPresenter
-                                    x:Name="ContentPresenter"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    FontFamily="{TemplateBinding FontFamily}"
-                                    FontSize="{TemplateBinding FontSize}"
-                                    FontWeight="{TemplateBinding FontWeight}"
-                                    OpticalMarginAlignment="TrimSideBearings" />
-
-                                <!--  height changed  -->
-                                <Rectangle
-                                    x:Name="SelectedPipe"
-                                    Height="3"
-                                    Margin="0,0,0,2"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Bottom"
-                                    Fill="{ThemeResource PivotHeaderItemSelectedPipeFill}" />
 
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="SelectionStates">
@@ -573,6 +554,25 @@
                                     </VisualStateGroup>
 
                                 </VisualStateManager.VisualStateGroups>
+                                <ContentPresenter
+                                    x:Name="ContentPresenter"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    FontFamily="{TemplateBinding FontFamily}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    FontWeight="{TemplateBinding FontWeight}"
+                                    OpticalMarginAlignment="TrimSideBearings" />
+
+                                <!--  height changed  -->
+                                <Rectangle
+                                    x:Name="SelectedPipe"
+                                    Height="3"
+                                    Margin="0,0,0,2"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Bottom"
+                                    Fill="{ThemeResource PivotHeaderItemSelectedPipeFill}" />
                             </Grid>
 
                         </ControlTemplate>

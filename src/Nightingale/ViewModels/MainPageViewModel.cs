@@ -79,13 +79,11 @@ public class MainPageViewModel : ViewModelBase
         IMessageBus messageBus,
         ITabCollectionContainer tabContainer,
         IDeployService deployService,
-        MvpViewModel mvpViewModel,
         IStorage storage,
         IExportService exportService,
         IUserSettings userSettings,
         ITelemetry telemetry)
     {
-        MvpViewModel = mvpViewModel;
         _storage = storage;
         _workspaceStorageAccessor = workspaceStorageAccessor;
         _workspaceListModifier = workspaceListModifier;
@@ -147,8 +145,6 @@ public class MainPageViewModel : ViewModelBase
         }
     }
     private bool _successfulImportFlyoutVisible;
-
-    public MvpViewModel MvpViewModel { get; }
 
     private void PaneLayoutChanged(object sender, EventArgs e)
     {
@@ -573,11 +569,6 @@ public class MainPageViewModel : ViewModelBase
             { "imported collection count", importedCollections?.Count.ToString() ?? "0" },
             { "imported workspace count", importedWorkspaces?.Count.ToString() ?? "0" }
         });
-    }
-
-    public async void OpenMvp()
-    {
-        await _dialogService.OpenMvpAsync();
     }
 
     public async void OpenSettingsDialog()

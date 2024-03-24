@@ -146,7 +146,6 @@ partial class App
     [Singleton(typeof(RestSharpMethodConverter), typeof(IHttpMethodConverter))]
     [Singleton(typeof(OneDriveSyncClient), typeof(ICloudBackupClient))]
     [Singleton(typeof(MethodsContainer), typeof(IMethodsContainer))]
-    [Singleton(typeof(MvpViewModel))]
     [Singleton(typeof(CookieDialogService), typeof(ICookieDialogService))]
     [Singleton(typeof(CertificateFactory), typeof(ICertificateFactory))]
     [Singleton(typeof(PostmanConverter), typeof(IPostmanConverter))]
