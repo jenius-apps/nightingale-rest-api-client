@@ -2,7 +2,6 @@
     x:Class="Nightingale.UserControls.WelcomeScreen"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Nightingale.UserControls"
@@ -67,7 +66,6 @@
         <GridView
             Grid.Row="1"
             Margin="0,4,0,0"
-            animations:ReorderGridAnimation.Duration="300"
             SelectionMode="None">
             <GridView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource GridViewItemExpanded}" TargetType="GridViewItem">
