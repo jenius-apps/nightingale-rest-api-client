@@ -38,27 +38,10 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock
-                    FontSize="28"
-                    FontWeight="SemiBold"
-                    Text="Welcome to Nightingale 4" />
-
-                <Grid
-                    x:Name="VipGrid"
-                    Margin="12,0,0,0"
-                    Padding="8,0"
-                    Background="{StaticResource SystemAccentColorLight2}"
-                    CornerRadius="4"
-                    Visibility="Collapsed">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="24"
-                        FontWeight="Bold"
-                        Foreground="{StaticResource SystemAccentColorDark2}"
-                        Text="VIP" />
-                </Grid>
-            </StackPanel>
+            <TextBlock
+                FontSize="28"
+                FontWeight="SemiBold"
+                Text="Welcome to Nightingale 4" />
             <TextBlock Text="Select an action below to get started." />
         </StackPanel>
 
@@ -198,10 +181,6 @@
                         Style="{StaticResource ShortcutLabel}"
                         Text="Rename current tab" />
                 </Grid>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock FontWeight="SemiBold" Text="What's new" />
-                <local:WhatsNewControl Margin="0,8,0,0" />
             </StackPanel>
         </GridView>
     </Grid>

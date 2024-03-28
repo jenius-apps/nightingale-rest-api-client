@@ -17,7 +17,6 @@ public sealed partial class WelcomeScreen : UserControl
     public WelcomeScreen()
     {
         this.InitializeComponent();
-        TryLoadVip();
     }
 
     private void NewTab()
@@ -36,13 +35,5 @@ public sealed partial class WelcomeScreen : UserControl
     {
         NewCollectionClicked?.Invoke(this, new EventArgs());
         App.Services.GetRequiredService<ITelemetry>().TrackEvent(Telemetry.WelcomeNewCollection);
-    }
-
-    private async void TryLoadVip()
-    {
-        bool subscribed = await StoreHandler.IsUserSubscribed();
-        VipGrid.Visibility = subscribed
-            ? Visibility.Visible
-            : Visibility.Collapsed;
     }
 }
