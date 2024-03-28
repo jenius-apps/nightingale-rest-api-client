@@ -13,7 +13,7 @@
   <Identity
     Name="75bf4b83-a7ae-402f-87cb-67e9fcb743a6"
     Publisher="CN=0B44CA61-7898-42FE-825C-ADA43BC01A93"
-    Version="4.5.0.0" />
+    Version="4.5.1.0" />
 
   <Properties>
     <DisplayName>Nightingale REST Client</DisplayName>
