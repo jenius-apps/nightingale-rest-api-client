@@ -621,6 +621,9 @@
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>8.2.2</Version>
     </PackageReference>
+    <PackageReference Include="JeniusApps.Common.Uwp">
+      <Version>0.0.38-preview</Version>
+    </PackageReference>
     <PackageReference Include="JeniusApps.Insomnia.NET">
       <Version>0.0.4-preview</Version>
     </PackageReference>

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Extensions.DependencyInjection;
 using JeniusApps.Common.Telemetry;
+using JeniusApps.Common.Tools;
+using JeniusApps.Common.Tools.Uwp;
 using JeniusApps.Nightingale.Converters.Curl;
 using JeniusApps.Nightingale.Converters.Insomnia;
 using JeniusApps.Nightingale.Converters.OData;
@@ -168,6 +170,7 @@ partial class App
     [Transient(typeof(BackgroundSettingsViewModel))]
     [Singleton(typeof(ExportService), typeof(IExportService))]
     [Singleton(typeof(CurlConverter), typeof(ICurlConverter))]
+    [Singleton(typeof(MicrosoftStoreUpdater), typeof(IAppStoreUpdater))]
     [Transient(typeof(MainPageViewModel))]
     [Transient(typeof(ImportPostmanViewModel))]
     [Transient(typeof(SettingsViewModel))]

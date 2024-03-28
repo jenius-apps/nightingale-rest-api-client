@@ -1,4 +1,5 @@
 ﻿using JeniusApps.Common.Telemetry;
+using JeniusApps.Common.Tools;
 using Nightingale.Core.Cookies;
 using Nightingale.Core.Dialogs;
 using Nightingale.Core.Export;
@@ -54,6 +55,7 @@ public class MainPageViewModel : ViewModelBase
     private readonly IExportService _exportService;
     private readonly IUserSettings _userSettings;
     private readonly ITelemetry _telemetry;
+    private readonly IAppStoreUpdater _appStoreUpdater;
     private readonly string _workspaceRootId = "root";
     private Workspace _selectedWorkspace;
     private bool _saving;
@@ -82,7 +84,8 @@ public class MainPageViewModel : ViewModelBase
         IStorage storage,
         IExportService exportService,
         IUserSettings userSettings,
-        ITelemetry telemetry)
+        ITelemetry telemetry,
+        IAppStoreUpdater appStoreUpdater)
     {
         _storage = storage;
         _workspaceStorageAccessor = workspaceStorageAccessor;
@@ -103,6 +106,7 @@ public class MainPageViewModel : ViewModelBase
         _exportService = exportService;
         _userSettings = userSettings;
         _telemetry = telemetry;
+        _appStoreUpdater = appStoreUpdater;
 
         this._workspaceItemNavigationService = workspaceItemNavigationService ?? throw new ArgumentNullException(nameof(workspaceItemNavigationService));
         UpdateRateButtonVisibility();
@@ -249,6 +253,8 @@ public class MainPageViewModel : ViewModelBase
             : this.Workspaces.FirstOrDefault();
 
         Loading = false;
+
+        _ = _appStoreUpdater.TrySilentDownloadAsync();
     }
 
     public bool Saving
