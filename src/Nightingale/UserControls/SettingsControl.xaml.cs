@@ -1,5 +1,5 @@
 ﻿using System;
-using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Utilities;
 using Nightingale.ViewModels;
 
@@ -14,7 +14,7 @@ namespace Nightingale.UserControls
         public SettingsControl()
         {
             this.InitializeComponent();
-            this.DataContext = App.Container.Resolve<SettingsViewModel>();
+            this.DataContext = App.Services.GetRequiredService<SettingsViewModel>();
         }
 
         public SettingsViewModel ViewModel => (SettingsViewModel)this.DataContext;

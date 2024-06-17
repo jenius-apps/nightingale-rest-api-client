@@ -30,8 +30,19 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MaxWidth="94" />
             <ColumnDefinition Width="*" MinWidth="100" />
-            <ColumnDefinition Width="*" MaxWidth="86" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Focused">
+                    <VisualState.Setters>
+                        <Setter Target="AutoSuggestUrlBox.TextBoxStyle" Value="{StaticResource ExpandedUrlTextBox}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <!--  method  -->
         <ComboBox
@@ -85,12 +96,10 @@
                     </ResourceDictionary.ThemeDictionaries>
                 </ResourceDictionary>
             </c:SplitButton.Resources>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="{StaticResource DefaultFontSize}"
-                    Text="Send" />
-            </StackPanel>
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="{StaticResource DefaultFontSize}"
+                Text="Send" />
             <ToolTipService.ToolTip>
                 <TextBlock x:Uid="/ToolTips/SendRequest" Style="{StaticResource BaseTextblock}" />
             </ToolTipService.ToolTip>
@@ -100,7 +109,7 @@
             </c:SplitButton.KeyboardAccelerators>
 
             <c:SplitButton.Flyout>
-                <MenuFlyout>
+                <MenuFlyout Placement="Bottom">
                     <!--  send flyout button required for touch  -->
                     <MenuFlyoutItem
                         AutomationProperties.Name="Send request and view response"
@@ -123,16 +132,5 @@
                 </MenuFlyout>
             </c:SplitButton.Flyout>
         </c:SplitButton>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="Normal" />
-                <VisualState x:Name="Focused">
-                    <VisualState.Setters>
-                        <Setter Target="AutoSuggestUrlBox.TextBoxStyle" Value="{StaticResource ExpandedUrlTextBox}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </utilities:ObservableUserControl>

@@ -1,21 +1,21 @@
 ﻿using System;
-using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Workspaces.Models;
 
 namespace Nightingale.ViewModels.Factories
 {
     public class CodeGeneratorViewModelFactory : ICodeGeneratorViewModelFactory
     {
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
 
-        public CodeGeneratorViewModelFactory(ILifetimeScope scope)
+        public CodeGeneratorViewModelFactory(IServiceProvider scope)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
         }
 
         public CodeGenPageViewModel CreateViewModel(Item workspaceItem)
         {
-            var vm = _scope.Resolve<CodeGenPageViewModel>();
+            var vm = _scope.GetRequiredService<CodeGenPageViewModel>();
             vm.WorkspaceItem = workspaceItem ?? throw new ArgumentNullException(nameof(workspaceItem));
             return vm;
         }

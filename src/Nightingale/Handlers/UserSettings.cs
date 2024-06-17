@@ -9,12 +9,12 @@ namespace Nightingale.Handlers
     /// </summary>
     public class UserSettings : IUserSettings
     {
-        public static void Set<T>(string settingKey, object value)
+        public void Set<T>(string settingKey, object value)
         {
             ApplicationData.Current.LocalSettings.Values[settingKey] = (T)value;
         }
 
-        public static T Get<T>(string settingKey)
+        public T Get<T>(string settingKey)
         {
             object result = ApplicationData.Current.LocalSettings.Values[settingKey];
             return result == null ? (T)SettingsConstants.Defaults[settingKey] : (T)result;

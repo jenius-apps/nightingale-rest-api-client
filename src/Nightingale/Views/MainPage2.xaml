@@ -5,7 +5,6 @@
     xmlns:core="using:Nightingale.Core.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Nightingale.Views"
-    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:m="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:Nightingale.UserControls"
@@ -55,21 +54,6 @@
                     Text="{x:Bind ViewModel.ActiveFileName, Mode=OneWay}"
                     TextTrimming="CharacterEllipsis" />
 
-                <Grid
-                    x:Name="MvpBadge"
-                    Margin="8,0,0,0"
-                    Padding="4,2"
-                    x:Load="{x:Bind ViewModel.MvpViewModel.BadgeVisible, Mode=OneWay}"
-                    Background="{x:Bind ViewModel.MvpViewModel.BadgeBrush, Mode=OneWay}"
-                    CornerRadius="2">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="{StaticResource DefaultFontSize}"
-                        FontWeight="SemiBold"
-                        Foreground="Black"
-                        Text="MVP" />
-                </Grid>
-
                 <m:ProgressRing
                     Margin="8,0,0,0"
                     IsActive="{x:Bind ViewModel.Saving, Mode=OneWay}"
@@ -83,8 +67,7 @@
             x:Name="WorkspaceSwitcher"
             Grid.Row="0"
             HorizontalAlignment="Center"
-            Background="Transparent"
-            CornerRadius="0">
+            Style="{StaticResource TransparentDropDownButtonStyle}">
             <m:DropDownButton.Content>
                 <TextBlock Style="{StaticResource BaseTextblock}" Text="{x:Bind ViewModel.WorkspaceName, Mode=OneWay}" />
             </m:DropDownButton.Content>
@@ -341,18 +324,6 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Orientation="Horizontal">
-
-                <!--  support developer button  -->
-                <Button
-                    Margin="0,0,4,0"
-                    Content="Support developer"
-                    Style="{StaticResource TransparentRevealButton}">
-                    <Button.Flyout>
-                        <Flyout>
-                            <uc:SupportView MvpClicked="{x:Bind ViewModel.OpenMvp}" />
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
 
                 <!--  Settings button  -->
                 <Button Click="{x:Bind ViewModel.OpenSettingsDialog}" Style="{StaticResource TransparentRevealButton}">

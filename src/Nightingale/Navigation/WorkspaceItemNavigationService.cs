@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Autofac;
+using JeniusApps.Common.Telemetry;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Mock.Services;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.ViewModels;
@@ -11,9 +12,9 @@ namespace Nightingale.Navigation
 {
     public sealed class WorkspaceItemNavigationService : BaseNavigationService, IWorkspaceItemNavigationService
     {
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
 
-        public WorkspaceItemNavigationService(ILifetimeScope scope)
+        public WorkspaceItemNavigationService(IServiceProvider scope)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
         }
@@ -30,18 +31,19 @@ namespace Nightingale.Navigation
             if (item.Type == ItemType.Request)
             {
                 // Configure navigation parameters
-                var urlBarViewModel = _scope.Resolve<UrlBarViewModel>();
-                var requestControlViewModel = _scope.Resolve<RequestControlViewModel>();
-                var authViewModel = _scope.Resolve<AuthControlViewModel>();
-                var requestBodyViewModel = _scope.Resolve<RequestBodyViewModel>();
-                var bodyControlViewModel = _scope.Resolve<BodyControlViewModel>();
-                var statusBarViewModel = _scope.Resolve<StatusBarViewModel>();
+                var urlBarViewModel = _scope.GetRequiredService<UrlBarViewModel>();
+                var requestControlViewModel = _scope.GetRequiredService<RequestControlViewModel>();
+                var authViewModel = _scope.GetRequiredService<AuthControlViewModel>();
+                var requestBodyViewModel = _scope.GetRequiredService<RequestBodyViewModel>();
+                var bodyControlViewModel = _scope.GetRequiredService<BodyControlViewModel>();
+                var statusBarViewModel = _scope.GetRequiredService<StatusBarViewModel>();
 
                 await urlBarViewModel.Initialize();
                 requestControlViewModel.Request = item;
                 requestControlViewModel.MockDataViewModel = new Mock.MockDataViewModel(
                     item.MockData,
-                    _scope.Resolve<IDeployService>());
+                    _scope.GetRequiredService<IDeployService>(),
+                    _scope.GetRequiredService<ITelemetry>());
                 authViewModel.ActiveAuthModel = item.Auth;
                 requestBodyViewModel.RequestBody = item.Body;
                 bodyControlViewModel.WorkspaceResponse = item.Response;
@@ -49,7 +51,7 @@ namespace Nightingale.Navigation
 
                 result = new RequestPageParameters
                 {
-                    RequestPageViewModel = _scope.Resolve<RequestPageViewModel>(),
+                    RequestPageViewModel = _scope.GetRequiredService<RequestPageViewModel>(),
                     RequestControlViewModel = requestControlViewModel,
                     UrlBarViewModel = urlBarViewModel,
                     AuthControlViewModel = authViewModel,
@@ -60,8 +62,8 @@ namespace Nightingale.Navigation
             }
             else if (item.Type == ItemType.Collection)
             {
-                var vm = _scope.Resolve<CollectionViewModel>();
-                var authVm = _scope.Resolve<AuthControlViewModel>();
+                var vm = _scope.GetRequiredService<CollectionViewModel>();
+                var authVm = _scope.GetRequiredService<AuthControlViewModel>();
                 authVm.ActiveAuthModel = item.Auth;
                 vm.SelectedCollection = item;
                 result = new CollectionPageParameters

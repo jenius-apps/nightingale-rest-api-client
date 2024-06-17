@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Microsoft.AppCenter.Analytics;
+﻿using JeniusApps.Common.Telemetry;
+using Microsoft.Extensions.DependencyInjection;
 using Nightingale.Core.Dialogs;
 using Nightingale.Core.Export;
 using Nightingale.Core.Models;
@@ -26,18 +26,21 @@ namespace Nightingale.Dialogs
         public static string NewRequestDialogTitle = "📝 " + ResourceLoader.GetForCurrentView().GetString("NewRequest/Text");
         public static string NewCollectionDialogTitle = "📂 " + ResourceLoader.GetForCurrentView().GetString("NewCollection/Text");
         public static string EditItemDialogTitle = "✏ " + ResourceLoader.GetForCurrentView().GetString("EditName");
-        private readonly ILifetimeScope _scope;
+        private readonly IServiceProvider _scope;
         private readonly IUserSettings _userSettings;
         private readonly IItemFactory _itemFactory;
+        private readonly ITelemetry _telemetry;
 
         public DialogService(
-            ILifetimeScope scope,
+            IServiceProvider scope,
             IUserSettings userSettings,
-            IItemFactory itemFactory)
+            IItemFactory itemFactory,
+            ITelemetry telemetry)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
             _userSettings = userSettings ?? throw new ArgumentNullException(nameof(userSettings));
             _itemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
+            _telemetry = telemetry;
         }
 
         /// <inheritdoc/>
@@ -53,25 +56,6 @@ namespace Nightingale.Dialogs
             await dialog.ShowAsync();
             IsDialogActive = false;
         }
-
-        /// <inheritdoc/>
-        public async Task OpenMvpAsync()
-        {
-            if (IsDialogActive)
-            {
-                return;
-            }
-
-            IsDialogActive = true;
-            var dialog = new MvpDialog
-            {
-                MvpViewModel = _scope.Resolve<MvpViewModel>(),
-                RequestedTheme = ThemeController.GetTheme()
-            };
-            await dialog.ShowAsync();
-            IsDialogActive = false;
-        }
-
 
         /// <inheritdoc/>
         public async Task TutorialAsync()
@@ -287,7 +271,7 @@ namespace Nightingale.Dialogs
 
             if (dialog.DeleteWithoutAsking)
             {
-                Analytics.TrackEvent(Telemetry.DeleteWithoutAskingChecked);
+                _telemetry.TrackEvent(Telemetry.DeleteWithoutAskingChecked);
                 await _userSettings.SetAsync(SettingsConstants.ConfirmDeletion, false);
             }
 
@@ -316,7 +300,7 @@ namespace Nightingale.Dialogs
 
             IsDialogActive = true;
             var dialog = new ImportDialog();
-            dialog.ViewModel = _scope.Resolve<ImportPostmanViewModel>();
+            dialog.ViewModel = _scope.GetRequiredService<ImportPostmanViewModel>();
             await dialog.ShowAsync();
             IsDialogActive = false;
 

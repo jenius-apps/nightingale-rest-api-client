@@ -8,6 +8,7 @@ using Nightingale.Core.Helpers.Interfaces;
 using Nightingale.Core.Interfaces;
 using Nightingale.Core.Logging;
 using Nightingale.Core.Models;
+using Nightingale.Core.Settings;
 using Nightingale.Core.Workspaces.Extensions;
 using Nightingale.Core.Workspaces.Models;
 using System;
@@ -41,7 +42,8 @@ namespace Nightingale.Core.Client
             ICookieJar cookieJar,
             ISslValidator validator,
             IBodyBuilder bodyBuilder,
-            IHeaderBuilder headerBuilder)
+            IHeaderBuilder headerBuilder,
+            IUserSettings userSettings)
         {
             var handler = new HttpClientHandler
             {
@@ -57,15 +59,26 @@ namespace Nightingale.Core.Client
             };
 
             _client = new HttpClient(handler);
-            _varRes = variableResolver
-                ?? throw new ArgumentNullException(nameof(variableResolver));
-            _cookieJar = cookieJar
-                ?? throw new ArgumentNullException(nameof(cookieJar));
-            _bodyBuilder = bodyBuilder
-                ?? throw new ArgumentNullException(nameof(bodyBuilder));
-            _headerBuilder = headerBuilder
-                ?? throw new ArgumentNullException(nameof(headerBuilder));
+            ApplyTimeoutSettings(userSettings, _client);
+            _varRes = variableResolver;
+            _cookieJar = cookieJar;
+            _bodyBuilder = bodyBuilder;
+            _headerBuilder = headerBuilder;
             _digestAuthenticator = new DigestAuthenticator();
+        }
+
+        private static void ApplyTimeoutSettings(IUserSettings userSettings, HttpClient client)
+        {
+            if (userSettings.Get<bool>(SettingsConstants.InfiniteTimeoutKey) is true)
+            {
+                client.Timeout = Timeout.InfiniteTimeSpan;
+            }
+            else if (userSettings.Get<double>(SettingsConstants.TimeoutSecondsKey) is double timeoutSeconds &&
+                timeoutSeconds > 0 &&
+                timeoutSeconds != 100d)
+            {
+                client.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
+            }
         }
 
         /// <inheritdoc/>
@@ -256,7 +269,7 @@ namespace Nightingale.Core.Client
             {
                 string key = _varRes.ResolveVariable(activeQuery.Key, useCache: true);
                 string value = _varRes.ResolveVariable(activeQuery.Value, useCache: true);
-                queries.Add($"{key}={value}");
+                queries.Add($"{key}{(value?.Trim().Length > 0 ? "=" : "")}{value}");
             }
 
             return queries.Count == 0 ? "" : string.Join("&", queries);

@@ -1,9 +1,12 @@
-﻿using Microsoft.AppCenter.Analytics;
+﻿using JeniusApps.Common.Telemetry;
+using JeniusApps.Common.Tools;
 using Nightingale.Core.Cookies;
 using Nightingale.Core.Dialogs;
+using Nightingale.Core.Export;
 using Nightingale.Core.Helpers;
 using Nightingale.Core.Helpers.Interfaces;
 using Nightingale.Core.Http;
+using Nightingale.Core.Interfaces;
 using Nightingale.Core.Mock.Services;
 using Nightingale.Core.Models;
 using Nightingale.Core.Settings;
@@ -11,7 +14,6 @@ using Nightingale.Core.Storage.Interfaces;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Core.Workspaces.Services;
 using Nightingale.Dialogs;
-using Nightingale.Handlers;
 using Nightingale.Navigation;
 using Nightingale.Tabs.Services;
 using Nightingale.Utilities;
@@ -19,16 +21,13 @@ using Nightingale.VisualState;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation.Metadata;
 using Windows.System;
 using Windows.UI.Core;
-using System.Threading;
-using Nightingale.Core.Interfaces;
-using Microsoft.AppCenter.Crashes;
-using Nightingale.Core.Export;
-using System.IO;
 
 namespace Nightingale.ViewModels;
 
@@ -54,6 +53,9 @@ public class MainPageViewModel : ViewModelBase
     private readonly IDeployService _deployService;
     private readonly IStorage _storage;
     private readonly IExportService _exportService;
+    private readonly IUserSettings _userSettings;
+    private readonly ITelemetry _telemetry;
+    private readonly IAppStoreUpdater _appStoreUpdater;
     private readonly string _workspaceRootId = "root";
     private Workspace _selectedWorkspace;
     private bool _saving;
@@ -79,28 +81,32 @@ public class MainPageViewModel : ViewModelBase
         IMessageBus messageBus,
         ITabCollectionContainer tabContainer,
         IDeployService deployService,
-        MvpViewModel mvpViewModel,
         IStorage storage,
-        IExportService exportService)
+        IExportService exportService,
+        IUserSettings userSettings,
+        ITelemetry telemetry,
+        IAppStoreUpdater appStoreUpdater)
     {
-        MvpViewModel = mvpViewModel ?? throw new ArgumentNullException(nameof(mvpViewModel));
-        _storage = storage ?? throw new ArgumentNullException(nameof(storage));
-        _workspaceStorageAccessor = workspaceStorageAccessor ?? throw new ArgumentNullException(nameof(workspaceStorageAccessor));
-        _workspaceListModifier = workspaceListModifier ?? throw new ArgumentNullException(nameof(workspaceListModifier));
-        _workspaceContainer = workspaceContainer ?? throw new ArgumentNullException(nameof(workspaceContainer));
-        _environmentContainer = environmentContainer ?? throw new ArgumentNullException(nameof(environmentContainer));
-        _cookieJar = cookieJar ?? throw new ArgumentNullException(nameof(cookieJar));
-        _workspaceNavigationService = workspaceNavigationService ?? throw new ArgumentNullException(nameof(workspaceNavigationService));
-        _cookieDialogService = cookieDialogService ?? throw new ArgumentNullException(nameof(cookieDialogService));
-        _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-        _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
-        _methodsContainer = methodsContainer ?? throw new ArgumentNullException(nameof(methodsContainer));
-        _workspaceTreeModifier = workspaceTreeModifier ?? throw new ArgumentNullException(nameof(workspaceTreeModifier));
-        _visualStatePublisher = visualStatePublisher ?? throw new ArgumentNullException(nameof(visualStatePublisher));
-        _environmentDialogService = environmentDialogService ?? throw new ArgumentNullException(nameof(environmentDialogService));
-        _tabContainer = tabContainer ?? throw new ArgumentNullException(nameof(tabContainer));
-        _deployService = deployService ?? throw new ArgumentNullException(nameof(deployService));
-        _exportService = exportService ?? throw new ArgumentNullException(nameof(exportService));
+        _storage = storage;
+        _workspaceStorageAccessor = workspaceStorageAccessor;
+        _workspaceListModifier = workspaceListModifier;
+        _workspaceContainer = workspaceContainer ;
+        _environmentContainer = environmentContainer;
+        _cookieJar = cookieJar;
+        _workspaceNavigationService = workspaceNavigationService;
+        _cookieDialogService = cookieDialogService;
+        _dialogService = dialogService;
+        _messageBus = messageBus;
+        _methodsContainer = methodsContainer;
+        _workspaceTreeModifier = workspaceTreeModifier;
+        _visualStatePublisher = visualStatePublisher;
+        _environmentDialogService = environmentDialogService;
+        _tabContainer = tabContainer;
+        _deployService = deployService;
+        _exportService = exportService;
+        _userSettings = userSettings;
+        _telemetry = telemetry;
+        _appStoreUpdater = appStoreUpdater;
 
         this._workspaceItemNavigationService = workspaceItemNavigationService ?? throw new ArgumentNullException(nameof(workspaceItemNavigationService));
         UpdateRateButtonVisibility();
@@ -116,7 +122,7 @@ public class MainPageViewModel : ViewModelBase
 
         _visualStatePublisher.PaneLayoutToggled += PaneLayoutChanged;
 
-        if (UserSettings.Get<bool>(SettingsConstants.AutoSaveInterval))
+        if (_userSettings.Get<bool>(SettingsConstants.AutoSaveInterval))
         {
             _saveTimer = new Timer(TimerCallback, null, 300000 /* 5 minutes */, 300000);
         }
@@ -144,8 +150,6 @@ public class MainPageViewModel : ViewModelBase
     }
     private bool _successfulImportFlyoutVisible;
 
-    public MvpViewModel MvpViewModel { get; }
-
     private void PaneLayoutChanged(object sender, EventArgs e)
     {
         RaisePropertyChanged(nameof(IsSinglePaneLayout));
@@ -158,7 +162,7 @@ public class MainPageViewModel : ViewModelBase
         {
             args.Handled = true;
             await SaveWorkspaceAsync();
-            Analytics.TrackEvent(Telemetry.CtrlS);
+            _telemetry.TrackEvent(Telemetry.CtrlS);
         }
     }
 
@@ -174,7 +178,7 @@ public class MainPageViewModel : ViewModelBase
     {
         var deferral = e.GetDeferral();
 
-        if (UserSettings.Get<bool>(SettingsConstants.AutoSaveEnabled))
+        if (_userSettings.Get<bool>(SettingsConstants.AutoSaveEnabled))
         {
             Saving = true;
             await _workspaceStorageAccessor.SaveWorkspacesAsync(Workspaces, _workspaceRootId, SelectedWorkspace?.Id);
@@ -249,6 +253,8 @@ public class MainPageViewModel : ViewModelBase
             : this.Workspaces.FirstOrDefault();
 
         Loading = false;
+
+        _ = _appStoreUpdater.TrySilentDownloadAsync();
     }
 
     public bool Saving
@@ -320,7 +326,7 @@ public class MainPageViewModel : ViewModelBase
     public async void DeployServer()
     {
         var deploymentSuccessful = await _deployService.DeployAsync();
-        Analytics.TrackEvent(Telemetry.MockServerDeployed, Telemetry.MockTelemetryProps(deploymentSuccessful, "ribbon"));
+        _telemetry.TrackEvent(Telemetry.MockServerDeployed, Telemetry.MockTelemetryProps(deploymentSuccessful, "ribbon"));
     }
 
     public async void SaveAs()
@@ -337,7 +343,7 @@ public class MainPageViewModel : ViewModelBase
         ExportFlyoutVisible = exportSuccessful;
         _lastExportedFilePath = pathToExportFile;
 
-        Analytics.TrackEvent(Telemetry.MenuExportClicked, new Dictionary<string, string>
+        _telemetry.TrackEvent(Telemetry.MenuExportClicked, new Dictionary<string, string>
         {
             { "Export performed", exportSuccessful.ToString() }
         });
@@ -370,11 +376,11 @@ public class MainPageViewModel : ViewModelBase
             {
                 var parentFolder = _lastExportedFilePath.Replace(Path.GetFileName(_lastExportedFilePath), "");
                 await Launcher.LaunchFolderPathAsync(parentFolder);
-                Analytics.TrackEvent(Telemetry.ExportLocationOpened);
+                _telemetry.TrackEvent(Telemetry.ExportLocationOpened);
             }
             catch (Exception e)
             {
-                Crashes.TrackError(e, new Dictionary<string, string>
+                _telemetry.TrackError(e, new Dictionary<string, string>
                 {
                     { "filepath", _lastExportedFilePath }
                 });
@@ -408,7 +414,7 @@ public class MainPageViewModel : ViewModelBase
         }
 
         await SaveWorkspaceAsync();
-        Analytics.TrackEvent(Telemetry.MenuSaveClicked, new Dictionary<string, string> 
+        _telemetry.TrackEvent(Telemetry.MenuSaveClicked, new Dictionary<string, string> 
         {
             { "Workspace count", Workspaces.Count.ToString() }
         });
@@ -417,14 +423,14 @@ public class MainPageViewModel : ViewModelBase
     public async void OpenCookiesDialog()
     {
         await _cookieDialogService.OpenCookieDialog();
-        Analytics.TrackEvent(Telemetry.MenuCookiesClicked);
+        _telemetry.TrackEvent(Telemetry.MenuCookiesClicked);
     }
 
     public async void NewWorkspace()
     {
         Workspace newWorkspace = await _workspaceListModifier.NewWorkspaceAsync();
 
-        Analytics.TrackEvent(Telemetry.MenuNewWorkspaceClicked, new Dictionary<string, string>
+        _telemetry.TrackEvent(Telemetry.MenuNewWorkspaceClicked, new Dictionary<string, string>
         {
             { "workspace added", newWorkspace == null ? "false" : "true" }
         });
@@ -446,7 +452,7 @@ public class MainPageViewModel : ViewModelBase
 
         if (newItem != null)
         {
-            Analytics.TrackEvent(Telemetry.MenuNewRequestAdded, new Dictionary<string, string>
+            _telemetry.TrackEvent(Telemetry.MenuNewRequestAdded, new Dictionary<string, string>
             {
                 { "parent", newItem.Parent == null ? "root" : "item" }
             });
@@ -468,7 +474,7 @@ public class MainPageViewModel : ViewModelBase
 
         if (newItem != null)
         {
-            Analytics.TrackEvent(Telemetry.MenuNewCollectionAdded, new Dictionary<string, string>
+            _telemetry.TrackEvent(Telemetry.MenuNewCollectionAdded, new Dictionary<string, string>
             {
                 { "parent", newItem.Parent == null ? "root" : "item" }
             });
@@ -492,7 +498,7 @@ public class MainPageViewModel : ViewModelBase
         {
             // Update UI if list is empty
             RaisePropertyChanged("IsWorkspaceListEmpty");
-            Analytics.TrackEvent(Telemetry.MenuWorkspaceDeleted);
+            _telemetry.TrackEvent(Telemetry.MenuWorkspaceDeleted);
         }
     }
 
@@ -507,7 +513,7 @@ public class MainPageViewModel : ViewModelBase
 
         if (success)
         {
-            Analytics.TrackEvent(Telemetry.MenuWorkspaceEdited);
+            _telemetry.TrackEvent(Telemetry.MenuWorkspaceEdited);
             RaisePropertyChanged("WorkspaceName");
         }
     }
@@ -535,7 +541,7 @@ public class MainPageViewModel : ViewModelBase
         var item = await _workspaceTreeModifier.InsertToWorkspaceAsync(currentTab.ViewModel?.Request);
         if (item != null)
         {
-            Analytics.TrackEvent(Telemetry.MenuSaveTab);
+            _telemetry.TrackEvent(Telemetry.MenuSaveTab);
         }
     }
 
@@ -564,45 +570,40 @@ public class MainPageViewModel : ViewModelBase
         // In case workspace list was empty previous to importing,
         // this will remove the empty placeholder.
         RaisePropertyChanged(nameof(IsWorkspaceListEmpty));
-        Analytics.TrackEvent(Telemetry.MenuImportClicked, new Dictionary<string, string>
+        _telemetry.TrackEvent(Telemetry.MenuImportClicked, new Dictionary<string, string>
         {
             { "imported collection count", importedCollections?.Count.ToString() ?? "0" },
             { "imported workspace count", importedWorkspaces?.Count.ToString() ?? "0" }
         });
     }
 
-    public async void OpenMvp()
-    {
-        await _dialogService.OpenMvpAsync();
-    }
-
     public async void OpenSettingsDialog()
     {
         await _dialogService.OpenSettingsAsync();
-        Analytics.TrackEvent(Telemetry.MenuSettingsClicked);
+        _telemetry.TrackEvent(Telemetry.MenuSettingsClicked);
     }
 
     public async void EmailDev()
     {
-        Analytics.TrackEvent(Telemetry.EmailDev);
+        _telemetry.TrackEvent(Telemetry.EmailDev);
         await Launcher.LaunchUriAsync(new Uri("mailto:nightingale_app@outlook.com"));
     }
 
     public async void OpenLocalHostTroubleShoot()
     {
-        Analytics.TrackEvent(Telemetry.LocalhostHelp);
+        _telemetry.TrackEvent(Telemetry.LocalhostHelp);
         await Launcher.LaunchUriAsync(new Uri("https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/docs/localhost.md"));
     }
 
     public async void OpenKnownBugs()
     {
-        Analytics.TrackEvent(Telemetry.KnownBugs);
+        _telemetry.TrackEvent(Telemetry.KnownBugs);
         await Launcher.LaunchUriAsync(new Uri("https://github.com/jenius-apps/nightingale-rest-api-client/issues?q=is%3Aopen+is%3Aissue+label%3Abug"));
     }
 
     public async void NewGitHubIssue()
     {
-        Analytics.TrackEvent(Telemetry.GitHubIssue);
+        _telemetry.TrackEvent(Telemetry.GitHubIssue);
         await Launcher.LaunchUriAsync(new Uri("https://github.com/jenius-apps/nightingale-rest-api-client/issues/new"));
     }
 
@@ -614,13 +615,13 @@ public class MainPageViewModel : ViewModelBase
         }
 
         await _environmentDialogService.OpenEnvironmentDialog(SelectedWorkspace.Environments);
-        Analytics.TrackEvent(Telemetry.MenuEnvManager);
+        _telemetry.TrackEvent(Telemetry.MenuEnvManager);
     }
 
     public void SinglePaneLayout()
     {
         _visualStatePublisher.SetPaneLayoutSideBySide(false);
-        Analytics.TrackEvent(Telemetry.SinglePane, new Dictionary<string, string>
+        _telemetry.TrackEvent(Telemetry.SinglePane, new Dictionary<string, string>
         {
             { "state", "single pane" }
         });
@@ -629,7 +630,7 @@ public class MainPageViewModel : ViewModelBase
     public void TwoPaneLayout()
     {
         _visualStatePublisher.SetPaneLayoutSideBySide(true);
-        Analytics.TrackEvent(Telemetry.TwoPane, new Dictionary<string, string>
+        _telemetry.TrackEvent(Telemetry.TwoPane, new Dictionary<string, string>
         {
             { "state", "two pane" }
         });
@@ -639,7 +640,7 @@ public class MainPageViewModel : ViewModelBase
     {
         bool displayRateButton = await Task.Run(() =>
         {
-            bool IsAlreadyRated = UserSettings.Get<bool>(SettingsConstants.IsAppRated);
+            bool IsAlreadyRated = _userSettings.Get<bool>(SettingsConstants.IsAppRated);
             return IsAlreadyRated ? false : new Random().Next(2) == 0;
         });
 

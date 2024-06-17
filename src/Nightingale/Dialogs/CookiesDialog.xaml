@@ -10,7 +10,7 @@
     CornerRadius="8"
     mc:Ignorable="d">
 
-    <Grid Width="560" Height="600">
+    <Grid Width="560">
         <Button
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
@@ -87,7 +87,7 @@
             <!--  cookies list  -->
             <ListView
                 Grid.Row="3"
-                Padding="0,12,0,0"
+                Padding="0,12"
                 ItemsSource="{x:Bind ViewModel.Cookies, Mode=OneWay}"
                 SelectionMode="None">
                 <ListView.ItemTemplate>

@@ -19,12 +19,6 @@ namespace Nightingale.Core.Dialogs
         Task OpenSettingsAsync();
 
         /// <summary>
-        /// Pops a dialog describing Nightingale
-        /// VIP group.
-        /// </summary>
-        Task OpenMvpAsync();
-
-        /// <summary>
         /// Display pop up for mock server
         /// with preview of what mock data will be used.
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp.Connectivity;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp.Connectivity;
 using Nightingale.Core.Settings;
 using System;
 using System.Collections.Generic;
@@ -41,12 +42,12 @@ namespace Nightingale.Handlers
         /// <returns>True if user is subscribed or has purchased premium, false otherwise.</returns>
         public static async Task<bool> IsUserSubscribed()
         {
-            long userSubDateTicks = UserSettings.Get<long>(SettingsConstants.PremiumDateUnlocked);
+            long userSubDateTicks = App.Services.GetRequiredService<IUserSettings>().Get<long>(SettingsConstants.PremiumDateUnlocked);
             DateTime userSubDate = new DateTime(userSubDateTicks);
 
             if (userSubDate > DateTime.MinValue)
             {
-                string premiumId = UserSettings.Get<string>(SettingsConstants.PremiumIapId);
+                string premiumId = App.Services.GetRequiredService<IUserSettings>().Get<string>(SettingsConstants.PremiumIapId);
 
                 if (premiumId == PremiumDurable)
                 {
@@ -129,8 +130,8 @@ namespace Nightingale.Handlers
 
         private static void UpdateLocalSettings(string iapId, long ticks)
         {
-            UserSettings.Set<long>(SettingsConstants.PremiumDateUnlocked, ticks);
-            UserSettings.Set<string>(SettingsConstants.PremiumIapId, iapId.ToUpper());
+            App.Services.GetRequiredService<IUserSettings>().Set<long>(SettingsConstants.PremiumDateUnlocked, ticks);
+            App.Services.GetRequiredService<IUserSettings>().Set<string>(SettingsConstants.PremiumIapId, iapId.ToUpper());
         }
 
         /// <summary>
