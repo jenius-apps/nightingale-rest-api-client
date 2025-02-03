@@ -164,12 +164,11 @@
                 Command="{x:Bind ViewModel.BuyPremiumCommand}"
                 Style="{ThemeResource AccentButtonStyle}">
                 <Grid>
-                    <StackPanel>
+                    <StackPanel Visibility="{x:Bind ex:UIExtensions.InvertBoolToVis(ViewModel.PremiumPriceLoading), Mode=OneWay}">
                         <TextBlock
                             FontSize="12"
                             Text="{x:Bind ViewModel.PremiumPrice, Mode=OneWay}"
-                            TextAlignment="Center"
-                            Visibility="{x:Bind ex:UIExtensions.InvertBoolToVis(ViewModel.PremiumPriceLoading), Mode=OneWay}" />
+                            TextAlignment="Center" />
                         <TextBlock
                             x:Name="TariffText"
                             FontSize="10"
