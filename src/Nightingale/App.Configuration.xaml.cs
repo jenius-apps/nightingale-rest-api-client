@@ -190,5 +190,6 @@ partial class App
     [Transient(typeof(RestSharpAuthenticator), typeof(Core.Interfaces.IOAuth2TokenRetriever))]
     [Transient(typeof(WorkspaceResponseLogger), typeof(ILogger))]
     [Singleton(typeof(StoreHandler), typeof(IStoreHandler))]
+    [Transient(typeof(PremiumDialogViewModel))]
     private static partial void ConfigureServices(IServiceCollection services);
 }

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Nightingale.ViewModels;
+using System;
+using System.Threading;
+using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 #nullable enable
 
@@ -19,13 +12,44 @@ namespace Nightingale.Dialogs;
 
 public sealed partial class PremiumDialog : ContentDialog
 {
+    private readonly CancellationTokenSource _cts = new();
+
     public PremiumDialog()
     {
         this.InitializeComponent();
+        ViewModel = App.Services.GetRequiredService<PremiumDialogViewModel>();
+
+        if (new GeographicRegion().CodeTwoLetter.Equals("us", System.StringComparison.OrdinalIgnoreCase))
+        {
+            TariffText.Visibility = Visibility.Visible;
+        }
     }
+
+    public PremiumDialogViewModel ViewModel { get; }
 
     private void CloseClick(object sender, RoutedEventArgs e)
     {
         this.Hide();
+    }
+
+    private async void OnOpened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+    {
+        try
+        {
+            await ViewModel.InitializeAsync(_cts.Token);
+            ViewModel.CloseRequested += OnCloseRequested;
+        }
+        catch { }
+    }
+
+    private void OnCloseRequested(object sender, EventArgs e)
+    {
+        this.Hide();
+    }
+
+    private void OnClosed(ContentDialog sender, ContentDialogClosedEventArgs args)
+    {
+        ViewModel.CloseRequested -= OnCloseRequested;
+        _cts.Cancel();
     }
 }

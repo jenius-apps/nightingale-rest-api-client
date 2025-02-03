@@ -1,5 +1,6 @@
 ﻿using JeniusApps.Common.Telemetry;
 using JeniusApps.Common.Tools;
+using Nightingale.Core.Constants;
 using Nightingale.Core.Cookies;
 using Nightingale.Core.Dialogs;
 using Nightingale.Core.Export;
@@ -14,6 +15,7 @@ using Nightingale.Core.Storage.Interfaces;
 using Nightingale.Core.Workspaces.Models;
 using Nightingale.Core.Workspaces.Services;
 using Nightingale.Dialogs;
+using Nightingale.Handlers;
 using Nightingale.Navigation;
 using Nightingale.Tabs.Services;
 using Nightingale.Utilities;
@@ -56,6 +58,7 @@ public class MainPageViewModel : ViewModelBase
     private readonly IUserSettings _userSettings;
     private readonly ITelemetry _telemetry;
     private readonly IAppStoreUpdater _appStoreUpdater;
+    private readonly IStoreHandler _storeHandler;
     private readonly string _workspaceRootId = "root";
     private Workspace _selectedWorkspace;
     private bool _saving;
@@ -85,7 +88,8 @@ public class MainPageViewModel : ViewModelBase
         IExportService exportService,
         IUserSettings userSettings,
         ITelemetry telemetry,
-        IAppStoreUpdater appStoreUpdater)
+        IAppStoreUpdater appStoreUpdater,
+        IStoreHandler storeHandler)
     {
         _storage = storage;
         _workspaceStorageAccessor = workspaceStorageAccessor;
@@ -107,6 +111,7 @@ public class MainPageViewModel : ViewModelBase
         _userSettings = userSettings;
         _telemetry = telemetry;
         _appStoreUpdater = appStoreUpdater;
+        _storeHandler = storeHandler;
 
         this._workspaceItemNavigationService = workspaceItemNavigationService ?? throw new ArgumentNullException(nameof(workspaceItemNavigationService));
         UpdateRateButtonVisibility();
@@ -428,6 +433,13 @@ public class MainPageViewModel : ViewModelBase
 
     public async void NewWorkspace()
     {
+        var owned = await _storeHandler.IsOwnedAsync(IapConstants.PremiumDurable);
+        if (!owned)
+        {
+            await _dialogService.PremiumDialogAsync();
+            return;
+        }
+
         Workspace newWorkspace = await _workspaceListModifier.NewWorkspaceAsync();
 
         _telemetry.TrackEvent(Telemetry.MenuNewWorkspaceClicked, new Dictionary<string, string>
