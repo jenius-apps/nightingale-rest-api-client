@@ -170,6 +170,9 @@
     <Compile Include="Dialogs\NewRequestDialog.xaml.cs">
       <DependentUpon>NewRequestDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\PremiumDialog.xaml.cs">
+      <DependentUpon>PremiumDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -327,6 +330,7 @@
     <Compile Include="ViewModels\Factories\ICodeGeneratorViewModelFactory.cs" />
     <Compile Include="ViewModels\ImportPostmanViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\PremiumDialogViewModel.cs" />
     <Compile Include="ViewModels\RequestBodyViewModel.cs" />
     <Compile Include="ViewModels\RequestControlViewModel.cs" />
     <Compile Include="ViewModels\RequestPageViewModel.cs" />
@@ -456,6 +460,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\NewRequestDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\PremiumDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -656,6 +664,11 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="PolySharp">
+      <Version>1.15.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
       <Version>1.27.1</Version>

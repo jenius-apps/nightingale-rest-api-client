@@ -1,6 +1,7 @@
-﻿using Nightingale.Core.Dialogs;
-using Nightingale.Core.Helpers.Interfaces;
+﻿using Nightingale.Core.Constants;
+using Nightingale.Core.Dialogs;
 using Nightingale.Core.Models;
+using Nightingale.Core.Services;
 using Nightingale.Core.Workspaces.Factories;
 using Nightingale.Core.Workspaces.Models;
 using System;
@@ -16,15 +17,18 @@ namespace Nightingale.Core.Workspaces.Services
     {
         private readonly IDialogService _dialogService;
         private readonly IItemFactory _itemFactory;
+        private readonly IStoreHandler _storeHandler;
 
         public WorkspaceTreeModifier(
             IDialogService dialogService,
-            IItemFactory itemFactory)
+            IItemFactory itemFactory,
+            IStoreHandler storeHandler)
         {
             _dialogService = dialogService ??
                 throw new ArgumentNullException(nameof(dialogService));
             _itemFactory = itemFactory ??
                 throw new ArgumentNullException(nameof(itemFactory));
+            _storeHandler = storeHandler;
         }
 
         /// <inheritdoc/>
@@ -169,6 +173,20 @@ namespace Nightingale.Core.Workspaces.Services
             if (!tupleResult.Item1 || string.IsNullOrWhiteSpace(tupleResult.Item2))
             {
                 return null;
+            }
+
+            bool exceedsPremiumThreshold = tupleResult.Item3 is null
+                ? Current.Items.Count >= IapConstants.RootThreshold
+                : tupleResult.Item3.Children.Count >= IapConstants.NestedThreshold;
+
+            if (exceedsPremiumThreshold)
+            {
+                var owned = await _storeHandler.IsOwnedAsync(IapConstants.PremiumDurable);
+                if (!owned)
+                {
+                    await _dialogService.PremiumDialogAsync();
+                    return null;
+                }
             }
 
             Item newItem = _itemFactory.Create(type, tupleResult.Item2, tupleResult.Item3);
