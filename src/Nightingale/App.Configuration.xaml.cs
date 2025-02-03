@@ -189,5 +189,6 @@ partial class App
     [Transient(typeof(RequestControlViewModel))]
     [Transient(typeof(RestSharpAuthenticator), typeof(Core.Interfaces.IOAuth2TokenRetriever))]
     [Transient(typeof(WorkspaceResponseLogger), typeof(ILogger))]
+    [Singleton(typeof(StoreHandler), typeof(IStoreHandler))]
     private static partial void ConfigureServices(IServiceCollection services);
 }

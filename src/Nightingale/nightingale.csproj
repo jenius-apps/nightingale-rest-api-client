@@ -187,6 +187,7 @@
     <Compile Include="CustomEventArgs\AddedItemArgs.cs" />
     <Compile Include="CustomEventArgs\DeletedItemArgs.cs" />
     <Compile Include="Handlers\DocumentStorage.cs" />
+    <Compile Include="Handlers\IStoreHandler.cs" />
     <Compile Include="Handlers\KbShortcutsHandler.cs" />
     <Compile Include="Handlers\ResponseFileWriter.cs" />
     <Compile Include="History\HistorySource.cs" />
