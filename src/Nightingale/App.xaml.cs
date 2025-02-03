@@ -37,6 +37,11 @@ namespace Nightingale
             ThemeController.ThemeChanged += ThemeController_ThemeChanged;
         }
 
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+        }
+
         private void ThemeController_ThemeChanged(object sender, EventArgs e)
         {
             if (Window.Current.Content is Frame rootFrame)
