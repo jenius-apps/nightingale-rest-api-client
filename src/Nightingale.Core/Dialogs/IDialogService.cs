@@ -103,5 +103,6 @@ namespace Nightingale.Core.Dialogs
         /// Pops onboarding tutorial dialog.
         /// </summary>
         Task TutorialAsync();
+        Task PremiumDialogAsync();
     }
 }
