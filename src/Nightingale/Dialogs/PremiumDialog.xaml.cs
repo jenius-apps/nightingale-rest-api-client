@@ -19,10 +19,10 @@ public sealed partial class PremiumDialog : ContentDialog
         this.InitializeComponent();
         ViewModel = App.Services.GetRequiredService<PremiumDialogViewModel>();
 
-        if (new GeographicRegion().CodeTwoLetter.Equals("us", System.StringComparison.OrdinalIgnoreCase))
-        {
-            TariffText.Visibility = Visibility.Visible;
-        }
+        //if (new GeographicRegion().CodeTwoLetter.Equals("us", System.StringComparison.OrdinalIgnoreCase))
+        //{
+        //    TariffText.Visibility = Visibility.Visible;
+        //}
     }
 
     public PremiumDialogViewModel ViewModel { get; }
