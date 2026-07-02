@@ -226,10 +226,6 @@
                         HorizontalAlignment="Center"
                         NavigateUri="https://github.com/jenius-apps/nightingale-rest-api-client/blob/master/privacypolicy.md" />
                     <HyperlinkButton
-                        x:Uid="RateReview"
-                        HorizontalAlignment="Center"
-                        Click="{x:Bind ViewModel.RateAndReviewAsync}" />
-                    <HyperlinkButton
                         x:Uid="Donate"
                         HorizontalAlignment="Center"
                         NavigateUri="https://paypal.me/kidjenius" />

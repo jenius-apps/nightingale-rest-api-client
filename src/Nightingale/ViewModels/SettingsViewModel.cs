@@ -374,11 +374,6 @@ public partial class SettingsViewModel : ObservableObject
         ClearRecentUrlSuccessful = true;
     }
 
-    public async void RateAndReviewAsync()
-    {
-        await StoreHandler.ShowRatingReviewDialog();
-    }
-
     private void ChangeTelemetry(bool value)
     {
         _telemetry.SetEnabled(value);
